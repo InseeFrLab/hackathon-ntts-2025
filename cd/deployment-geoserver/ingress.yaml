@@ -4,7 +4,7 @@ metadata:
   name: geoserver-ingress
 spec:
   rules:
-  - host: geoserver-satellite-images.lab.sspcloud.fr
+  - host: geoserver-hachathon2025.lab.sspcloud.fr
     http:
       paths:
       - backend:
@@ -16,4 +16,4 @@ spec:
         pathType: Prefix
   tls: 
   - hosts:
-    - geoserver-satellite-images.lab.sspcloud.fr
+    - geoserver-hachathon2025.lab.sspcloud.fr

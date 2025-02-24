@@ -37,16 +37,16 @@ spec:
               valueFrom:
                 secretKeyRef:
                   key: accessKey
-                  name: my-s3-creds
+                  name: mc-s3
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   key: secretKey
-                  name: my-s3-creds
+                  name: mc-s3
             - name: MC_HOST_s3
               valueFrom:
                 secretKeyRef:
-                  key: secret
+                  key: mcHostS3
                   name: mc-s3
           ports:
             - containerPort: 8080
