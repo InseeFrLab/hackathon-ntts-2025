@@ -3,27 +3,28 @@ import requests
 # URL exportImage du service Copernicus
 export_url = (
     "https://copernicus.discomap.eea.europa.eu/"
-    "arcgis/rest/services/CLC_plus/CLMS_CLCplus_RASTER_2021_010m_eu/"
+    "arcgis/rest/services/CLC_plus/CLMS_CLCplus_RASTER_2018_010m_eu/"
     "ImageServer/exportImage"
 )
 
+from PIL import Image
+import pandas as pd
+import numpy as np
 
+# Path to your local Parquet file
+parquet_file = "hackathon-ntts-2025/filename2bbox.parquet"
+
+# Lire le fichier Parquet
+df = pd.read_parquet(parquet_file)
+
+# Convertir la bounding box en tuple d'entiers
+bbox_tuple = tuple(map(int, df.bbox[0]))
+filename = df.filename
+
+# Afficher le résultat
 # Bounding box (Lambert-93, EPSG:2154) : 2,5 km × 2,5 km autour de Paris
 xmin, ymin, xmax, ymax = (647592, 6858866, 650092, 6861366)
-
-# Calcul du facteur d'élargissement (x5)
-expand_factor = 5
-width = xmax - xmin  # 2500 m
-height = ymax - ymin  # 2500 m
-
-new_width = width * expand_factor
-new_height = height * expand_factor
-
-# Ajustement des coordonnées pour élargir symétriquement
-xmin -= new_width // 2
-xmax += new_width // 2
-ymin -= new_height // 2
-ymax += new_height // 2
+xmin, ymin, xmax, ymax = bbox_tuple
 
 # Résolution cible en mètres par pixel
 resolution = 10
@@ -39,8 +40,8 @@ bbox_str = f"{xmin},{ymin},{xmax},{ymax}"
 common_params = {
     "f": "image",
     "bbox": bbox_str,
-    "bboxSR": "2154",   # Lambert-93
-    "imageSR": "2154",  # Sortie aussi en Lambert-93
+    "bboxSR": "3035",   # Lambert-93
+    "imageSR": "3035",  # Sortie aussi en Lambert-93
     "size": f"{size_x},{size_y}",  # Ajusté automatiquement pour 1 pixel = 10 m
 }
 
@@ -60,8 +61,8 @@ def download_image(format_ext, filename):
         print(f"Erreur {format_ext.upper()} : ", response.status_code, response.text)
 
 # --- Téléchargement des fichiers ---
-download_image("tiff", "clcplus2021_paris_10m.tif")
-download_image("png", "clcplus2021_paris_10m.png")
+download_image("tiff", "clcplus2016_test_10m.tif")
+download_image("png", "clcplus2015_test_10m.png")
 
 try:
     img = Image.open("clcplus2021_paris_10m.tif")
@@ -70,5 +71,10 @@ try:
 except Exception as e:
     print("Erreur à l'ouverture du TIFF :", e)
 
+
 np.array(img)
-np.unique(img) = 10
+np.unique(img)
+
+
+# Afficher les 5 premières lignes
+print(df.head())
