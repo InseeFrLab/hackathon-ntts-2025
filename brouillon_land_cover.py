@@ -1,51 +1,48 @@
 import requests
-
-# URL exportImage du service Copernicus
-export_url = (
-    "https://copernicus.discomap.eea.europa.eu/"
-    "arcgis/rest/services/CLC_plus/CLMS_CLCplus_RASTER_2018_010m_eu/"
-    "ImageServer/exportImage"
-)
-
 from PIL import Image
 import pandas as pd
 import numpy as np
+import os
+import s3fs
+# URL exportImage du service Copernicus
 
-# Path to your local Parquet file
-parquet_file = "hackathon-ntts-2025/filename2bbox.parquet"
 
-# Lire le fichier Parquet
-df = pd.read_parquet(parquet_file)
+fs = s3fs.S3FileSystem(
+    client_kwargs={'endpoint_url': 'https://'+'minio.lab.sspcloud.fr'},
+    key = os.environ["AWS_ACCESS_KEY_ID"], 
+    secret = os.environ["AWS_SECRET_ACCESS_KEY"]
+    )
 
-# Convertir la bounding box en tuple d'entiers
-bbox_tuple = tuple(map(int, df.bbox[0]))
-filename = df.filename
+# Define S3 File Path
+s3_path_s2  = "s3://projet-hackathon-ntts-2025/data-raw/SENTINEL2"
+NUTS3 = "BE100" 
+year = "2021"
+parquet_name = "filename2bbox.parquet"
 
-# Afficher le résultat
-# Bounding box (Lambert-93, EPSG:2154) : 2,5 km × 2,5 km autour de Paris
-xmin, ymin, xmax, ymax = (647592, 6858866, 650092, 6861366)
-xmin, ymin, xmax, ymax = bbox_tuple
+# Construct the S3 path dynamically
+s3_path = f"{s3_path_s2}/{NUTS3}/{year}/{parquet_name}"
 
-# Résolution cible en mètres par pixel
-resolution = 10
+os.makedirs(f"{"labels"}/{NUTS3}/{year}")
 
-# Calcul de la taille en pixels pour garantir 1 pixel = 10 m
-size_x = int((xmax - xmin) / resolution)
-size_y = int((ymax - ymin) / resolution)
+# export_url = (
+#     "https://copernicus.discomap.eea.europa.eu/"
+#     "arcgis/rest/services/CLC_plus/CLMS_CLCplus_RASTER_2021_010m_eu/"
+#     "ImageServer/exportImage"
+# )
 
-# Construction de la bounding box sous forme de chaîne
-bbox_str = f"{xmin},{ymin},{xmax},{ymax}"
+export_url = f"https://copernicus.discomap.eea.europa.eu/arcgis/rest/services/CLC_plus/CLMS_CLCplus_RASTER_{year}_010m_eu/ImageServer/exportImage"
 
-# Paramètres communs pour l'export
-common_params = {
-    "f": "image",
-    "bbox": bbox_str,
-    "bboxSR": "3035",   # Lambert-93
-    "imageSR": "3035",  # Sortie aussi en Lambert-93
-    "size": f"{size_x},{size_y}",  # Ajusté automatiquement pour 1 pixel = 10 m
-}
+# Configure S3 Filesystem for MinIO
+fs = s3fs.S3FileSystem(
+    client_kwargs={'endpoint_url': 'https://' + 'minio.lab.sspcloud.fr'},
+    key=os.environ["AWS_ACCESS_KEY_ID"], 
+    secret=os.environ["AWS_SECRET_ACCESS_KEY"]
+)
 
-def download_image(format_ext, filename):
+with fs.open(s3_path, "rb") as f:
+    df = pd.read_parquet(f)
+
+def download_image(format_ext, filename, common_params, export_url):
     """Télécharge une image dans le format spécifié (tiff ou png)"""
     params = common_params.copy()
     params["format"] = format_ext
@@ -56,25 +53,49 @@ def download_image(format_ext, filename):
         with open(filename, "wb") as f:
             for chunk in response.iter_content(chunk_size=8192):
                 f.write(chunk)
-        print(f"Téléchargement {format_ext.upper()} terminé : {filename}")
+        #print(f"Téléchargement {format_ext.upper()} terminé : {filename}")
     else:
         print(f"Erreur {format_ext.upper()} : ", response.status_code, response.text)
 
-# --- Téléchargement des fichiers ---
-download_image("tiff", "clcplus2016_test_10m.tif")
-download_image("png", "clcplus2015_test_10m.png")
+#row = df.iloc[0]
+#row.bbox
+for index, row in df.iterrows():
+    
+    bbox_tuple = tuple(map(int, row.bbox))  # Convertir bbox en tuple d'entiers
+    filename = row.filename  # Récupérer le nom du fichier
+    
+    xmin, ymin, xmax, ymax = bbox_tuple
 
-try:
-    img = Image.open("clcplus2021_paris_10m.tif")
-    img.show()
-    print("TIFF ouvert avec succès.")
-except Exception as e:
-    print("Erreur à l'ouverture du TIFF :", e)
+    resolution = 10
+
+    # Calcul de la taille en pixels pour garantir 1 pixel = 10 m
+    size_x = int((xmax - xmin) / resolution)
+    size_y = int((ymax - ymin) / resolution)
+
+    # Construction de la bounding box sous forme de chaîne
+    bbox_str = f"{xmin},{ymin},{xmax},{ymax}"
+
+    # Paramètres communs pour l'export
+    common_params = {
+        "f": "image",
+        "bbox": bbox_str,
+        "bboxSR": "3035",   # Lambert-93
+        "imageSR": "3035",  # Sortie aussi en Lambert-93
+        "size": f"{size_x},{size_y}",  # Ajusté automatiquement pour 1 pixel = 10 m
+    }
+    # Construct the S3 path dynamically
+    l_path = f"{"labels"}/{NUTS3}/{year}/"
+
+    download_image("tiff",l_path+filename, common_params,export_url)
+    
+    img = Image.open(l_path+filename)
+    npy_filename = filename.replace(".tif", ".npy")
+    np.save(l_path + npy_filename,np.array(img))
+
+    if os.path.exists(l_path+filename):
+        os.remove(l_path+filename)
 
 
-np.array(img)
-np.unique(img)
 
 
-# Afficher les 5 premières lignes
-print(df.head())
+fs.put(lpath,rpath)
