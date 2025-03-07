@@ -1,10 +1,17 @@
 [
   {
-    "objectID": "src/pitch/index.html#introduction-1",
-    "href": "src/pitch/index.html#introduction-1",
+    "objectID": "src/pitch/index.html#team-17",
+    "href": "src/pitch/index.html#team-17",
     "title": "Artificialization with CLC+",
-    "section": "Introduction",
-    "text": "Introduction\nWe are TEAM 17 From France !"
+    "section": "TEAM 17",
+    "text": "TEAM 17\nWe are TEAM 17 From France !"
+  },
+  {
+    "objectID": "src/pitch/index.html#our-background",
+    "href": "src/pitch/index.html#our-background",
+    "title": "Artificialization with CLC+",
+    "section": "Our Background",
+    "text": "Our Background\nSatellite tracking of slum changes in French oversea territories, for a better census With a dashboard!"
   },
   {
     "objectID": "src/pitch/index.html#land-use-change",
@@ -26,6 +33,13 @@
     "title": "Artificialization with CLC+",
     "section": "Corine Land Cover + is looking for use cases",
     "text": "Corine Land Cover + is looking for use cases"
+  },
+  {
+    "objectID": "src/pitch/index.html#state-of-the-art",
+    "href": "src/pitch/index.html#state-of-the-art",
+    "title": "Artificialization with CLC+",
+    "section": "State of the art",
+    "text": "State of the art\nUrban Atlas ➡ Only for cities, last available data : 2018\nEuropean Environment Agency ➡ last available data : 2018. Bias correction for long term series\nHigh Resolution Layer Imperviousness ➡ last available data : 2018"
   },
   {
     "objectID": "src/pitch/index.html#clc-delta",
