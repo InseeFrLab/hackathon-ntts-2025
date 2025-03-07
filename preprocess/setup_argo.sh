@@ -21,4 +21,4 @@ done
 
 json_string="${json_string%,*} }"
 
-echo "$json_string" > /home/onyxia/work/hackathon-ntts-2025/preprocess/GCP_credentials.json
+echo "$json_string" > hackathon-ntts-2025/preprocess/GCP_credentials.json
