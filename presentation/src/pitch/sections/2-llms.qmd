@@ -1,0 +1,119 @@
+## Une brève explication
+- LLM = [**Large Language Model**]{.orange}
+- Capable de prédire le [**mot suivant dans une phrase**]{.blue2} (à partir d'une contexte)
+- Entrainé à converser avec l'utilisateur
+- Données d'entrainement : une [**énorme quantité de pages de textes**]{.orange}
+
+## LLM et confidentialité
+![](../img/llm_cadre_general.png){width=75% fig-align="center"}
+
+- le modèle final est de taille conséquente : peut aller jusqu'à plusieurs [**centaines de Gigas**]{.orange} (un film de bonne qualité 3 Gigas) 
+- Mais est capable de recracher une quantité d'information beaucoup plus grande ! 
+- Idée de [**compression de l'information**]{.orange}, bien que la restitution soit particulière
+
+## LLM et confidentialité
+![](../img/llm_confidentialite.png){width=75% fig-align="center"}
+
+- Attention à la confidentialité des données !
+
+## LLM et confidentialité
+![](../img/llm_cadre_confidentialite_insee.png){width=75% fig-align="center"}
+
+- les LLMS peuvent être hébergés [localement]{.orange} mais nécessitent de l'espace et de la puissance de calcul
+- Démonstration [**d'Ollama**]{.orange} sur le datalab ? 
+- Package R ollamax : [[**https://github.com/clement2323/ollamax**]{.blue2}](https://github.com/clement2323/ollamax)
+
+## Notion d'embeddings:
+![](../img/embeddings.png){width=75% fig-align="center"}
+
+- La proximité dans l'espace est une proximité sémantique !
+
+## Base vectorielle: 
+![](../img/base_vectorielle.png){width=75% fig-align="center"}
+
+- On transforme le site de l'insee en une [**base vectorielle**]{.orange}
+- Revient à associer une position dans l'espace à chaque page du site
+
+## RAG : 
+- Retrieval Augmented Generation
+![](../img/RAG.png){width=75% fig-align="center"}
+
+## Les besoins pour un RAG : 
+
+- Le plus difficile est de récupérer les données dans [**un format structuré**]{.orange}
+- Exemple du site de l'insee.fr : comment récupérer l'entiereté des publications ?
+
+
+## Un exemple de RAG particulier (BoutadE):
+
+![](../img/redondance_r.png){width=75% fig-align="center"}
+
+- Constat : beaucoup de [**redondance**]{.orange} dans les codes de production de tableaux et graphiques
+
+
+## Un exemple de RAG particulier (BoutadE):
+
+![](../img/arbre_boutade.png){width=75% fig-align="center"}
+
+- Hautement [**automatisable**]{.blue2} !
+
+##  Un exemple de RAG particulier (BoutadE):
+
+- un tableau ou graphique est basé sur des [**éléments simples**]{.orange}:
+
+    - un titre
+    - une table de départ
+    - des variables de croisement (sexe, CSP..)
+    - des variables quantitatives (Revenu, nb enfants)
+    - une fonction agregeante (somme, moyenne..)
+
+- idée : créer [**une machine**]{.orange} qui prend en entrée les éléments mentionnés et qui renvoie la table ou le graphique associé 
+- on remplace toutes les lignes de code par l'appel d'une seule fonction !
+
+## Les métadonnées :
+
+- [**En ajoutant du contexte**]{.orange} aux tableaux et en envoyant le tout à un LLM (en soignant le prompt), on construit un RAG artisanal permettant d'analyser les données
+
+- éléments de contexte : 
+    - dictionnaire des variables
+    - objectifs de l'étude, voire messages pressentis
+    - public cible
+
+## Les métadonnées : 
+
+- [Démonstration](https://clement2323.github.io/boutade/)
+
+## La naissance de BoutaDE
+
+![](../img/boutade.png){width=75% fig-align="center"}
+
+- De l'importance de savoir où on va avant de se lancer !
+
+## Autres cas d'usages potentiels :
+- Gonfler les publications du site de l'INSEE avec des notices sur la méthodologie et les missions de l'INSEE
+- Produire un RAG sur les documents administratifs de l'INSEE 
+
+
+## Les modèles de visions :
+
+- Exemple récents de reconnaissance de texte sur des scans de fiche adresse RP
+- Les modèles de vision, sont devenus très performants !
+- Voir sur [**Mistral Chat**](https://chat.mistral.ai/chat)
+- [**Démonstration**]{.blue2} : rapport écrit à partir de schémas excalidraw..
+
+## Les grosses boîtes :
+
+- Open AI et chat GPT
+- depSeek (concurrent chinois) -> Open source
+- Anthropic
+- Google
+- Meta
+- Mistral
+- X 
+
+## Les différents modèles : 
+- chatGPT 
+- claude
+- gemini
+- llama
+- mistral

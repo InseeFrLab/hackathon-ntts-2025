@@ -1,0 +1,91 @@
+## L'exemple des plans de collecte
+
+![](../img/plan_de_collecte_reel.png){width=75% fig-align="center"}
+
+- Simple en apparence, un point sur une carte pour repérer le logement
+
+## L'exemple des plans de collecte
+
+![](../img/plan_de_collecte.png){width=75% fig-align="center"}
+
+- La production des plans repose sur de nombreuses sources de données
+
+## Les plans de collecte du RP
+
+![](../img/NO_ZOOM.png){width=75% fig-align="center"}
+
+- illisible en l'état
+
+
+## Les plans de collecte du RP
+
+![](../img/zoom_schema.png){width=75% fig-align="center"}
+
+
+## Les plans de collecte du RP
+
+![](../img/zoom_schema_2.png){width=75% fig-align="center"}
+
+- Un plan de collecte par groupe !
+
+## Les plans de collecte du RP
+
+![](../img/ZOOM_1.png){width=75% fig-align="center"}
+
+
+## Les plans de collecte du RP
+
+![](../img/ZOOM_2.png){width=75% fig-align="center"}
+
+
+## Les plans de collecte du RP
+
+![](../img/ZOOM_4.png){width=75% fig-align="center"}
+
+## Les plans de collecte du RP
+
+![](../img/ZOOM_3.png){width=75% fig-align="center"}
+
+
+
+## Algorithmes de détection du bâti
+
+- Les données satellites sont une source d'image non conventionnelle 
+- Méritent d'etre analysées pour aider au [**Recensement de la Population**]{.orange}
+- Tempête Chido à Mayotte, critiques des élus en Guyane
+
+
+## Les images
+
+| ![](../img/pleiade.png){width=75% fig-align="center"} | ![](../img/sentinel2_exemple.png){width=75% fig-align="center"} |
+|:---:|:---:|
+
+- Différentes résolutions, spatiales spectrales et temporelles 
+- [**Lien vers les images**](https://geoserver-hachathon2025.lab.sspcloud.fr/geoserver/web/wicket/bookmarkable/org.geoserver.web.demo.MapPreviewPage?23&filter=false)
+
+# Stratégie de détection de changements
+![](../img/strategie_segmentation.png){width=75% fig-align="center"}
+
+## Quelles données en entrée ? 
+| ![](../img/cosia.png){width=70% fig-align="center"} | ![](../img/image_cosia.png){width=60% fig-align="center"} |
+|:---:|:---:|
+
+
+- Pour [**entraîner**]{.orange} le modèle, il nous faut des images et des annotations associées
+- Le projet [Cosia](https://cosia.ign.fr/) nous donne ces annotations pour une année donnée
+
+## Quelques liens 
+- [Lien vers l'application présentant les derniers résultats](https://inseefrlab.github.io/satellite-images-webapp/)
+- [Lien vers la documentation du projet](https://inseefrlab.github.io/satellite-images-webapp/)
+
+## Ce qu'il reste à faire
+
+- pérenniser le processus d'obtention des images (geoserveur) pour [**pérenniser**]{.orange} les outils
+- gérer la transition RIL / Base adresse nationale
+- travaux de [**qualité**]{.orange} sur la source fiscale (Résil DROM)
+- [**se mettre à jour !**]{.blue2}  : de nouveaux modèles émanent de la littérature très fréquemment
+
+## L'IA dans tout ça ? :
+
+- La méthode de Zoom des plans de collecte est de l'ordre de [**l'automatisation**]{.orange}, mais utilise une méthode des [**k plus proches voisins**]{.orange} pour regrouper les points qui sont proches
+- Les [**algorithmes de Segmentation**]{.orange} utilisés ici sont appelés des "SegFormer" et fond partis des "Vision Models" → Structure très proche des [**transformers**]{.blue2}

@@ -1,0 +1,35 @@
+## Introduction
+
+- Beaucoup de [**"hype"**]{.orange} autour de l'intelligence artificielle (IA)
+- [**Mot valise**]{.blue1} dont la définition change selon l'interlocuteur
+- Identifier les [**opportunités pour l'INSEE**]{.orange}, et les enjeux associés
+
+## Un contour mal défini : 
+
+- IA intelligence artificielle, pourrait regrouper :
+    - l'ensemble des traitements ayant pour but d'[**automatiser**]{.blue2} des processus
+    - des méthodes statistiques plus poussées → économétrie, méthodes d'[**apprentissage statistique**]{.blue2}
+    - Les méthodes d'apprentissage profond →  [**Deep Learning**]{.orange} 
+    - Arrivée récente des [**Large Language Models (LLM)**]{.orange} a ouvert l'IA au grand public
+
+## Un contour mal défini : 
+
+![](../img/IA_concentrique.png){width=75% fig-align="center"}
+
+- Où commence la notion d'[**IA**]{.blue2} ?
+
+## L'apprentissage statistique : 
+
+![](../img/cadre_general_apprentissage.png){width=75% fig-align="center"}
+
+- Pour apprendre il faut des [**exemples**]{.blue2}!
+- Des images, des textes, des sons, des vidéos, des données structurées, des données non structurées
+
+
+## Objectif de la présentation
+
+- Présenter les travaux techniques menés par le SES
+- En [**différenciant**]{.orange} bien l'automatisation, de la partie IA / l'apprentissage statistique
+- Présenter des [**intégrations de l'IA**]{.blue2} possibles dans les processus de l'INSEE (et donc dans l'ecosystème de l'INSEE)
+- Discuter des [**opportunités pour l'INSEE et ses agents**]{.orange} 
+- Et donner des pistes pour identifier les processus pour lesquels [**l'automatisation peut s'avérer fructueuse**]{.blue2}

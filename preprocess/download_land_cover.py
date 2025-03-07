@@ -15,8 +15,8 @@ fs = s3fs.S3FileSystem(
 
 # Define S3 File Path
 s3_path_s2  = "s3://projet-hackathon-ntts-2025/data-raw/SENTINEL2"
-NUTS3 = "BE100" 
-year = "2021"
+NUTS3 = "FRJ27" 
+year = "2018"
 parquet_name = "filename2bbox.parquet"
 
 # Construct the S3 path dynamically
@@ -95,7 +95,28 @@ for index, row in df.iterrows():
     if os.path.exists(l_path+filename):
         os.remove(l_path+filename)
 
+    fs.put(
+        l_path+npy_filename,
+        f"{"s3://projet-hackathon-ntts-2025/data-label/CLCplus-Backbone"}/{NUTS3}/{year}/",
+        True
+    )
 
 
 
-fs.put(lpath,rpath)
+import numpy as np
+from PIL import Image
+
+npy_filename ="3924340_3097760_0_60.npy"
+
+# Charger le fichier .npy
+img_array = np.load(l_path + npy_filename)
+projet-hackathon-ntts-2025/data-label/CLCplus-Backbone
+# Créer une image binaire : Classe 1 → Blanc (255), Autres → Noir (0)
+binary_img = np.where(img_array == 1, 255, 0).astype(np.uint8)
+
+# Convertir en image et sauvegarder en PNG
+output_png = "output_class1.png"
+Image.fromarray(binary_img).save(output_png)
+
+print(f"Image sauvegardée sous : {output_png}")
+

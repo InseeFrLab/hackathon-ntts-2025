@@ -1,0 +1,14 @@
+---
+title: Présentation au ST Martinique
+image: img/IA.jpg
+date: "2025-02-26"
+description: |
+  <b>Description :</b> L'IA et ses usages (potentiels) à l'INSEE
+author:  Clément Guillo
+slides:
+  text: Slides
+  url: src/pitch/index.html
+order: 1
+lang: fr-FR
+---
+
