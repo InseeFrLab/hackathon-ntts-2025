@@ -58,14 +58,6 @@ parser.add_argument(
     help="Run name in MLflow",
 )
 parser.add_argument(
-    "--task",
-    type=str,
-    choices=["segmentation", "detection", "classification"],
-    default="segmentation",
-    help="Task of the training",
-    required=True,
-)
-parser.add_argument(
     "--source",
     type=str,
     choices=["PLEIADES", "SENTINEL2"],
@@ -99,7 +91,7 @@ parser.add_argument(
 parser.add_argument(
     "--type_labeler",
     type=str,
-    choices=["BDTOPO", "COSIA"],
+    choices=["BDTOPO", "COSIA", "CLCplus-Backbone"],
     default="BDTOPO",
     help="Source of data used for labelling",
 )
@@ -321,6 +313,10 @@ def main(
         )
         patches.sort()
         labels.sort()
+        # tmp
+        # labels.remove(
+        #     "data/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/BE100/2018/250/3924030_3093620_0_8.npy"
+        # )
         # No filtering here
         indices = filter_indices_from_labels(labels, -1.0, 2.0, type_labeler)
         train_patches += [patches[idx] for idx in indices]
@@ -335,14 +331,17 @@ def main(
         weights.append(len(indices))
 
     # Get test patches and labels
-    deps_test = ["NUTS1"]
-    years_test = ["YEAR_NUTS1"]
+    deps_test = ["BE100"]
+    years_test = ["2021"]
     for dep, year in zip(deps_test, years_test):
         # Get patches and labels for test
         patches, labels = get_patchs_labels(from_s3, source, dep, year, tiles_size, type_labeler)
 
         patches.sort()
         labels.sort()
+        # labels.remove(
+        #     "data/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/BE100/2021/250/3924030_3093620_0_8.npy"
+        # )
         test_patches += list(patches)
         test_labels += list(labels)
 
@@ -415,7 +414,7 @@ def main(
 
     # TODO : Est ce qu'on met des poids ?
     weights = [
-        building_class_weight if label == "Bâtiment" else 1.0
+        building_class_weight if label == "Sealed" else 1.0
         for label in requests.get(
             f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
         )
@@ -506,9 +505,7 @@ def format_datasets(args_dict: dict) -> Tuple[str, int]:
     deps = [dep.upper() for dep in deps]
     fs = get_file_system()
     for dep, year in zip(deps, years):
-        s3_path = (
-            f"s3://projet-hackathon-ntts-2025/data-raw/{args_dict['source']}/{dep.upper()}/{year}"
-        )
+        s3_path = f"s3://projet-hackathon-ntts-2025/data-preprocessed/patchs/{args_dict['type_labeler']}/{args_dict['source']}/{dep.upper()}/{year}"
         if not fs.exists(s3_path):
             raise ValueError(f"S3 path {s3_path} does not exist.")
     args_dict.pop("datasets")

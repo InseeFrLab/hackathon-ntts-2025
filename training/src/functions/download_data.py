@@ -228,7 +228,7 @@ def normalization_params(source: str, dep: str, year: str, tiles_size: str, type
     tiles_size (str): Tiles size.
     type_labeler (str): Type of labeler.
     """
-    params_path = f"data/data-preprocessed/patchs/{source}/{dep}/{year}/{tiles_size}/train/metrics-normalization.yaml"  # noqa
+    params_path = f"data/data-preprocessed/patchs/{source}/{dep}/{year}/{tiles_size}/metrics-normalization.yaml"  # noqa
     with open(params_path) as f:
         params = yaml.safe_load(f)
     return params["mean"], params["std"]
