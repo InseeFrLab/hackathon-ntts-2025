@@ -14,15 +14,16 @@ fs = s3fs.S3FileSystem(
     )
 
 # Define S3 File Path
-s3_path_s2  = "s3://projet-hackathon-ntts-2025/data-raw/SENTINEL2"
-NUTS3 = "FRJ27" 
-year = "2018"
+s3_path_s2  = "s3://projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2"
+NUTS3 = "BE100" 
+year = "2021"
 parquet_name = "filename2bbox.parquet"
 
 # Construct the S3 path dynamically
-s3_path = f"{s3_path_s2}/{NUTS3}/{year}/{parquet_name}"
+s3_path = f"{s3_path_s2}/{NUTS3}/{year}/250/{parquet_name}"
 
-os.makedirs(f"{"labels"}/{NUTS3}/{year}")
+label_dir = f"data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/{NUTS3}/{year}/250/"
+os.makedirs(label_dir)
 
 # export_url = (
 #     "https://copernicus.discomap.eea.europa.eu/"
@@ -84,7 +85,7 @@ for index, row in df.iterrows():
         "size": f"{size_x},{size_y}",  # Ajusté automatiquement pour 1 pixel = 10 m
     }
     # Construct the S3 path dynamically
-    l_path = f"{"labels"}/{NUTS3}/{year}/"
+    l_path = label_dir
 
     download_image("tiff",l_path+filename, common_params,export_url)
     
@@ -92,31 +93,9 @@ for index, row in df.iterrows():
     npy_filename = filename.replace(".tif", ".npy")
     np.save(l_path + npy_filename,np.array(img))
 
-    if os.path.exists(l_path+filename):
-        os.remove(l_path+filename)
-
     fs.put(
         l_path+npy_filename,
-        f"{"s3://projet-hackathon-ntts-2025/data-label/CLCplus-Backbone"}/{NUTS3}/{year}/",
+        f"{"s3://projet-hackathon-ntts-2025"}/{label_dir}",
         True
     )
-
-
-
-import numpy as np
-from PIL import Image
-
-npy_filename ="3924340_3097760_0_60.npy"
-
-# Charger le fichier .npy
-img_array = np.load(l_path + npy_filename)
-projet-hackathon-ntts-2025/data-label/CLCplus-Backbone
-# Créer une image binaire : Classe 1 → Blanc (255), Autres → Noir (0)
-binary_img = np.where(img_array == 1, 255, 0).astype(np.uint8)
-
-# Convertir en image et sauvegarder en PNG
-output_png = "output_class1.png"
-Image.fromarray(binary_img).save(output_png)
-
-print(f"Image sauvegardée sous : {output_png}")
 
