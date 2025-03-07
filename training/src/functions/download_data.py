@@ -47,13 +47,13 @@ def get_golden_paths(
 
         patchs = fs.ls(
             (
-                f"projet-slums-detection/golden-test/patchs/"
+                f"projet-hackathon-ntts-2025/golden-test/patchs/"
                 f"{task}/{source}/{dep}/{year}/{tiles_size}"
             )
         )
         labels = fs.ls(
             (
-                f"projet-slums-detection/golden-test/labels/"
+                f"projet-hackathon-ntts-2025/golden-test/labels/"
                 f"{task}/{source}/{dep}/{year}/{tiles_size}"
             )
         )
@@ -71,7 +71,7 @@ def get_golden_paths(
             "cp",
             "--quiet",
             "-r",
-            f"s3/projet-slums-detection/golden-test/patchs/"
+            f"s3/projet-hackathon-ntts-2025/golden-test/patchs/"
             f"{task}/{source}/{dep}/{year}/{tiles_size}/",
             patchs_path + "/",
         ]
@@ -80,7 +80,7 @@ def get_golden_paths(
             "cp",
             "--quiet",
             "-r",
-            f"s3/projet-slums-detection/golden-test/labels/"
+            f"s3/projet-hackathon-ntts-2025/golden-test/labels/"
             f"{task}/{source}/{dep}/{year}/{tiles_size}/",
             labels_path + "/",
         ]
@@ -102,20 +102,17 @@ def get_golden_paths(
 
 def get_patchs_labels(
     from_s3: bool,
-    task: str,
     source: str,
     dep: str,
     year: str,
     tiles_size: str,
     type_labeler: str,
-    train: bool,
 ) -> Tuple[List[str], List[str]]:
     """
     Get paths to patches and labels from s3 or local.
 
     Args:
         from_s3 (bool): True if data should be downloaded from s3, False otherwise.
-        task (str): Task.
         source (str): Satellite source.
         dep (str): Department.
         year (str): Year.
@@ -126,53 +123,43 @@ def get_patchs_labels(
     Returns:
         Tuple[List[str], List[str]]: Paths to patchs and labels.
     """
-    if train:
-        stage = "train"
-    else:
-        stage = "test"
-
     if from_s3:
         fs = get_file_system()
 
         patchs = fs.ls(
             (
-                f"projet-slums-detection/data-preprocessed/patchs/"
-                f"{type_labeler}/{task}/{source}/{dep}/{year}/{tiles_size}/{stage}"
+                f"projet-hackathon-ntts-2025/data-preprocessed/patchs/"
+                f"{type_labeler}/{source}/{dep}/{year}/{tiles_size}"
             )
         )
 
         labels = fs.ls(
             (
-                f"projet-slums-detection/data-preprocessed/labels/"
-                f"{type_labeler}/{task}/{source}/{dep}/{year}/{tiles_size}/{stage}"
+                f"projet-hackathon-ntts-2025/data-preprocessed/labels/"
+                f"{type_labeler}/{source}/{dep}/{year}/{tiles_size}"
             )
         )
 
     else:
-        patchs_path = (
-            f"data/data-preprocessed/patchs/" f"{task}/{source}/{dep}/{year}/{tiles_size}/{stage}"
-        )
+        patchs_path = f"data/data-preprocessed/patchs/" f"{source}/{dep}/{year}/{tiles_size}"
         labels_path = (
-            f"data/data-preprocessed/labels/"
-            f"{type_labeler}/{task}/{source}/{dep}/{year}/{tiles_size}/{stage}"
+            f"data/data-preprocessed/labels/" f"{type_labeler}/{source}/{dep}/{year}/{tiles_size}"
         )
 
         download_data(
             patchs_path,
             labels_path,
-            task,
             source,
             dep,
             year,
             tiles_size,
             type_labeler,
-            train,
         )
 
         patchs = [
             f"{patchs_path}/{filename}"
             for filename in os.listdir(patchs_path)
-            if Path(filename).suffix != ".yaml"
+            if Path(filename).suffix == ".tif"
         ]
         labels = [f"{labels_path}/{filename}" for filename in os.listdir(labels_path)]
 
@@ -182,13 +169,11 @@ def get_patchs_labels(
 def download_data(
     patchs_path: str,
     labels_path: str,
-    task: str,
     source: str,
     dep: str,
     year: str,
     tiles_size: str,
     type_labeler: str,
-    train: bool,
 ) -> None:
     """
     Download data for a specific context, if not already downloaded.
@@ -196,19 +181,12 @@ def download_data(
     Args:
         patchs_path (str): Paths to patchs.
         labels_path (str): Paths to labels.
-        task (str): Task.
         source (str): Satellite source.
         dep (str): Department.
         year (str): Year.
         tiles_size (str): Tiles size.
         type_labeler (str): Type of labeler.
-        train (bool): True if data should be downloaded for training, False otherwise.
     """
-    if train:
-        stage = "train"
-    else:
-        stage = "test"
-
     all_exist = all(os.path.exists(f"{directory}") for directory in [patchs_path, labels_path])
 
     if all_exist:
@@ -218,16 +196,16 @@ def download_data(
         "mc",
         "cp",
         "-r",
-        f"s3/projet-slums-detection/data-preprocessed/patchs/{type_labeler}/{task}/{source}/{dep}/{year}/{tiles_size}/{stage}/",  # noqa
-        f"data/data-preprocessed/patchs/{task}/{source}/{dep}/{year}/{tiles_size}/{stage}/",
+        f"s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",  # noqa
+        f"data/data-preprocessed/patchs/{source}/{dep}/{year}/{tiles_size}/",
     ]
 
     label_cmd = [
         "mc",
         "cp",
         "-r",
-        f"s3/projet-slums-detection/data-preprocessed/labels/{type_labeler}/{task}/{source}/{dep}/{year}/{tiles_size}/{stage}/",  # noqa
-        f"data/data-preprocessed/labels/{type_labeler}/{task}/{source}/{dep}/{year}/{tiles_size}/{stage}/",
+        f"s3/projet-hackathon-ntts-2025/data-preprocessed/labels/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",  # noqa
+        f"data/data-preprocessed/labels/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",
     ]
 
     print("Downloading data from S3...\n")
@@ -239,9 +217,7 @@ def download_data(
     print("Downloading finished!\n")
 
 
-def normalization_params(
-    task: str, source: str, dep: str, year: str, tiles_size: str, type_labeler: str
-):
+def normalization_params(source: str, dep: str, year: str, tiles_size: str, type_labeler: str):
     """
     Get normalization params from s3.
 
@@ -252,7 +228,7 @@ def normalization_params(
     tiles_size (str): Tiles size.
     type_labeler (str): Type of labeler.
     """
-    params_path = f"data/data-preprocessed/patchs/{task}/{source}/{dep}/{year}/{tiles_size}/train/metrics-normalization.yaml"  # noqa
+    params_path = f"data/data-preprocessed/patchs/{source}/{dep}/{year}/{tiles_size}/train/metrics-normalization.yaml"  # noqa
     with open(params_path) as f:
         params = yaml.safe_load(f)
     return params["mean"], params["std"]

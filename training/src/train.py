@@ -15,10 +15,6 @@ import numpy as np
 import requests
 import torch
 from albumentations.pytorch.transforms import ToTensorV2
-from osgeo import gdal
-from torch import Generator
-from torch.utils.data import DataLoader, random_split
-
 from functions.download_data import (
     get_file_system,
     get_patchs_labels,
@@ -27,6 +23,9 @@ from functions.download_data import (
 )
 from functions.filter import filter_indices_from_labels
 from functions.instanciators import get_dataset, get_lightning_module, get_trainer
+from osgeo import gdal
+from torch import Generator
+from torch.utils.data import DataLoader, random_split
 
 gdal.UseExceptions()
 
@@ -41,7 +40,7 @@ parser = argparse.ArgumentParser(description="PyTorch Training Satellite Images"
 parser.add_argument(
     "--remote_server_uri",
     type=str,
-    default="https://projet-slums-detection-***.user.lab.sspcloud.fr",
+    default="https://projet-hackathon-ntts-2025-***.user.lab.sspcloud.fr",
     help="MLflow URI",
     required=True,
 )
@@ -253,7 +252,6 @@ def main(
     remote_server_uri: str,
     experiment_name: str,
     run_name: str,
-    task: str,
     source: str,
     deps: Tuple[str],
     years: Tuple[str],
@@ -314,7 +312,12 @@ def main(
     for dep, year in zip(deps, years):
         # Get patchs and labels for training
         patches, labels = get_patchs_labels(
-            from_s3, task, source, dep, year, tiles_size, type_labeler, train=True
+            from_s3,
+            source,
+            dep,
+            year,
+            tiles_size,
+            type_labeler,
         )
         patches.sort()
         labels.sort()
@@ -323,30 +326,25 @@ def main(
         train_patches += [patches[idx] for idx in indices]
         train_labels += [labels[idx] for idx in indices]
 
-        # Get patches and labels for test
-        patches, labels = get_patchs_labels(
-            from_s3, task, source, dep, year, tiles_size, type_labeler, train=False
-        )
-
-        patches.sort()
-        labels.sort()
-        test_patches += list(patches)
-        test_labels += list(labels)
-
         # Get normalization parameters
         normalization_mean, normalization_std = normalization_params(
-            task, source, dep, year, tiles_size, type_labeler
+            source, dep, year, tiles_size, type_labeler
         )
         normalization_means.append(normalization_mean)
         normalization_stds.append(normalization_std)
         weights.append(len(indices))
 
-    # # Golden test dataset
-    # golden_patches, golden_labels = get_golden_paths(
-    #     from_s3, task, source, "MAYOTTE_CLEAN", "2022", tiles_size
-    # )
-    # golden_patches.sort()
-    # golden_labels.sort()
+    # Get test patches and labels
+    deps_test = ["NUTS1"]
+    years_test = ["YEAR_NUTS1"]
+    for dep, year in zip(deps_test, years_test):
+        # Get patches and labels for test
+        patches, labels = get_patchs_labels(from_s3, source, dep, year, tiles_size, type_labeler)
+
+        patches.sort()
+        labels.sort()
+        test_patches += list(patches)
+        test_labels += list(labels)
 
     # 2- Define the transforms to apply
     # Normalization mean
@@ -395,11 +393,8 @@ def main(
 
     # 3- Retrieve the Dataset object given the params
     # TODO: mettre en Params comme Tom a fait dans formation-mlops
-    dataset = get_dataset(task, train_patches, train_labels, n_bands, from_s3, transform)
-    test_dataset = get_dataset(task, test_patches, test_labels, n_bands, from_s3, test_transform)
-    # golden_dataset = get_dataset(
-    #     task, golden_patches, golden_labels, n_bands, from_s3, test_transform
-    # )
+    dataset = get_dataset(train_patches, train_labels, n_bands, from_s3, transform)
+    test_dataset = get_dataset(test_patches, test_labels, n_bands, from_s3, test_transform)
 
     # 4- Use random_split to split the dataset
     train_dataset, val_dataset = random_split(dataset, [0.8, 0.2], generator=Generator())
@@ -414,17 +409,15 @@ def main(
     test_loader = DataLoader(
         test_dataset, batch_size=test_batch_size, shuffle=False, drop_last=True, **kwargs
     )
-    # golden_loader = DataLoader(
-    #     golden_dataset, batch_size=test_batch_size, shuffle=False, drop_last=True, **kwargs
-    # )
 
     # 6- Create the trainer and the lightning
     trainer = get_trainer(earlystop, checkpoints, epochs, num_sanity_val_steps, accumulate_batch)
 
+    # TODO : Est ce qu'on met des poids ?
     weights = [
         building_class_weight if label == "Bâtiment" else 1.0
         for label in requests.get(
-            f"https://minio.lab.sspcloud.fr/projet-slums-detection/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
+            f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
         )
         .json()
         .values()
@@ -439,7 +432,6 @@ def main(
         n_bands=n_bands,
         logits=bool(logits),
         freeze_encoder=bool(freeze_encoder),
-        task=task,
         lr=lr,
         momentum=momentum,
         earlystop=earlystop,
@@ -514,7 +506,9 @@ def format_datasets(args_dict: dict) -> Tuple[str, int]:
     deps = [dep.upper() for dep in deps]
     fs = get_file_system()
     for dep, year in zip(deps, years):
-        s3_path = f"s3://projet-slums-detection/data-raw/{args_dict['source']}/{dep.upper()}/{year}"
+        s3_path = (
+            f"s3://projet-hackathon-ntts-2025/data-raw/{args_dict['source']}/{dep.upper()}/{year}"
+        )
         if not fs.exists(s3_path):
             raise ValueError(f"S3 path {s3_path} does not exist.")
     args_dict.pop("datasets")

@@ -3,18 +3,17 @@ from typing import Dict, List, Optional
 import pytorch_lightning as pl
 import torch
 from albumentations import Compose
+from config.dataset import dataset_dict
+from config.loss import loss_dict
+from config.module import module_dict
+from config.scheduling import scheduling_policies
+from config.task import task_dict
 from pytorch_lightning.callbacks import (
     EarlyStopping,
     LearningRateMonitor,
     ModelCheckpoint,
 )
 from s3fs import S3FileSystem
-
-from config.dataset import dataset_dict
-from config.loss import loss_dict
-from config.module import module_dict
-from config.scheduling import scheduling_policies
-from config.task import task_dict
 
 
 def get_trainer(
@@ -152,7 +151,6 @@ def get_lightning_module(
     n_bands: str,
     logits: bool,
     freeze_encoder: bool,
-    task: str,
     lr: float,
     momentum: float,
     earlystop: Dict,
@@ -184,10 +182,8 @@ def get_lightning_module(
         A PyTorch Lightning module for segmentation.
     """
 
-    if task not in task_dict:
-        raise ValueError("Invalid task type")
-    else:
-        LightningModule = task_dict[task]
+    task = "segmentation"
+    LightningModule = task_dict[task]
 
     model = get_model(module_name, type_labeler, n_bands, logits, freeze_encoder)
 
