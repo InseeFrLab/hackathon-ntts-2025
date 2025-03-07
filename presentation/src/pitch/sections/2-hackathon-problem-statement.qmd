@@ -12,3 +12,7 @@ EU Regulation on the Inclusion of Greenhouse Gas emissions and Removals from Lan
     ➡ Only for cities, last available data : 2018
 
 [European Environment Agency](https://www.eionet.europa.eu/etcs/etc-di/products/etc-di-report-2024-3-analysis-of-usability-of-imperviousness-and-clc-backbone-data-for-mapping-sealed-areas)
+    ➡ last available data : 2018. Bias correction for long term series
+
+[High Resolution Layer Imperviousness](https://land.copernicus.eu/en/products/high-resolution-layer-imperviousness?tab=documentation)
+    ➡ last available data : 2018
