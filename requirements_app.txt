@@ -16,3 +16,7 @@ torchvision
 geopandas
 libpysal
 pqdm
+earthengine-api
+geemap
+hvac
+geedim
