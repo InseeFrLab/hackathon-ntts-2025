@@ -2,14 +2,20 @@ import numpy as np
 import os
 from PIL import Image
 
+
 # Définition des paramètres
+
+label_dir = f"data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/{NUTS3}/{year}/250/"
 file = "labels"
-nuts3 = "FRK26"
+nuts3 = "BE100"
 years = [2018, 2021]
-filename = "3879060_2555540_0_362.npy"
+filename = "3879060_2555540_0_362.tif"
 
 # Dictionnaire pour stocker les images binaires
 masks = {}
+label_dir = f"data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/{NUTS3}/{year}/250/"
+
+
 
 # Fonction pour charger et traiter une année
 def process_year(year):
