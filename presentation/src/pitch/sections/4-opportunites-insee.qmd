@@ -1,0 +1,54 @@
+## Que retenir de tout ça ?
+- Il y a des opportunités pour l'INSEE et ses agents dans toutes les sphères !
+- usages possibles : 
+    - [**automatisation**]{.orange} des tâches redondantes
+    - [**production**]{.blue2} facilitée de documentation
+    - chats [**spécialisés dans un domaine**]{.orange} (RAG) 
+    - aide précieuse en [**programmation**]{.blue1} (cursor démonstration (elo) + documentation via github)
+- glissements des [**agents conversationnels**]{.orange} vers les agents réalisant des actions ! (bolt.new)
+
+# La contrepartie 
+- [**Formations**]{.orange} nécessaires sur l'usage de ces outils
+- redéfinition possible de certains [**rôles**]{.blue2} :
+    - l'exemple de [**sirene**]{.orange} : + classification automatique des [**APE**]{.blue2}
+    - données [**satellites**]{.orange} + enquete cartographique
+- Nécessite une [**mise à jour**]{.blue2} assez fréquente 
+
+## Attention aux données !:
+
+- Avec de [**mauvaises données**]{.blue2} on aura toujours de [**mauvais résultats**]{.orange} !
+- mauvaises images → mauvaises prédictions
+- mauvais corpus de texte → mauvais agents conversationnels
+
+## Attention à l'organisation 
+- L'[**automatisation**]{.orange} demande de la rigueur ! :
+    - [**stabilité**]{.blue2} dans les formats de données
+    - Mise à jour intelligente des sources de données
+    - [**parcimonie**]{.orange} dans les programmes
+    - [**Documentation**]{.orange} des programmes
+    - recherche de la [**reproductibilité**]{.orange} des programmes
+- nécessite une vraie [**culture de la donnée**]{.orange} !
+
+## L'intégration continue, un pas vers la rigueur 
+- Pour obtenir la [**reproductibilité**]{.orange} d'un processus, il faut des [**notions de bonnes pratiques**]{.blue2}
+- Git/Gitlab → [**integration continue**]{.orange}
+- Git/ Gitlab : permet la relecture des programmes autant que celle d'une publication
+- l'integration continue permet d'actualiser l'output finale sans jamais séparer les codes des chiffres !
+
+## L'écosystème INSEE
+
+- Ces outils sont-ils disponibles à l'INSEE ?
+
+![](../img/reseau_insee_vs_internet.png){width=75% fig-align="center"}
+
+- Trade-of entre [**flexibilité**]{.orange} et [**confidentialité**]{.blue2}
+
+## Le triangle des bonnes pratiques
+
+![](../img/triptyque.png){width=75% fig-align="center"}
+
+## Merci 
+
+Merci pour votre attention !
+
+

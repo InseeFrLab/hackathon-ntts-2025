@@ -1,0 +1,34 @@
+---
+title: "Artificialization with CLC+"
+subtitle: |
+  **Clément Guillo, Raya Berova, Thomas Faria, Damien Babet**
+date: "2025/03/07"
+date-format: "DD MMMM YYYY"
+slide-number: true
+lang: fr-FR
+slide-tone: false
+chalkboard: 
+  theme: whiteboard
+format:
+  onyxia-revealjs:
+    output-file: index.html
+controls: true
+css: ../custom.css
+ascii: true
+---
+
+
+# Plan de la présentation
+
+1️⃣ Introduction 
+
+2️⃣ Les données spatiales 
+
+3️⃣ Les LLMS
+
+4️⃣ Opportunités pour l'INSEE
+
+
+# 1️⃣ Introduction
+
+{{< include sections/test.qmd >}}

@@ -1,0 +1,17 @@
+---
+listing:
+  id: presentations
+  contents: cards
+  sort: "order asc"
+  categories: false
+  template: style/listing-grid.ejs
+sidebar: false
+page-layout: full
+toc: false
+---
+
+## Présentations des outils produits par le SES
+
+
+::: {#presentations}
+:::

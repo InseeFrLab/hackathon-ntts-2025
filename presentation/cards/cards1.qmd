@@ -1,0 +1,14 @@
+---
+title: Artificialization with CLC+
+image: img/IA.jpg
+date: "2025-03-07"
+description: |
+  <b>Description :</b> test
+author:  Clément Guillo, Raya Berova, Thomas Faria, Damien Babet
+slides:
+  text: Slides
+  url: src/pitch/index.html
+order: 1
+lang: fr-FR
+---
+
