@@ -13,7 +13,6 @@ from pytorch_lightning.callbacks import (
     LearningRateMonitor,
     ModelCheckpoint,
 )
-from s3fs import S3FileSystem
 
 
 def get_trainer(
@@ -57,11 +56,10 @@ def get_trainer(
 
 
 def get_dataset(
-    task: str,
     patchs: List,
     labels: List,
     n_bands: int,
-    fs: S3FileSystem,
+    from_s3: bool,
     transform: Optional[Compose] = None,
 ):
     """
@@ -73,11 +71,11 @@ def get_dataset(
     Returns:
         A Dataset object.
     """
-
+    task = "segmentation"
     if task not in dataset_dict:
         raise ValueError("Invalid dataset type")
     else:
-        return dataset_dict[task](patchs, labels, n_bands, fs, transform)
+        return dataset_dict[task](patchs, labels, n_bands, from_s3, transform)
 
 
 def get_model(

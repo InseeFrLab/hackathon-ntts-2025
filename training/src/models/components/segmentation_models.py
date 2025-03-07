@@ -6,6 +6,7 @@ import torchvision
 from torch import nn
 from torchvision.models.segmentation.deeplabv3 import DeepLabHead
 from transformers import (
+    SegformerConfig,
     SegformerDecodeHead,
     SegformerModel,
     SegformerPreTrainedModel,
@@ -347,11 +348,17 @@ class SegformerB5(SemanticSegmentationSegformer):
         ).json()
         id2label = {int(k): v for k, v in id2label.items()}
         label2id = {v: k for k, v in id2label.items()}
+
+        config = SegformerConfig.from_pretrained("nvidia/mit-b5")
+        config.num_channels = int(n_bands)  # Update number of input channels
+        config.num_labels = len(id2label)  # Set number of segmentation classes
+        config.id2label = id2label  # Assign id2label mapping
+        config.label2id = label2id  # Assign label2id mapping
+
         model = SemanticSegmentationSegformer.from_pretrained(
             "nvidia/mit-b5",
-            num_labels=len(id2label),
-            id2label=id2label,
-            label2id=label2id,
+            config=config,
+            ignore_mismatched_sizes=True,  # Prevent errors due to num_channels change
         )
         if freeze_encoder:
             model.freeze()

@@ -415,7 +415,7 @@ def main(
 
     # TODO : Est ce qu'on met des poids ?
     weights = [
-        building_class_weight if label == "Bâtiment" else 1.0
+        building_class_weight if label == "Sealed" else 1.0
         for label in requests.get(
             f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
         )
