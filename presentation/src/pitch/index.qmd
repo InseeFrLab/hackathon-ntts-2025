@@ -1,8 +1,8 @@
 ---
-title: "IA et ses usages (potentiels) à l'INSEE"
+title: "Artificialization with CLC+"
 subtitle: |
-  **Clément Guillo**
-date: "2025/02/26"
+  **Clément Guillo, Raya Berova, Thomas Faria, Damien Babet**
+date: "2025/03/07"
 date-format: "DD MMMM YYYY"
 slide-number: true
 lang: fr-FR
