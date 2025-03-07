@@ -15,6 +15,7 @@ spec:
       - name: training-conf-list
         value: '[
             { "SOURCE": "SENTINEL2",
+              "N_BANDS": "14",
               "DATASETS": ["BE100_2018"],
               "TILES_SIZE": 250,
               "AUGMENT_SIZE": 512,
@@ -48,6 +49,8 @@ spec:
               parameters:
                 - name: SOURCE
                   value: "{{item.SOURCE}}"
+                - name: N_BANDS
+                  value: "{{item.N_BANDS}}"
                 - name: DATASETS
                   value: "{{item.DATASETS}}"
                 - name: TYPE_LABELER
@@ -91,6 +94,7 @@ spec:
       inputs:
         parameters:
           - name: SOURCE
+          - name: N_BANDS
           - name: DATASETS
           - name: TYPE_LABELER
           - name: TILES_SIZE
@@ -129,6 +133,7 @@ spec:
                 -P remote_server_uri=$MLFLOW_TRACKING_URI \
                 -P experiment_name=$MLFLOW_EXPERIMENT_NAME \
                 -P source={{inputs.parameters.SOURCE}} \
+                -P n_bands={{inputs.parameters.N_BANDS}} \
                 -P datasets='{{inputs.parameters.DATASETS}}' \
                 -P type_labeler={{inputs.parameters.TYPE_LABELER}} \
                 -P tiles_size={{inputs.parameters.TILES_SIZE}} \
