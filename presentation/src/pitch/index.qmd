@@ -18,17 +18,37 @@ ascii: true
 ---
 
 
-# Plan de la présentation
+# Sections
 
 1️⃣ Introduction 
 
-2️⃣ Les données spatiales 
+2️⃣ Problem statement: artificialization at granular level 
 
-3️⃣ Les LLMS
+3️⃣ Product: CLC Delta
 
-4️⃣ Opportunités pour l'INSEE
+4️⃣ Demo
+
+5️⃣ Next steps: BBB!
+
 
 
 # 1️⃣ Introduction
 
-{{< include sections/test.qmd >}}
+{{< include sections/1-hackathon-introduction.qmd >}}
+
+
+# 2️⃣ Problem statement: artificialization at granular level
+
+{{< include sections/2-hackathon-problem-statement.qmd >}}
+
+# 3️⃣ Product: CLC Delta
+
+{{< include sections/3-hackathon-product.qmd >}}
+
+# 4️⃣ Demo
+
+{{< include sections/4-hackathon-demo.qmd >}}
+
+# 5️⃣ Next steps: BBB!
+
+{{< include sections/5-hackathon-next-steps.qmd >}}

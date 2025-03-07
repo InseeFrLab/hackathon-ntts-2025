@@ -1,0 +1,3 @@
+## CLC Delta
+- Compare CLC+ 2018 and 2021
+- Measure land use change indicators on given area

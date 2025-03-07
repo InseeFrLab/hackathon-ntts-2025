@@ -1,0 +1,7 @@
+earthengine-api
+geemap
+astrovision
+hvac
+geedim
+geopandas
+pyyaml
