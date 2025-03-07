@@ -18,15 +18,18 @@ ascii: true
 ---
 
 
-# Plan de la présentation
+# Sections
 
 1️⃣ Introduction 
 
-2️⃣ Les données spatiales 
+2️⃣ Problem statement: artificialization at granular level 
 
-3️⃣ Les LLMS
+3️⃣ Product: CLC Delta
 
-4️⃣ Opportunités pour l'INSEE
+4️⃣ Demo
+
+5️⃣ Next steps: MEGA!
+
 
 
 # 1️⃣ Introduction
