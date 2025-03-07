@@ -1,11 +1,11 @@
 ## Land Use Change
 EU Regulation on the Inclusion of Greenhouse Gas emissions and Removals from Land Use, Land Use Change and Forestry (LULUCF)
 
-## Artificialization
+## Artificialisation
 "the disappearance of natural spaces under concrete or bitumen"
 
 ## Corine Land Cover + is looking for use cases
-![](../src/pitch/img/looking_for_use_cases.png){width=75% fig-align="center"}
+[](../src/pitch/img/looking_for_use_cases.png){width=75% fig-align="center"}
 
 ## State of the art
 [Urban Atlas](https://land.copernicus.eu/en/products/urban-atlas#tab=overview)
