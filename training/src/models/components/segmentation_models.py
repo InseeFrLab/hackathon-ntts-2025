@@ -203,7 +203,7 @@ class SegformerB0(SemanticSegmentationSegformer):
         type_labeler: str = "BDTOPO",
     ):
         id2label = requests.get(
-            f"https://minio.lab.sspcloud.fr/projet-slums-detection/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
+            f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
         ).json()
         id2label = {int(k): v for k, v in id2label.items()}
         label2id = {v: k for k, v in id2label.items()}
@@ -231,7 +231,7 @@ class SegformerB1(SemanticSegmentationSegformer):
         type_labeler: str = "BDTOPO",
     ):
         id2label = requests.get(
-            f"https://minio.lab.sspcloud.fr/projet-slums-detection/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
+            f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-20252025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
         ).json()
         id2label = {int(k): v for k, v in id2label.items()}
         label2id = {v: k for k, v in id2label.items()}
@@ -259,7 +259,7 @@ class SegformerB2(SemanticSegmentationSegformer):
         type_labeler: str = "BDTOPO",
     ):
         id2label = requests.get(
-            f"https://minio.lab.sspcloud.fr/projet-slums-detection/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
+            f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-202520252025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
         ).json()
         id2label = {int(k): v for k, v in id2label.items()}
         label2id = {v: k for k, v in id2label.items()}
@@ -287,7 +287,7 @@ class SegformerB3(SemanticSegmentationSegformer):
         type_labeler: str = "BDTOPO",
     ):
         id2label = requests.get(
-            f"https://minio.lab.sspcloud.fr/projet-slums-detection/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
+            f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
         ).json()
         id2label = {int(k): v for k, v in id2label.items()}
         label2id = {v: k for k, v in id2label.items()}
@@ -315,7 +315,7 @@ class SegformerB4(SemanticSegmentationSegformer):
         type_labeler: str = "BDTOPO",
     ):
         id2label = requests.get(
-            f"https://minio.lab.sspcloud.fr/projet-slums-detection/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
+            f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
         ).json()
         id2label = {int(k): v for k, v in id2label.items()}
         label2id = {v: k for k, v in id2label.items()}
@@ -343,7 +343,7 @@ class SegformerB5(SemanticSegmentationSegformer):
         type_labeler: str = "BDTOPO",
     ):
         id2label = requests.get(
-            f"https://minio.lab.sspcloud.fr/projet-slums-detection/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
+            f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
         ).json()
         id2label = {int(k): v for k, v in id2label.items()}
         label2id = {v: k for k, v in id2label.items()}
