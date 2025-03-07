@@ -314,9 +314,9 @@ def main(
         patches.sort()
         labels.sort()
         # tmp
-        labels.remove(
-            "data/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/BE100/2018/250/3924030_3093620_0_8.npy"
-        )
+        # labels.remove(
+        #     "data/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/BE100/2018/250/3924030_3093620_0_8.npy"
+        # )
         # No filtering here
         indices = filter_indices_from_labels(labels, -1.0, 2.0, type_labeler)
         train_patches += [patches[idx] for idx in indices]
@@ -339,9 +339,9 @@ def main(
 
         patches.sort()
         labels.sort()
-        labels.remove(
-            "data/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/BE100/2021/250/3924030_3093620_0_8.npy"
-        )
+        # labels.remove(
+        #     "data/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/BE100/2021/250/3924030_3093620_0_8.npy"
+        # )
         test_patches += list(patches)
         test_labels += list(labels)
 
