@@ -1,10 +1,52 @@
 [
   {
-    "objectID": "src/pitch/index.html#kikou",
-    "href": "src/pitch/index.html#kikou",
+    "objectID": "src/pitch/index.html#introduction-1",
+    "href": "src/pitch/index.html#introduction-1",
     "title": "Artificialization with CLC+",
-    "section": "kikou",
-    "text": "kikou\n\nhello world\nhackathon"
+    "section": "Introduction",
+    "text": "Introduction\nWe are TEAM 17 From France !"
+  },
+  {
+    "objectID": "src/pitch/index.html#land-use-change",
+    "href": "src/pitch/index.html#land-use-change",
+    "title": "Artificialization with CLC+",
+    "section": "Land Use Change",
+    "text": "Land Use Change\nEU Regulation on the Inclusion of Greenhouse Gas emissions and Removals from Land Use, Land Use Change and Forestry (LULUCF)"
+  },
+  {
+    "objectID": "src/pitch/index.html#artificialization",
+    "href": "src/pitch/index.html#artificialization",
+    "title": "Artificialization with CLC+",
+    "section": "Artificialization",
+    "text": "Artificialization\n“the disappearance of natural spaces under concrete or bitumen”"
+  },
+  {
+    "objectID": "src/pitch/index.html#corine-land-cover-is-looking-for-use-cases",
+    "href": "src/pitch/index.html#corine-land-cover-is-looking-for-use-cases",
+    "title": "Artificialization with CLC+",
+    "section": "Corine Land Cover + is looking for use cases",
+    "text": "Corine Land Cover + is looking for use cases"
+  },
+  {
+    "objectID": "src/pitch/index.html#clc-delta",
+    "href": "src/pitch/index.html#clc-delta",
+    "title": "Artificialization with CLC+",
+    "section": "CLC Delta",
+    "text": "CLC Delta\n\nCompare CLC+ 2018 and 2021\nMeasure land use change indicators on given area"
+  },
+  {
+    "objectID": "src/pitch/index.html#demo-1",
+    "href": "src/pitch/index.html#demo-1",
+    "title": "Artificialization with CLC+",
+    "section": "Demo",
+    "text": "Demo\n[Let’s have a look !]https://inseefrlab.github.io/satellite-images-webapp/"
+  },
+  {
+    "objectID": "src/pitch/index.html#next-steps-bbb-1",
+    "href": "src/pitch/index.html#next-steps-bbb-1",
+    "title": "Artificialization with CLC+",
+    "section": "Next steps : BBB!",
+    "text": "Next steps : BBB!\nBring back Britain !"
   },
   {
     "objectID": "index.html",
