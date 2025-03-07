@@ -35,6 +35,8 @@ We train a segformer-B2, a transformer specialized in image segmentation, light 
 ## References:
 - Gergely Maucha (Lechner Ltd.), Éva Kerékgyártó (Lechner Ltd.), Viktória Turos (Lechner Ltd.), Christophe Sannier (GAF), Jaroslav Dufek (GISAT), Tomas Soukup (GISAT), Eva Ivits (EEA), Analysis of usability of Imperviousness and CLC+ Backbone data for mapping sealed areas, ETC DI Report 2024/3, 13 Jun 2024
 [Link](https://www.eionet.europa.eu/etcs/etc-di/products/etc-di-report-2024-3-analysis-of-usability-of-imperviousness-and-clc-backbone-data-for-mapping-sealed-areas)
+- Sannier, Christophe, et al. "Harmonized Pan-European Time Series for Monitoring Soil Sealing." Land 13.7 (2024): 1087.
+[Link](https://www.mdpi.com/2073-445X/13/7/1087)
 - Pelletier, Charlotte, Geoffrey I. Webb, and François Petitjean. "Temporal convolutional neural network for the classification of satellite image time series." Remote Sensing 11.5 (2019): 523
 [Link](https://www.mdpi.com/2072-4292/11/5/523)
 [Repo](https://github.com/charlotte-pel/temporalCNN)
