@@ -1,0 +1,72 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: dl-sentinel2-nuts-
+spec:
+  serviceAccountName: workflow
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: regions
+        value: '[{"nuts": "BE100", "startDate": "2018-05-01", "endDate": "2018-09-01", "exportCLC": true},
+                 {"nuts": "BE251", "startDate": "2018-05-01", "endDate": "2018-09-01", "exportCLC": true},
+                 {"nuts": "FRK26", "startDate": "2018-05-01", "endDate": "2018-09-01", "exportCLC": true},
+                 {"nuts": "FRJ27", "startDate": "2018-05-01", "endDate": "2018-09-01", "exportCLC": true},
+                 {"nuts": "BE100", "startDate": "2021-05-01", "endDate": "2021-09-01", "exportCLC": true},
+                 {"nuts": "BE251", "startDate": "2021-05-01", "endDate": "2021-09-01", "exportCLC": true},
+                 {"nuts": "FRK26", "startDate": "2021-05-01", "endDate": "2021-09-01", "exportCLC": true},
+                 {"nuts": "FRJ27", "startDate": "2021-05-01", "endDate": "2021-09-01", "exportCLC": true}]'
+
+  templates:
+    - name: main
+      steps:
+        - - name: run-dl-step
+            template: run-dl-task
+            arguments:
+              parameters:
+                - name: nuts
+                  value: "{{item.nuts}}"
+                - name: startDate
+                  value: "{{item.startDate}}"
+                - name: endDate
+                  value: "{{item.endDate}}"
+                - name: exportCLC
+                  value: "{{item.exportCLC}}"
+            withParam: "{{workflow.parameters.regions}}"
+
+    - name: run-dl-task
+      inputs:
+        parameters:
+          - name: nuts
+          - name: startDate
+          - name: endDate
+          - name: exportCLC
+      container:
+        image: inseefrlab/onyxia-vscode-pytorch:py3.12.6
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash", "-c"]
+        args: [
+           "git clone https://github.com/InseeFrLab/hackathon-ntts-2025.git &&
+           cd hackathon-ntts-2025/preprocess &&
+           export MC_HOST_s3=https://$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY@$AWS_S3_ENDPOINT &&
+           mc cp s3/projet-hackathon-ntts-2025/NUTS_RG_01M_2021_4326_LEVL_3.gpkg data/ &&
+           source ./setup_argo.sh &&
+           python main_nuts.py --nuts3 {{inputs.parameters.nuts}} --startDate {{inputs.parameters.startDate}} --endDate {{inputs.parameters.endDate}} --exportCLC {{inputs.parameters.exportCLC}}"
+        ]
+        env:
+          - name: PROJ_LIB
+            value: /opt/conda/share/proj
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: mc-s3
+                key: accessKey
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: mc-s3
+                key: secretKey
+          - name: AWS_DEFAULT_REGION
+            value: us-east-1
+          - name: AWS_S3_ENDPOINT
+            value: minio.lab.sspcloud.fr
