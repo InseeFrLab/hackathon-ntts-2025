@@ -8,7 +8,7 @@ spec:
     - name: dshm
       emptyDir:
         medium: Memory
-        sizeLimit: 64Gi
+        sizeLimit: 128Gi
   entrypoint: main
   arguments:
     parameters:
@@ -29,7 +29,7 @@ spec:
               "LOSS_NAME": "cross_entropy_weighted",
               "MODULE_NAME": "segformer-b5",
               "SCHEDULER_NAME": "one_cycle",
-              "PATIENCE": 10,
+              "PATIENCE": 4,
               "LABEL_SMOOTHING": 0.0,
               "LOGITS": 1,
               "FREEZE_ENCODER": 0,
