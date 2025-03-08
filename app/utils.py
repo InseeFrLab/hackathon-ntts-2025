@@ -378,10 +378,6 @@ def predict(
         # Retrieve satellite image
         si = get_satellite_image(image, n_bands)
 
-        # Normalize image if it is not in uint8
-        if si.array.dtype is not np.dtype("uint8"):
-            si.array = cv2.normalize(si.array, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-
         if si.array.shape[1] == tiles_size:
             lsi = make_prediction(
                 model=model,

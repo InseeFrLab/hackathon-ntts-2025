@@ -109,4 +109,3 @@ gdf_concatenated = gpd.GeoDataFrame(pd.concat(gdf_list, ignore_index=True))
 
 # Sauvegarde en shapefile (optionnel)
 gdf_concatenated.to_file(f"change_polygons_CLC.gpkg")
-
