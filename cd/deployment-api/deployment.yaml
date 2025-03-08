@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: hackathon-ntts-2025-model-deployment
 spec:
-  replicas: 25
+  replicas: 1
   selector:
     matchLabels:
       app: hackathon-ntts-2025-model-deployment
