@@ -6,7 +6,6 @@ import gc
 import os
 from contextlib import asynccontextmanager
 from typing import Dict
-
 import geopandas as gpd
 import mlflow
 import numpy as np
