@@ -395,13 +395,13 @@ def main(
 
     # 5- Create data loaders
     train_loader = DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True, drop_last=True, **kwargs
+        train_dataset, batch_size=batch_size, num_workers=0, shuffle=True, drop_last=True, **kwargs
     )
     val_loader = DataLoader(
-        val_dataset, batch_size=test_batch_size, shuffle=False, drop_last=True, **kwargs
+        val_dataset, batch_size=test_batch_size, num_workers=0, shuffle=False, drop_last=True, **kwargs
     )
     test_loader = DataLoader(
-        test_dataset, batch_size=test_batch_size, shuffle=False, drop_last=True, **kwargs
+        test_dataset, batch_size=test_batch_size, num_workers=0, shuffle=False, drop_last=True, **kwargs
     )
 
     # 6- Create the trainer and the lightning
