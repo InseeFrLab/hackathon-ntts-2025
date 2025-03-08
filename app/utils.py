@@ -378,10 +378,6 @@ def predict(
         # Retrieve satellite image
         si = get_satellite_image(image, n_bands)
 
-        # Normalize image if it is not in uint8
-        if si.array.dtype is not np.dtype("uint8"):
-            si.array = cv2.normalize(si.array, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-
         if si.array.shape[1] == tiles_size:
             lsi = make_prediction(
                 model=model,
@@ -442,57 +438,6 @@ def predict(
         ]
 
 
-def subset_predictions(
-    predictions: list[SegmentationLabeledSatelliteImage],
-    roi: gpd.GeoDataFrame,
-) -> Dict:
-    # Get the predictions for all the images
-    preds = pd.concat([create_geojson_from_mask(x) for x in predictions])
-    preds.crs = roi.crs
-
-    # Ensure the geometries are valid
-    if not all([geom.is_valid for geom in roi.geometry]):
-        roi["geometry"] = roi["geometry"].apply(
-            lambda geom: make_valid(geom) if not geom.is_valid else geom
-        )
-
-    if not all([geom.is_valid for geom in preds.geometry]):
-        preds["geometry"] = preds["geometry"].apply(
-            lambda geom: make_valid(geom) if not geom.is_valid else geom
-        )
-
-    # Union of the roi geometries
-    roi_union = unary_union(roi.geometry)
-
-    # Initialize a dictionary to store the results
-    results = []
-
-    # TODO: Peut-etre qu'on veut loop sur toutes les geometries plutôt pour garder l'info indiv des geométries mais plus couteux de faire N intersections
-
-    # Iterate over each label in the predictions
-    for label in preds["label"].unique():
-        # Subset the predictions for the current label
-        preds_label = preds[preds["label"] == label]
-
-        # Union of the prediction geometries for the current label
-        preds_union = unary_union(preds_label.geometry)
-
-        # Perform the intersection with validated geometries
-        geom_preds_in_roi = roi_union.intersection(preds_union)
-
-        # Restrict the predictions to the region of interest
-        preds_roi = gpd.GeoDataFrame(
-            {"geometry": geom_preds_in_roi, "label": [label]},
-            crs=roi.crs,
-        )
-
-        # Store the result in the dictionary
-        results.append(preds_roi.reset_index(drop=True))
-
-    results = pd.concat(results)
-    return results[~results["geometry"].is_empty]
-
-
 def get_filename_to_polygons(dep: str, year: int, fs: S3FileSystem) -> gpd.GeoDataFrame:
     """
     Retrieves the filename to polygons mapping for a given department and year.
@@ -522,43 +467,43 @@ def get_filename_to_polygons(dep: str, year: int, fs: S3FileSystem) -> gpd.GeoDa
     return gpd.GeoDataFrame(data, geometry="geometry", crs=data.CRS.unique()[0])
 
 
-def compute_roi_statistics(predictions: list, roi: gpd.GeoDataFrame) -> Dict[str, float]:
-    """
-    Compute statistics of the predictions within a region of interest (ROI).
+# def compute_roi_statistics(predictions: list, roi: gpd.GeoDataFrame) -> Dict[str, float]:
+#     """
+#     Compute statistics of the predictions within a region of interest (ROI).
 
-    Args:
-        predictions (list): List of predictions.
-        roi (gpd.GeoDataFrame): Region of interest.
+#     Args:
+#         predictions (list): List of predictions.
+#         roi (gpd.GeoDataFrame): Region of interest.
 
-    Returns:
-        dict: Dictionary containing the computed statistics.
-    """
-    RESOLUTION = 0.5
-    area_cluster = 0
-    area_building = 0
+#     Returns:
+#         dict: Dictionary containing the computed statistics.
+#     """
+#     RESOLUTION = 0.5
+#     area_cluster = 0
+#     area_building = 0
 
-    for pred in predictions:
-        polygon_mask = rasterize(
-            [(roi.geometry.iloc[0], 1)],
-            out_shape=pred.label.shape,
-            transform=pred.satellite_image.transform,
-            fill=0,
-            dtype=np.uint8,
-        )
+#     for pred in predictions:
+#         polygon_mask = rasterize(
+#             [(roi.geometry.iloc[0], 1)],
+#             out_shape=pred.label.shape,
+#             transform=pred.satellite_image.transform,
+#             fill=0,
+#             dtype=np.uint8,
+#         )
 
-        original_mask = pred.label
-        area_cluster += (polygon_mask.sum() * RESOLUTION**2) / 1e6  # in km²
-        # TODO: Assume 1 is label for buildings
-        area_building += (
-            ((original_mask == 1) * polygon_mask).sum() * RESOLUTION**2
-        ) / 1e6  # in km²
+#         original_mask = pred.label
+#         area_cluster += (polygon_mask.sum() * RESOLUTION**2) / 1e6  # in km²
+#         # TODO: Assume 1 is label for buildings
+#         area_building += (
+#             ((original_mask == 1) * polygon_mask).sum() * RESOLUTION**2
+#         ) / 1e6  # in km²
 
-    pct_building = area_building / area_cluster * 100
-    roi = roi.assign(
-        area_cluster=area_cluster, area_building=area_building, pct_building=pct_building
-    )
+#     pct_building = area_building / area_cluster * 100
+#     roi = roi.assign(
+#         area_cluster=area_cluster, area_building=area_building, pct_building=pct_building
+#     )
 
-    return roi.reset_index(drop=True)
+#     return roi.reset_index(drop=True)
 
 
 def get_cache_path(image: str) -> str:
