@@ -84,9 +84,10 @@ def get_normalization_metrics(model: mlflow.pyfunc.PyFuncModel, n_bands: int):
     normalization_mean = json.loads(
         mlflow.get_run(model.metadata.run_id).data.params["normalization_mean"]
     )
-    normalization_std = json.loads(
+    normalization_std_float = eval(
         mlflow.get_run(model.metadata.run_id).data.params["normalization_std"]
     )
+    normalization_std = [float(value) for value in normalization_std_float]
 
     # Extract normalization mean and standard deviation for the number of bands
     normalization_mean, normalization_std = (
