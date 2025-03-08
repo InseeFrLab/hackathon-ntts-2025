@@ -7,3 +7,8 @@ export MC_HOST_s3="https://2YFNYPL1PA361SVYM3TA:eR7UKgWffJBuQmtMvJWeDcUj2BgL8TLK
 
 /tmp/mc cp  s3/projet-hackathon-ntts-2025/indicators/change_polygons_CLC.gpkg  /opt/geoserver/data_dir/change_polygons_CLC.gpkg 
 chmod -R a+rw /opt/geoserver/data_dir
+
+
+
+/tmp/mc cp --recursive s3/projet-hackathon-ntts-2025/data-predictions/CLCplus-Backbone/SENTINEL2/2024/250/  /opt/geoserver/data_dir/predictions/2024/
+
