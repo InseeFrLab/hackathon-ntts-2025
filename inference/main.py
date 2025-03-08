@@ -1,4 +1,5 @@
 import argparse
+import io
 import json
 import os
 import time
@@ -23,11 +24,12 @@ if __name__ == "__main__":
         key=os.environ["AWS_ACCESS_KEY_ID"],
         secret=os.environ["AWS_SECRET_ACCESS_KEY"],
     )
-
+    print(f"Start of the prediction of NUTS {nuts3}")
     url = "https://hackathon-ntts-2025.lab.sspcloud.fr/predict_nuts"
     response = requests.get(url, params={"nuts_id": nuts3, "year": year})
 
     if response.status_code == 200:
+        print("Prediction done, now register on s3")
         geojson_string = response.json()["predictions"]
         geojson_obj = json.loads(geojson_string)
 
@@ -38,11 +40,14 @@ if __name__ == "__main__":
             coordinates = feature["geometry"]["coordinates"]
 
             data.append({"id": feature_id, "label": label, "coordinates": coordinates})
+
         df = gpd.GeoDataFrame(data)
+        buffer = io.BytesIO()
+        df.to_file(buffer, driver="GPKG")
 
         filepath_out = f"s3://projet-hackathon-ntts-2025/data-predictions/CLCplus-Backbone/SENTINEL2/{year}/250/predictions_{nuts3}.gpkg"
         with fs.open(filepath_out, "wb") as f:
-            df.to_file(f, driver="GPKG", index=False)
+            f.write(buffer.getvalue())
 
         end_time = time.time() - start_time
         print(f"{nuts3} predicted in {round(end_time/60)} min and registered here {filepath_out}")

@@ -18,8 +18,8 @@ spec:
             template: run-predict-task
             arguments:
               parameters:
-                - name: nuts3
-                  value: "{{item.nuts3}}"
+                - name: nuts
+                  value: "{{item.nuts}}"
                 - name: year
                   value: "{{item.year}}"
             withParam: "{{workflow.parameters.regions}}"
@@ -30,13 +30,13 @@ spec:
           - name: nuts
           - name: year
       container:
-        image: inseefrlab/onyxia-vscode-pytorch:py3.12.6
+        image:  rayaberova/hackathon-ntts-2025:main
         imagePullPolicy: IfNotPresent
         command: ["/bin/bash", "-c"]
         args: [
            "git clone https://github.com/InseeFrLab/hackathon-ntts-2025.git &&
-           cd hackathon-ntts-2025/inference/ &&
-           python main.py --nuts3 {{inputs.parameters.nuts3}} --year {{inputs.parameters.year}}"
+           cd /api/hackathon-ntts-2025/inference/ &&
+           python main.py --nuts3 {{inputs.parameters.nuts}} --year {{inputs.parameters.year}}"
         ]
         env:
           - name: PROJ_LIB
