@@ -22,7 +22,6 @@ fs = s3fs.S3FileSystem(
     )
 # --- Étape 1 : Définition des fichiers pour 2018 et 2021 ---
 
-
 picture_dir = "projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/"
 label_dir = "projet-hackathon-ntts-2025/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/"
 
@@ -94,7 +93,7 @@ for NUTS3 in NUTS3S:
         "NDVI-": suppression_ndvi,
         "artificial+": ajout_bati,
         "artificial-": suppression_bati,
-        "artificial 2021": bati_2021
+        "artificial_2021": bati_2021
     })
 
 
@@ -106,7 +105,6 @@ pixel_to_m2 = 100
 df_results["NDVI_net"] = df_results["NDVI+"] - df_results["NDVI-"]
 df_results["artificial_net"] = df_results["artificial+"] - df_results["artificial-"]
 
-
 df_results["artificial+"] = df_results["artificial+"] * pixel_to_m2
 df_results["artificial-"] = df_results["artificial-"] * pixel_to_m2
 df_results["artificial_net"] = df_results["artificial_net"] * pixel_to_m2
@@ -117,7 +115,7 @@ df_results["NDVI-"] = df_results["NDVI-"] * pixel_to_m2
 df_results["NDVI_net"] = df_results["NDVI_net"] * pixel_to_m2
 
 # Réorganiser les colonnes
-df_results = df_results[["NUTS3", "artificial 2021"
+df_results = df_results[["NUTS3", "artificial_2021"
                          "artificial+", "artificial-", "artificial_net",
                          "NDVI+", "NDVI-", "NDVI_net"]]
 
@@ -150,8 +148,9 @@ gdf_filtered = gdf_filtered.to_crs(epsg=3035)
 gdf_filtered["surface_m2"] = gdf_filtered.geometry.area
 gdf_filtered = gdf_filtered[["NUTS_ID","surface_m2"]]
 # Fusionner avec df_results pour récupérer les valeurs d'artificialisation
-df_results = df_results.merge(gdf_filtered, left_on="NUTS3", right_on="NUTS_ID", how="left")
 
+df_results = df_results.merge(gdf_filtered, left_on="NUTS3", right_on="NUTS_ID", how="left")
+df_results["artificial_ratio"] = (100*(df_results["artificial_2021"]/df_results["surface_m2"])).round(2)
 # Save DataFrame as a Parquet file
 df_results.to_parquet("indicateurs_departements.parquet", engine="pyarrow", index=False)
 
@@ -159,4 +158,3 @@ lpath =f"indicateurs_departements.parquet"
 rpath =f"s3://projet-hackathon-ntts-2025/indicators/"
 
 fs.put(lpath,rpath)
-
