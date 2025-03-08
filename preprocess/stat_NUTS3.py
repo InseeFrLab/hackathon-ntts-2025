@@ -26,22 +26,12 @@ fs = s3fs.S3FileSystem(
 picture_dir = "projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/"
 label_dir = "projet-hackathon-ntts-2025/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/"
 
-NUTS3S = ["BE100","BE251","FRJ27","FRK26"]
-NUTS3=["BE100","BE251",
-"BG322",
-"CY000",
-"CZ072",
-"DEA54",
-"DK041",
-"EE00A",
-"EL521",
-"ES612",
-"FI1C1"]
+NUTS3S = ["BG322", "CY000", "CZ072", "DEA54", "EE00A", "EL521", "ES612", "FI1C1", "BE100", "BE251", "FRJ27", "FRK26"]
 
 results=[]
 
 for NUTS3 in NUTS3S:
-    #NUTS3 = "BE100"
+    #NUTS3 = "DK041"
     print(NUTS3)
 
     list_labels_2018= fs.ls(f"{label_dir}{NUTS3}/{2018}/250")
@@ -54,6 +44,7 @@ for NUTS3 in NUTS3S:
     total_suppression_ndvi = 0
     total_ajout_bati = 0
     total_suppression_bati = 0
+    bati_2021 = 0
 
     import numpy as np
 
@@ -93,23 +84,17 @@ for NUTS3 in NUTS3S:
         total_suppression_ndvi += suppression_ndvi
         total_ajout_bati += ajout_bati
         total_suppression_bati += suppression_bati
+        bati_2021 += np.sum(label_2021 == 1)
         
-                # Création du tableau de sortie selon les conditions
-        diff_array = np.where((label_2018 != 1) & (label_2021 != 1), 0,
-        np.where((label_2018 != 1) & (label_2021 == 1), 1,
-        np.where((label_2018 == 1) & (label_2021 != 1), 2, 3)))
-        satdiff = sat18.copy()
-        satdiff.array = diff_array
-        satdiff.to_raster("tmp.tif")
-        
-        
+
     # Ajouter les résultats à la liste
     results.append({
         "NUTS3": NUTS3,
         "NDVI+": ajout_ndvi,
         "NDVI-": suppression_ndvi,
         "artificial+": ajout_bati,
-        "artificial-": suppression_bati
+        "artificial-": suppression_bati,
+        "artificial 2021": bati_2021
     })
 
 
@@ -132,10 +117,40 @@ df_results["NDVI-"] = df_results["NDVI-"] * pixel_to_m2
 df_results["NDVI_net"] = df_results["NDVI_net"] * pixel_to_m2
 
 # Réorganiser les colonnes
-df_results = df_results[["NUTS3", 
+df_results = df_results[["NUTS3", "artificial 2021"
                          "artificial+", "artificial-", "artificial_net",
                          "NDVI+", "NDVI-", "NDVI_net"]]
 
+
+
+fs = s3fs.S3FileSystem(
+    client_kwargs={"endpoint_url": f"https://{os.environ['AWS_S3_ENDPOINT']}"},
+    key=os.getenv("AWS_ACCESS_KEY_ID"),
+    secret=os.getenv("AWS_SECRET_ACCESS_KEY"),
+)
+
+# Remplacez par le chemin exact vers votre fichier .gpkg sur S3
+gpkg_s3_path = "projet-hackathon-ntts-2025/NUTS_RG_01M_2021_4326_LEVL_3.gpkg"
+
+# Téléchargement local du GeoPackage depuis S3
+local_gpkg = "/tmp/NUTS_RG_01M_2021_4326_LEVL_3.gpkg"
+with fs.open(gpkg_s3_path, "rb") as remote_file:
+    with open(local_gpkg, "wb") as f:
+        f.write(remote_file.read())
+
+gdf = gpd.read_file(local_gpkg)
+
+# Filtrer les NUTS_ID présents dans df_results
+nuts_ids = df_results["NUTS3"].tolist()
+gdf_filtered = gdf[gdf["NUTS_ID"].isin(nuts_ids)].copy()
+
+gdf_filtered = gdf_filtered.to_crs(epsg=3035)
+
+# Calculer la surface en m²
+gdf_filtered["surface_m2"] = gdf_filtered.geometry.area
+gdf_filtered = gdf_filtered[["NUTS_ID","surface_m2"]]
+# Fusionner avec df_results pour récupérer les valeurs d'artificialisation
+df_results = df_results.merge(gdf_filtered, left_on="NUTS3", right_on="NUTS_ID", how="left")
 
 # Save DataFrame as a Parquet file
 df_results.to_parquet("indicateurs_departements.parquet", engine="pyarrow", index=False)
@@ -144,3 +159,4 @@ lpath =f"indicateurs_departements.parquet"
 rpath =f"s3://projet-hackathon-ntts-2025/indicators/"
 
 fs.put(lpath,rpath)
+
