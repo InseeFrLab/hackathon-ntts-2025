@@ -52,4 +52,4 @@ if __name__ == "__main__":
         end_time = time.time() - start_time
         print(f"{nuts3} predicted in {round(end_time/60)} min and registered here {filepath_out}")
     else:
-        print(f"API error {response.status_code}")
+        raise RuntimeError(f"API error {response.status_code}: {response.text}")
