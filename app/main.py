@@ -19,17 +19,14 @@ from shapely.geometry import box
 
 from app.logger_config import configure_logger
 from app.utils import (
-    compute_roi_statistics,
     create_geojson_from_mask,
     get_cache_path,
     get_file_system,
-    get_filename_to_polygons,
     get_model,
     get_normalization_metrics,
     load_from_cache,
     predict,
     produce_mask,
-    subset_predictions,
 )
 
 
