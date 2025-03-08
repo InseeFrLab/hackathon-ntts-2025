@@ -313,16 +313,17 @@ def make_prediction(
     Returns:
         SegmentationLabeledSatelliteImage: The labeled satellite image with the predicted mask.
     """
-    # Preprocess the image
-    normalized_si = preprocess_image(
-        model=model,
-        image=image,
-        tiles_size=tiles_size,
-        augment_size=augment_size,
-        n_bands=n_bands,
-        normalization_mean=normalization_mean,
-        normalization_std=normalization_std,
-    )
+    # # Preprocess the image
+    # normalized_si = preprocess_image(
+    #     model=model,
+    #     image=image,
+    #     tiles_size=tiles_size,
+    #     augment_size=augment_size,
+    #     n_bands=n_bands,
+    #     normalization_mean=normalization_mean,
+    #     normalization_std=normalization_std,
+    # )
+    normalized_si = image
 
     # Make prediction using the model
     with torch.no_grad():
