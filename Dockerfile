@@ -12,7 +12,8 @@ COPY requirements_app.txt requirements_app.txt
 
 # install all the requirements
 RUN conda install -c conda-forge gdal=3.9.3 -y &&\
-    pip install --no-cache-dir --upgrade -r requirements_app.txt
+    pip install --no-cache-dir --upgrade -r requirements_app.txt &&\
+    wget -q -O /api/nuts_2021.gpkg https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/NUTS_RG_01M_2021_4326_LEVL_3.gpkg
 
 # copy the main code of fastapi
 COPY ./app /api/app
