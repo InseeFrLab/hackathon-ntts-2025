@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: hackathon-ntts-2025-model-deployment
 spec:
-  replicas: 1
+  replicas: 25
   selector:
     matchLabels:
       app: hackathon-ntts-2025-model-deployment
@@ -41,7 +41,7 @@ spec:
             - name: MLFLOW_MODEL_NAME
               value: Segmentation-multiclass
             - name: MLFLOW_MODEL_VERSION
-              value: "3"
+              value: "4"
             - name: MLFLOW_ENABLE_ARTIFACTS_PROGRESS_BAR
               value: "false"
           resources:

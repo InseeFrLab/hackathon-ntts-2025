@@ -10,6 +10,7 @@ from typing import Dict
 import geopandas as gpd
 import mlflow
 import numpy as np
+import pandas as pd
 import pyarrow.parquet as pq
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
@@ -141,104 +142,100 @@ async def predict_image(image: str, polygons: bool = False) -> Dict:
         return {"mask": lsi.label.tolist()}
 
 
-# @app.get("/predict_nuts", tags=["Predict NUTS"])
-# def predict_cluster(
-#     nuts_id: str,
-#     year: int = Query(2022, ge=2018, le=2024),
-# ) -> Dict:
-#     """
-#     Predicts nuts for a given NUTS ID, year, and department.
+@app.get("/predict_nuts", tags=["Predict NUTS"])
+def predict_nuts(
+    nuts_id: str,
+    year: int = Query(2021, ge=2018, le=2024),
+) -> Dict:
+    """
+    Predicts nuts for a given NUTS ID, year, and department.
 
-#     Args:
-#         nuts_id (str): The ID of the NUTS.
-#         year (int): The year of the satellite images.
-#         dep (str): The department of the satellite images.
+    Args:
+        nuts_id (str): The ID of the NUTS.
+        year (int): The year of the satellite images.
+    Returns:
+        Dict: Response containing the predicted NUTS.
+    """
+    logger.info(
+        f"Predict nuts endpoint accessed with nuts_id: {nuts_id}, year: {year}"
+    )
 
-#     Returns:
-#         Dict: Response containing the predicted NUTS.
-#     """
-#     logger.info(
-#         f"Predict nuts endpoint accessed with nuts_id: {nuts_id}, year: {year}"
-#     )
+    fs = get_file_system()
 
-#     fs = get_file_system()
+    # # Get NUTS file
+    # nuts = gpd.read_file("/api/nuts_2021.gpkg")
+    # nuts = gpd.GeoDataFrame(nuts, geometry="geometry", crs="EPSG:4326")
 
-#     # Get NUTS file
-#     nuts = gpd.read_file("/api/nuts_2021.gpkg")
-#     nuts = gpd.GeoDataFrame(nuts, geometry="geometry", crs="EPSG:4326")
+    images = fs.ls(f"""s3://projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/{nuts_id}/{year}/250/""")
 
-#     # Get the filename to polygons mapping
-#     filename_table = get_filename_to_polygons(dep, year, fs)
+    # Check if images are found in S3 bucket
+    if not images:
+        logger.info(
+            f"""No images found for nuts_id: {nuts_id} and year: {year}"""
+        )
+        return JSONResponse(
+            content={
+                "predictions": gpd.GeoDataFrame(
+                    columns=["geometry"], crs="EPSG:3035"
+                ).to_json()
+            }
+        )
 
-#     # Get the selected cluster
-#     selected_cluster = clusters.loc[clusters["ident_ilot"] == cluster_id].to_crs(filename_table.crs)
+    images_to_predict = [im for im in images if not fs.exists(get_cache_path(im))]
+    images_from_cache = [im for im in images if fs.exists(get_cache_path(im))]
+    predictions = []
 
-#     # Get the filenames of the images that intersect with the selected cluster
-#     images = filename_table.loc[
-#         filename_table.geometry.intersects(selected_cluster.geometry.iloc[0]),
-#         "filename",
-#     ].tolist()
+    if images_to_predict:
+        # Predict
+        predictions = predict(
+            images_to_predict,
+            model,
+            tiles_size,
+            augment_size,
+            n_bands,
+            normalization_mean,
+            normalization_std,
+            module_name,
+        )
 
-#     # Check if images are found in S3 bucket
-#     if not images:
-#         logger.info(
-#             f"""No images found for cluster_id: {cluster_id}, year: {year}, and department: {dep}"""
-#         )
-#         return JSONResponse(
-#             content={
-#                 "predictions": gpd.GeoDataFrame(
-#                     columns=["geometry"], crs=filename_table.crs
-#                 ).to_json(),
-#                 "statistics": gpd.GeoDataFrame(
-#                     columns=["geometry"], crs=filename_table.crs
-#                 ).to_json(),
-#             }
-#         )
+        # Save predictions to cache
+        for im, pred in zip(images_to_predict, predictions):
+            with fs.open(get_cache_path(im), "wb") as f:
+                np.save(f, pred.label)
 
-#     images_to_predict = [im for im in images if not fs.exists(get_cache_path(im))]
-#     images_from_cache = [im for im in images if fs.exists(get_cache_path(im))]
-#     predictions = []
+    if images_from_cache:
+        logger.info(
+            f"""Loading predictions from cache for images: {", ".join(images_from_cache)}"""
+        )
+        # Load from cache
+        predictions += [load_from_cache(im, n_bands, fs) for im in images_from_cache]
 
-#     if images_to_predict:
-#         # Predict
-#         predictions = predict(
-#             images_to_predict,
-#             model,
-#             tiles_size,
-#             augment_size,
-#             n_bands,
-#             normalization_mean,
-#             normalization_std,
-#             module_name,
-#         )
+    # Produce mask with class IDs TODO : check if ok
+    for lsi in predictions:
+        lsi.label = produce_mask(lsi.label, module_name)
 
-#         # Save predictions to cache
-#         for im, pred in zip(images_to_predict, predictions):
-#             with fs.open(get_cache_path(im), "wb") as f:
-#                 np.save(f, pred.label)
+    preds = pd.concat([create_geojson_from_mask(x) for x in predictions])
 
-#     if images_from_cache:
-#         logger.info(
-#             f"""Loading predictions from cache for images: {", ".join(images_from_cache)}"""
-#         )
-#         # Load from cache
-#         predictions += [load_from_cache(im, n_bands, fs) for im in images_from_cache]
+    results = []
 
-#     # Produce mask with class IDs TODO : check if ok
-#     for lsi in predictions:
-#         lsi.label = produce_mask(lsi.label, module_name)
+    for label in preds["label"].unique():
+        preds_label = preds[preds["label"] == label]
 
-#     # Restrict predictions to the selected cluster
-#     preds_cluster = subset_predictions(predictions, selected_cluster)
+        preds_geom = gpd.GeoDataFrame(
+            {"geometry": preds_label.geometry, "label": [label]},
+            crs="EPSG:3035",
+        )
 
-#     stats_cluster = compute_roi_statistics(predictions, selected_cluster)
+        results.append(preds_geom.reset_index(drop=True))
 
-#     response_data = {
-#         "predictions": preds_cluster.to_json(),
-#         "statistics": stats_cluster.to_json(),
-#     }
+    results = pd.concat(results)
+    preds_cluster = results[~results["geometry"].is_empty]
 
-#     return JSONResponse(content=response_data)
+    response_data = {
+        "predictions": preds_cluster.to_json(),
+    }
+
+    return JSONResponse(content=response_data)
 
 
 # @app.get("/predict_bbox", tags=["Predict Bounding Box"])
