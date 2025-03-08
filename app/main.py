@@ -6,15 +6,14 @@ import gc
 import os
 from contextlib import asynccontextmanager
 from typing import Dict
+
 import geopandas as gpd
 import mlflow
 import numpy as np
 import pandas as pd
-import pyarrow.parquet as pq
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
 from osgeo import gdal
-from shapely.geometry import box
 
 from app.logger_config import configure_logger
 from app.utils import (
@@ -152,9 +151,7 @@ def predict_nuts(
     Returns:
         Dict: Response containing the predicted NUTS.
     """
-    logger.info(
-        f"Predict nuts endpoint accessed with nuts_id: {nuts_id}, year: {year}"
-    )
+    logger.info(f"Predict nuts endpoint accessed with nuts_id: {nuts_id}, year: {year}")
 
     fs = get_file_system()
 
@@ -162,18 +159,20 @@ def predict_nuts(
     # nuts = gpd.read_file("/api/nuts_2021.gpkg")
     # nuts = gpd.GeoDataFrame(nuts, geometry="geometry", crs="EPSG:4326")
 
-    images = fs.ls(f"""s3://projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/{nuts_id}/{year}/250/""")
+    images = [
+        img
+        for img in fs.ls(
+            f"s3://projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/{nuts_id}/{year}/250/"
+        )
+        if img.endswith(".tif")
+    ]
 
     # Check if images are found in S3 bucket
     if not images:
-        logger.info(
-            f"""No images found for nuts_id: {nuts_id} and year: {year}"""
-        )
+        logger.info(f"""No images found for nuts_id: {nuts_id} and year: {year}""")
         return JSONResponse(
             content={
-                "predictions": gpd.GeoDataFrame(
-                    columns=["geometry"], crs="EPSG:3035"
-                ).to_json()
+                "predictions": gpd.GeoDataFrame(columns=["geometry"], crs="EPSG:3035").to_json()
             }
         )
 
