@@ -211,23 +211,8 @@ def predict_nuts(
 
     preds = pd.concat([create_geojson_from_mask(x) for x in predictions])
 
-    results = []
-
-    for label in preds["label"].unique():
-        preds_label = preds[preds["label"] == label]
-
-        preds_geom = gpd.GeoDataFrame(
-            {"geometry": preds_label.geometry, "label": [label]},
-            crs="EPSG:3035",
-        )
-
-        results.append(preds_geom.reset_index(drop=True))
-
-    results = pd.concat(results)
-    preds_cluster = results[~results["geometry"].is_empty]
-
     response_data = {
-        "predictions": preds_cluster.to_json(),
+        "predictions": preds.to_json(),
     }
 
     return JSONResponse(content=response_data)
