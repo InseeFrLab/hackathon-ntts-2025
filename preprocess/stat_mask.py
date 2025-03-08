@@ -14,6 +14,7 @@ from astrovision.data.satellite_image import (
     SatelliteImage,
 )
 
+fs.ls("projet-hackathon-ntts-2025")
 fs = s3fs.S3FileSystem(
     client_kwargs={'endpoint_url': 'https://'+'minio.lab.sspcloud.fr'},
     key = os.environ["AWS_ACCESS_KEY_ID"], 
@@ -70,9 +71,9 @@ for NUTS3 in NUTS3S:
 
 gdf_list=[]
 NUTS3S=["BG322","CY000","CZ072","DEA54","DK041","EE00A","EL521","ES612","FI1C1","BE100","BE251","FRJ27","FRK26"]
-
+len(gdf_list)
 for NUTS3 in NUTS3S :
-    print(NUtS3)
+    print(NUTS3)
     label_dir= f"data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/{NUTS3}"
     # Lister les fichiers .tif pour 2018 et 2021
     tif_2018_files = sorted(glob.glob(os.path.join(label_dir, "2018/250/*.tif")))
@@ -122,8 +123,8 @@ gdf_concatenated = gpd.GeoDataFrame(pd.concat(gdf_list, ignore_index=True))
 
 
 # Sauvegarde en shapefile (optionnel)
-gdf_concatenated.to_file(f"change_polygons_CLC.gpkg")
-lpath =f"change_polygons_CLC.gpkg"
+gdf_concatenated.to_file(f"change_polygons_CLC_bigger.gpkg")
+lpath =f"change_polygons_CLC_bigger.gpkg"
 rpath =f"s3://projet-hackathon-ntts-2025/indicators/"
 
 fs.put(lpath,rpath)
