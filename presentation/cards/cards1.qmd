@@ -4,7 +4,7 @@ image: img/IA.jpg
 date: "2025-03-07"
 description: |
   <b>Description :</b> test
-author:  Clément Guillo, Raya Berova, Thomas Faria, Damien Babet
+author:  Damien Babet, Raya Berova, Clément Guillo
 slides:
   text: Slides
   url: src/pitch/index.html

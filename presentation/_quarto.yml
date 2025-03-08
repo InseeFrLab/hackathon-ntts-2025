@@ -8,9 +8,9 @@ project:
 
 website:
   page-navigation: true
-  title: "Présentation SES Dirag"
-  site-url: "https://github.com/orgs/InseeFrLab/teams/satellite-images/repositories"
-  repo-url: "https://github.com/orgs/InseeFrLab/teams/satellite-images/repositories"
+  title: "Presentation French Team for Eurostat Hackathon 2025"
+  site-url: "https://inseefrlab.github.io/hackathon-ntts-2025/"
+  repo-url: "https://github.com/InseeFrLab/hackathon-ntts-2025.git"
   open-graph: true
   page-footer:
     left: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
@@ -24,7 +24,7 @@ website:
     collapse-below: lg
     right:
       - icon: github
-        href: "https://github.com/clement2323/repositories"
+        href: "https://github.com/InseeFrLab/hackathon-ntts-2025.git"
         aria-label: GitHub
     left:
       - href: index.qmd
