@@ -262,8 +262,8 @@ def create_geojson_from_mask(lsi: SegmentationLabeledSatelliteImage) -> str:
         "height": lsi.label.shape[0],
         "crs": lsi.satellite_image.crs,
         "transform": rasterio.transform.from_origin(
-            lsi.satellite_image.bounds[0], lsi.satellite_image.bounds[3], 0.5, 0.5
-        ),  # pixel size is 0.5m
+            lsi.satellite_image.bounds[0], lsi.satellite_image.bounds[3], 10, 10
+        ),
     }
 
     # Use the context manager for temporary file handling
