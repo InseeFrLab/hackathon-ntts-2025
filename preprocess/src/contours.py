@@ -29,7 +29,7 @@ def get_sampled_country_polygon(country_id: str, sample_prop: float):
 
 
 def get_nuts3_polygon(nuts3_id: str):
-    if 'NUTS_ID' == "UKRAINE":
+    if nuts3_id == "UKRAINE":
         poly_nuts3 = Polygon(polygon_ukraine_next_ue["coordinates"][0])
 
     else:
