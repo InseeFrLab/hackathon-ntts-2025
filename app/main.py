@@ -56,8 +56,10 @@ async def lifespan(app: FastAPI):
 
     model_name: str = os.getenv("MLFLOW_MODEL_NAME")
     model_version: str = os.getenv("MLFLOW_MODEL_VERSION")
+    mlflow_tracking_uri: str = os.getenv("MLFLOW_TRACKING_URI")
+
     # Load the ML model
-    model = get_model(model_name, model_version)
+    model = get_model(model_name, model_version, mlflow_tracking_uri)
 
     # Extract several variables from model metadata
     n_bands = int(mlflow.get_run(model.metadata.run_id).data.params["n_bands"])
