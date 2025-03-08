@@ -41,7 +41,7 @@ spec:
             - name: MLFLOW_MODEL_NAME
               value: Segmentation-multiclass
             - name: MLFLOW_MODEL_VERSION
-              value: "2"
+              value: "3"
             - name: MLFLOW_ENABLE_ARTIFACTS_PROGRESS_BAR
               value: "false"
           resources:
