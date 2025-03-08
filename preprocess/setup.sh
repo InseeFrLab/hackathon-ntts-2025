@@ -1,5 +1,5 @@
 #!/bin/bash
-PROJECT_DIR=~/work/download_sentinel
+PROJECT_DIR=~/work/hackathon-ntts-2025/preprocess
 
 git config --global credential.helper store
 
@@ -40,7 +40,7 @@ done
 json_string="${json_string%,*} }"
 
 # Write the JSON string to a file
-echo "$json_string" > GCP_credentials.json
+echo "$json_string" > hackathon-ntts-2025/preprocess/GCP_credentials.json
 
 chown -R onyxia:users $PROJECT_DIR/
 

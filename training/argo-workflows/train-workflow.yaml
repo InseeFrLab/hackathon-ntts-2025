@@ -8,7 +8,7 @@ spec:
     - name: dshm
       emptyDir:
         medium: Memory
-        sizeLimit: 64Gi
+        sizeLimit: 128Gi
   entrypoint: main
   arguments:
     parameters:
@@ -16,20 +16,20 @@ spec:
         value: '[
             { "SOURCE": "SENTINEL2",
               "N_BANDS": "14",
-              "DATASETS": ["BE100_2018"],
+              "DATASETS": ["BE251_2018","BE251_2021","FRJ27_2018","FRK26_2021","HR050_2018","ITI32_2021","RO123_2021","FI1C1_2018","PL414_2018","ES612_2021","LU000_2021","CY000_2021", "IE061_2018", "EE00A_2021", "SI035_2018", "UKJ22_2018"],
               "TILES_SIZE": 250,
               "AUGMENT_SIZE": 512,
               "TYPE_LABELER": "CLCplus-Backbone",
               "USE_S3": 0,
               "EPOCHS": 40,
-              "BATCH_SIZE": 1,
-              "TEST_BATCH_SIZE": 1,
+              "BATCH_SIZE": 64,
+              "TEST_BATCH_SIZE": 32,
               "LR": 0.00005,
-              "BUILDING_CLASS_WEIGHT": 2.0,
+              "BUILDING_CLASS_WEIGHT": 10.0,
               "LOSS_NAME": "cross_entropy_weighted",
               "MODULE_NAME": "segformer-b5",
               "SCHEDULER_NAME": "one_cycle",
-              "PATIENCE": 10,
+              "PATIENCE": 4,
               "LABEL_SMOOTHING": 0.0,
               "LOGITS": 1,
               "FREEZE_ENCODER": 0,

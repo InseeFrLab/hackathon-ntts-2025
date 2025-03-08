@@ -48,7 +48,7 @@ def get_trainer(
         max_epochs=max_epochs,
         num_sanity_val_steps=num_sanity_val_steps,
         strategy=strategy,
-        log_every_n_steps=2,
+        log_every_n_steps=1,
         accumulate_grad_batches=accumulate_batch,
     )
 
