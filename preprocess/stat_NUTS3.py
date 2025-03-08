@@ -27,6 +27,16 @@ picture_dir = "projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backb
 label_dir = "projet-hackathon-ntts-2025/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/"
 
 NUTS3S = ["BE100","BE251","FRJ27","FRK26"]
+NUTS3=["BE100","BE251",
+"BG322",
+"CY000",
+"CZ072",
+"DEA54",
+"DK041",
+"EE00A",
+"EL521",
+"ES612",
+"FI1C1"]
 
 results=[]
 
@@ -45,6 +55,8 @@ for NUTS3 in NUTS3S:
     total_ajout_bati = 0
     total_suppression_bati = 0
 
+    import numpy as np
+
     # Boucle sur plusieurs départements
     for i in range(len(list_labels_2018)):
         # Charger les labels bâti
@@ -54,16 +66,19 @@ for NUTS3 in NUTS3S:
         with fs.open(list_labels_2021[i], 'rb') as f:
             label_2021 = np.load(f)
 
-        # Charger les NDVI
-        ndvi_2018 = SatelliteImage.from_raster(
+        sat18 = SatelliteImage.from_raster(
             file_path=f"/vsis3/{list_patchs_2018[i]}",
             n_bands=14,
-        ).array[12]
+        )
 
-        ndvi_2021 = SatelliteImage.from_raster(
+        sat21 = SatelliteImage.from_raster(
             file_path=f"/vsis3/{list_patchs_2021[i]}",
             n_bands=14,
-        ).array[12]
+        )
+
+        # Charger les NDVI
+        ndvi_2018 = sat18.array[12]
+        ndvi_2021 = sat21.array[12]
 
         # Calcul des changements NDVI
         ajout_ndvi = np.sum((ndvi_2018 > 0.3) & (ndvi_2021 <= 0.3))  # Perte de végétation
@@ -78,7 +93,16 @@ for NUTS3 in NUTS3S:
         total_suppression_ndvi += suppression_ndvi
         total_ajout_bati += ajout_bati
         total_suppression_bati += suppression_bati
-
+        
+                # Création du tableau de sortie selon les conditions
+        diff_array = np.where((label_2018 != 1) & (label_2021 != 1), 0,
+        np.where((label_2018 != 1) & (label_2021 == 1), 1,
+        np.where((label_2018 == 1) & (label_2021 != 1), 2, 3)))
+        satdiff = sat18.copy()
+        satdiff.array = diff_array
+        satdiff.to_raster("tmp.tif")
+        
+        
     # Ajouter les résultats à la liste
     results.append({
         "NUTS3": NUTS3,
