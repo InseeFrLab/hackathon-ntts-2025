@@ -1,1 +1,1 @@
-Sitemap: https://github.com/orgs/InseeFrLab/teams/satellite-images/repositories/sitemap.xml
+Sitemap: https://inseefrlab.github.io/hackathon-ntts-2025/sitemap.xml
