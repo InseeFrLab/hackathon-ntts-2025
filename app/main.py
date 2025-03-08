@@ -11,25 +11,20 @@ import geopandas as gpd
 import mlflow
 import numpy as np
 import pandas as pd
-import pyarrow.parquet as pq
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
 from osgeo import gdal
-from shapely.geometry import box
 
 from app.logger_config import configure_logger
 from app.utils import (
-    compute_roi_statistics,
     create_geojson_from_mask,
     get_cache_path,
     get_file_system,
-    get_filename_to_polygons,
     get_model,
     get_normalization_metrics,
     load_from_cache,
     predict,
     produce_mask,
-    subset_predictions,
 )
 
 
@@ -156,9 +151,7 @@ def predict_nuts(
     Returns:
         Dict: Response containing the predicted NUTS.
     """
-    logger.info(
-        f"Predict nuts endpoint accessed with nuts_id: {nuts_id}, year: {year}"
-    )
+    logger.info(f"Predict nuts endpoint accessed with nuts_id: {nuts_id}, year: {year}")
 
     fs = get_file_system()
 
@@ -166,18 +159,20 @@ def predict_nuts(
     # nuts = gpd.read_file("/api/nuts_2021.gpkg")
     # nuts = gpd.GeoDataFrame(nuts, geometry="geometry", crs="EPSG:4326")
 
-    images = fs.ls(f"""s3://projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/{nuts_id}/{year}/250/""")
+    images = [
+        img
+        for img in fs.ls(
+            f"s3://projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/{nuts_id}/{year}/250/"
+        )
+        if img.endswith(".tif")
+    ]
 
     # Check if images are found in S3 bucket
     if not images:
-        logger.info(
-            f"""No images found for nuts_id: {nuts_id} and year: {year}"""
-        )
+        logger.info(f"""No images found for nuts_id: {nuts_id} and year: {year}""")
         return JSONResponse(
             content={
-                "predictions": gpd.GeoDataFrame(
-                    columns=["geometry"], crs="EPSG:3035"
-                ).to_json()
+                "predictions": gpd.GeoDataFrame(columns=["geometry"], crs="EPSG:3035").to_json()
             }
         )
 
@@ -216,23 +211,8 @@ def predict_nuts(
 
     preds = pd.concat([create_geojson_from_mask(x) for x in predictions])
 
-    results = []
-
-    for label in preds["label"].unique():
-        preds_label = preds[preds["label"] == label]
-
-        preds_geom = gpd.GeoDataFrame(
-            {"geometry": preds_label.geometry, "label": [label]},
-            crs="EPSG:3035",
-        )
-
-        results.append(preds_geom.reset_index(drop=True))
-
-    results = pd.concat(results)
-    preds_cluster = results[~results["geometry"].is_empty]
-
     response_data = {
-        "predictions": preds_cluster.to_json(),
+        "predictions": preds.to_json(),
     }
 
     return JSONResponse(content=response_data)

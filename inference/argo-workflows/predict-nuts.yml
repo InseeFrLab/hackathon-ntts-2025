@@ -1,0 +1,57 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: predict-nuts-
+spec:
+  serviceAccountName: workflow
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: regions
+        value: '[{"nuts": "BE100", "year": 2024}]'
+
+  templates:
+    - name: main
+      dag:
+        tasks:
+          - name: run-predict
+            template: run-predict-task
+            arguments:
+              parameters:
+                - name: nuts
+                  value: "{{item.nuts}}"
+                - name: year
+                  value: "{{item.year}}"
+            withParam: "{{workflow.parameters.regions}}"
+
+    - name: run-predict-task
+      inputs:
+        parameters:
+          - name: nuts
+          - name: year
+      container:
+        image:  rayaberova/hackathon-ntts-2025:main
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash", "-c"]
+        args: [
+           "git clone https://github.com/InseeFrLab/hackathon-ntts-2025.git &&
+           cd /api/hackathon-ntts-2025/inference/ &&
+           python main.py --nuts3 {{inputs.parameters.nuts}} --year {{inputs.parameters.year}}"
+        ]
+        env:
+          - name: PROJ_LIB
+            value: /opt/conda/share/proj
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: mc-s3
+                key: accessKey
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: mc-s3
+                key: secretKey
+          - name: AWS_DEFAULT_REGION
+            value: us-east-1
+          - name: AWS_S3_ENDPOINT
+            value: minio.lab.sspcloud.fr

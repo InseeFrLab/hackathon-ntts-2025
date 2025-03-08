@@ -6,24 +6,20 @@ import json
 import os
 import tempfile
 from contextlib import contextmanager
-from typing import Dict, List
+from typing import List
 
 import albumentations as A
-import cv2
 import geopandas as gpd
 import mlflow
 import numpy as np
-import pandas as pd
 import pyarrow.parquet as pq
 import rasterio
 import torch
 from albumentations.pytorch.transforms import ToTensorV2
 from astrovision.data import SatelliteImage, SegmentationLabeledSatelliteImage
 from astrovision.plot import make_mosaic
-from rasterio.features import rasterize, shapes
+from rasterio.features import shapes
 from s3fs import S3FileSystem
-from shapely import make_valid
-from shapely.ops import unary_union
 from tqdm import tqdm
 
 from app.logger_config import configure_logger
@@ -39,11 +35,12 @@ def get_file_system() -> S3FileSystem:
         client_kwargs={"endpoint_url": f"https://{os.environ['AWS_S3_ENDPOINT']}"},
         key=os.environ["AWS_ACCESS_KEY_ID"],
         secret=os.environ["AWS_SECRET_ACCESS_KEY"],
-        token=""
     )
 
 
-def get_model(model_name: str, model_version: str, mlflow_tracking_uri: str) -> mlflow.pyfunc.PyFuncModel:
+def get_model(
+    model_name: str, model_version: str, mlflow_tracking_uri: str
+) -> mlflow.pyfunc.PyFuncModel:
     """
     This function fetches a trained machine learning model from the MLflow
     model registry based on the specified model name and version.
@@ -265,8 +262,8 @@ def create_geojson_from_mask(lsi: SegmentationLabeledSatelliteImage) -> str:
         "height": lsi.label.shape[0],
         "crs": lsi.satellite_image.crs,
         "transform": rasterio.transform.from_origin(
-            lsi.satellite_image.bounds[0], lsi.satellite_image.bounds[3], 0.5, 0.5
-        ),  # pixel size is 0.5m
+            lsi.satellite_image.bounds[0], lsi.satellite_image.bounds[3], 10, 10
+        ),
     }
 
     # Use the context manager for temporary file handling
