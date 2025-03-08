@@ -210,13 +210,13 @@ parser.add_argument(
 parser.add_argument(
     "--scheduler_patience",
     type=int,
-    default=3,
+    default=2,
     help="Number of epochs with no improvement after which learning rate will be reduced",
 )
 parser.add_argument(
     "--patience",
     type=int,
-    default=10,
+    default=4,
     help="Number of epochs with no improvement after which training stops",
 )
 parser.add_argument(
@@ -313,10 +313,7 @@ def main(
         )
         patches.sort()
         labels.sort()
-        # tmp
-        # labels.remove(
-        #     "data/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/BE100/2018/250/3924030_3093620_0_8.npy"
-        # )
+
         # No filtering here
         indices = filter_indices_from_labels(labels, -1.0, 2.0, type_labeler)
         train_patches += [patches[idx] for idx in indices]
@@ -331,17 +328,15 @@ def main(
         weights.append(len(indices))
 
     # Get test patches and labels
-    deps_test = ["BE100"]
-    years_test = ["2021"]
+    deps_test = ["BE100", "DEA54", "CY000", "LU000"]
+    years_test = ["2021"] * len(deps_test)
     for dep, year in zip(deps_test, years_test):
         # Get patches and labels for test
         patches, labels = get_patchs_labels(from_s3, source, dep, year, tiles_size, type_labeler)
 
         patches.sort()
         labels.sort()
-        # labels.remove(
-        #     "data/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/BE100/2021/250/3924030_3093620_0_8.npy"
-        # )
+
         test_patches += list(patches)
         test_labels += list(labels)
 
