@@ -77,11 +77,18 @@
     "text": "Model performance\nWe assess the model predictive performance relative to the CLC+ reference\nWe use cross-entropy loss with or without weights\nand track intersection over union (IOU) for the “1: sealed” CLC+ category\nTest sample metrics: IOU “1/ sealed” category: 0.46 IOU all categories: 0.63\nNext step is confronting with ground truth data: LUCAS survey points"
   },
   {
-    "objectID": "src/pitch/index.html#a-good-predictor-is-not-enough",
-    "href": "src/pitch/index.html#a-good-predictor-is-not-enough",
+    "objectID": "src/pitch/index.html#a-quite-good-predictor-is-not-enough",
+    "href": "src/pitch/index.html#a-quite-good-predictor-is-not-enough",
     "title": "Artificialization with CLC+",
-    "section": "A good predictor is not enough",
-    "text": "A good predictor is not enough\n\nA predictor can be good but biased. Cross-entropy is biased when we use weights\nUnbiased errors can translate to bias when measuring evolutions\nFundamentally, results depend on resolution, due to the fractal nature of artificialisation\n\nThese problems might exist already for CLC+"
+    "section": "A quite good predictor is not enough",
+    "text": "A quite good predictor is not enough\n\nA predictor can be good but biased. Cross-entropy is biased when we use weights\nUnbiased errors can translate to bias when measuring evolutions\nFundamentally, results depend on resolution, due to the fractal nature of artificialisation\n\nThese problems might exist already at a smaller scale for CLC+"
+  },
+  {
+    "objectID": "src/pitch/index.html#an-exploration-tool",
+    "href": "src/pitch/index.html#an-exploration-tool",
+    "title": "Artificialization with CLC+",
+    "section": "An exploration tool",
+    "text": "An exploration tool\n+8% is not a reliable number\nBut a fast trained prediction model is a good tool to explore !"
   },
   {
     "objectID": "src/pitch/index.html#our-background",
