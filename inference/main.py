@@ -83,6 +83,8 @@ if __name__ == "__main__":
         )
         gdf = gpd.GeoDataFrame(df, geometry="geometry", crs="EPSG:3035")
 
+        gdf = gdf.set_crs("EPSG:3035", allow_override=True)
+
         gdf = gdf.drop(columns=["coordinates", "id"])
 
         filepath_out = f"s3://projet-hackathon-ntts-2025/data-predictions/CLCplus-Backbone/SENTINEL2/{year}/250/predictions_{nuts3}.gpkg"
