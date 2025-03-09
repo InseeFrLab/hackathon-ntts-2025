@@ -343,7 +343,7 @@
 </section>
 <section>
 <section id="one-number" class="title-slide slide level1 center" data-background-image="background.svg" data-background-size="contain">
-<h1>1️ One number</h1>
+<h1>1️ ONE number</h1>
 
 </section>
 <section id="one-number-1" class="slide level2" data-background-image="background.svg" data-background-size="contain">
@@ -358,10 +358,12 @@
 <section id="one-number-3" class="slide level2" data-background-image="background.svg" data-background-size="contain">
 <h2>One number</h2>
 <p><a title="Wolfgang Glock, CC BY 3.0 <https://creativecommons.org/licenses/by/3.0>, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Seven_Sisters_02.JPG"><img width="2048" alt="Seven Sisters 02" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Seven_Sisters_02.JPG/2048px-Seven_Sisters_02.JPG?20230724133400"></a></p>
-<p>+3% The growth or urbanized area in East Sussex, United Kingdom, between 2018 and 2024</p>
+<p>+3%</p>
+<p>The growth or <strong>urbanized area</strong> in East Sussex, United Kingdom, between 2018 and 2024</p>
 </section>
 <section id="one-number-4" class="slide level2" data-background-image="background.svg" data-background-size="contain">
 <h2>One number</h2>
+<p><a title="Wolfgang Glock, CC BY 3.0 <https://creativecommons.org/licenses/by/3.0>, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Seven_Sisters_02.JPG"><img width="2048" alt="Seven Sisters 02" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Seven_Sisters_02.JPG/2048px-Seven_Sisters_02.JPG?20230724133400"></a></p>
 <p><a href="https://clement2323.github.io/webapphackathon2025/">Let’s have a look</a></p>
 <p>https://inseefrlab.github.io/hackathon-ntts-2025-webapp/</p>
 </section></section>
@@ -372,56 +374,68 @@
 </section>
 <section id="land-use-change" class="slide level2" data-background-image="background.svg" data-background-size="contain">
 <h2>Land Use Change</h2>
-<p>[<strong>EU Regulation on the Inclusion of Greenhouse Gas emissions and Removals from Land Use, Land Use Change and Forestry (LULUCF)</strong>]</p>
-<p>We focus on artificialisation, defined here as a rise in imperviousness : “the disappearance of natural spaces under concrete or bitumen”</p>
+<p>We focus on <em>artificialisation</em>, defined here as a rise in imperviousness : “the disappearance of natural spaces under concrete or bitumen”</p>
 <p>Imperviousness negatively affects biodiversity, carbon storage and sequestration, soil hydrological properties, ecosystem services and nature conservation.</p>
-<p>The European Commission’s roadmap to a resource efficient Europe introduced a [<strong>‘no net land take by 2050’* initiative</strong>]</p>
+<p>The European Commission’s roadmap to a resource efficient Europe introduced a <strong>‘no net land take by 2050’ initiative</strong></p>
 <p><a href="https://www.eionet.europa.eu/etcs/etc-di/products/etc-di-report-2024-3-analysis-of-usability-of-imperviousness-and-clc-backbone-data-for-mapping-sealed-areas">European Environment Agency</a></p>
 </section>
 <section id="clc-backbone" class="slide level2" data-background-image="background.svg" data-background-size="contain">
 <h2>CLC+ Backbone</h2>
-<p>Land cover and land use: an important topic with [<strong>a lot</strong>] of work. The most recent and performant is the Corine Land Cover Plus (CLC+) Backbone</p>
+<p>Land cover and land use: an important topic with <strong>a lot</strong> of work. The most recent and performant is the Corine Land Cover Plus (CLC+) Backbone</p>
 <p>Everything we did is built on the CLC+ Backbone : <a href="https://land.copernicus.eu/en/map-viewer">CLMS Data Viewer</a></p>
-</section>
-<section id="clc-is-looking-for-use-cases" class="slide level2" data-background-image="background.svg" data-background-size="contain">
-<h2>CLC+ is looking for use cases</h2>
-<p><a href="../img/looking_for_use_cases.png" width="75%" data-fig-align="center"></a></p>
+<p>\## CLC+ is looking for use cases \<a href="../img/looking_for_use_cases.png" width="75%" data-fig-align="center"></a></p>
 </section></section>
 <section>
-<section id="product-clc-delta" class="title-slide slide level1 center" data-background-image="background.svg" data-background-size="contain">
-<h1>3️⃣ Product: CLC Delta</h1>
+<section id="the-innovation-behind-the-relevant-number" class="title-slide slide level1 center" data-background-image="background.svg" data-background-size="contain">
+<h1>3️⃣ The INNOVATION behind the relevant number</h1>
 
 </section>
-<section id="clc-delta" class="slide level2" data-background-image="background.svg" data-background-size="contain">
-<h2>CLC Delta</h2>
+<section id="segformer-model" class="slide level2" data-background-image="background.svg" data-background-size="contain">
+<h2>Segformer model</h2>
+<p>We trained a <strong>segformer</strong> model on Sentinel-2, - mosaic images of 250*250 pixels (resolution = 10m) - all 12 bands + NDVI and NDWI</p>
+<p>Xie, Enze, et al.&nbsp;“SegFormer: Simple and efficient design for semantic segmentation with transformers.” Advances in neural information processing systems 34 (2021): 12077-12090.</p>
+</section>
+<section id="architecture" class="slide level2" data-background-image="background.svg" data-background-size="contain">
+<h2>Architecture</h2>
+<div id="fig-chain2" class="quarto-float quarto-figure quarto-figure-center" width="100%" height="100%">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-chain2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="../img/pipeline_donnees_sat_en.png" id="fig-chain2" style="width:100.0%;height:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-chain2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figcaption>
+</figure>
+</div>
+</section></section>
+<section>
+<section id="the-replicability-of-the-innovation-behind-the-relevant-number" class="title-slide slide level1 center" data-background-image="background.svg" data-background-size="contain">
+<h1>4️⃣ The REPLICABILITY of the innovation behind the relevant number</h1>
+
+</section>
+<section id="you-can-do-this-at-home" class="slide level2" data-background-image="background.svg" data-background-size="contain">
+<h2>You CAN do this at home</h2>
 <ul>
-<li>Compare CLC+ 2018 and 2021</li>
-<li>Measure land use change indicators on given area</li>
+<li>Use the <a href="presentation/src/pitch/img/looking_for_use_cases.png">webapp</a></li>
+<li>Access our layers on <a href="https://geoserver-hachathon2025.lab.sspcloud.fr/geoserver">geoserver</a></li>
+<li>Predict on new Sentinel-2 images with the <a href="https://hackathon-ntts-2025.lab.sspcloud.fr/docs">API</a></li>
+<li>Download the model on <a href="https://huggingface.co/InseeFrLab/hackathon-ntts-2025-segmentation/blob/main/README.md">Hugging Face</a> to retrain and play</li>
+<li>Use our complete stack: it is containerized</li>
 </ul>
 </section></section>
 <section>
-<section id="demo" class="title-slide slide level1 center" data-background-image="background.svg" data-background-size="contain">
-<h1>4️⃣ Demo</h1>
+<section id="one-rigorous-number" class="title-slide slide level1 center" data-background-image="background.svg" data-background-size="contain">
+<h1>5️⃣ One RIGOROUS number ?</h1>
 
 </section>
-<section id="demo-1" class="slide level2" data-background-image="background.svg" data-background-size="contain">
-<h2>Demo</h2>
-<p><a href="https://inseefrlab.github.io/satellite-images-webapp/"><strong>Let’s have a look !</strong></a></p>
-</section></section>
-<section>
-<section id="next-steps-bbb" class="title-slide slide level1 center" data-background-image="background.svg" data-background-size="contain">
-<h1>5️⃣ Next steps: BBB!</h1>
-
+<section id="are-the-results-reliable" class="slide level2" data-background-image="background.svg" data-background-size="contain">
+<h2>Are the results reliable ?</h2>
+<p>Sannier, Christophe, et al.&nbsp;“Harmonized Pan-European Time Series for Monitoring Soil Sealing.” Land 13.7 (2024): 1087. <a href="https://www.mdpi.com/2073-445X/13/7/1087">Link</a></p>
 </section>
-<section id="next-steps-bbb-1" class="slide level2" data-background-image="background.svg" data-background-size="contain">
-<h2>Next steps : BBB!</h2>
-<p>Bring back Britain !</p>
-</section>
-<section id="next-steps-bbb-2" class="slide level2" data-background-image="background.svg" data-background-size="contain">
+<section id="next-steps-bbb" class="slide level2" data-background-image="background.svg" data-background-size="contain">
 <h2>Next steps : BBB!</h2>
 <p>Bring back Britain…</p>
 </section>
-<section id="next-steps-bbb-3" class="slide level2" data-background-image="background.svg" data-background-size="contain">
+<section id="next-steps-bbb-1" class="slide level2" data-background-image="background.svg" data-background-size="contain">
 <h2>Next steps : BBB!</h2>
 <p>Bring back Britain… land cover mapping</p>
 </section>
