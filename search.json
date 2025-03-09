@@ -81,7 +81,7 @@
     "href": "src/pitch/index.html#model-performance",
     "title": "Artificialization with CLC+",
     "section": "Model performance",
-    "text": "Model performance\nWe assess the model predictive performance relative to the CLC+ reference\nWe use cross-entropy loss with or without weights\nand track intersection over union (IOU) for the \"1: sealed\" CLC+ category\nTest sample metrics: IOU “1/ sealed” category: 0.34 IOU all categories: 0.57\nNext step is confronting with ground truth data: LUCAS survey points"
+    "text": "Model performance\nWe assess the model predictive performance relative to the CLC+ reference\nWe use cross-entropy loss with or without weights\nand track intersection over union (IOU) for the “1: sealed” CLC+ category\nTest sample metrics: IOU “1/ sealed” category: 0.34 IOU all categories: 0.57\nNext step is confronting with ground truth data: LUCAS survey points"
   },
   {
     "objectID": "src/pitch/index.html#a-good-predictor-is-not-enough",
