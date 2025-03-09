@@ -81,11 +81,10 @@ if __name__ == "__main__":
         df["geometry"] = df["coordinates"].apply(
             lambda x: shape({"type": "Polygon", "coordinates": x})
         )
-        gdf = gpd.GeoDataFrame(
-            df, geometry="geometry", crs="EPSG:3035"
-        )  # Ajuster le CRS si nécessaire
+        gdf = gpd.GeoDataFrame(df, geometry="geometry", crs="EPSG:3035")
 
-        gdf = gdf.to_crs(4326)
+        gdf = gdf.drop(columns=["coordinates", "id"])
+
         filepath_out = f"s3://projet-hackathon-ntts-2025/data-predictions/CLCplus-Backbone/SENTINEL2/{year}/250/predictions_{nuts3}.gpkg"
         save_geopackage_to_s3(df, filepath_out, fs)
 
