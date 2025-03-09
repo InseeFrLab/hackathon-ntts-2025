@@ -50,20 +50,22 @@ Satellite tracking of settlements changes in French oversea territories, for a b
     ➡ last available data : 2018
 
 ## References
-    [Beyond the Modifiable Areal Unit Problem, François Sémécurbe](https://fsemecurbe.github.io/fractal-for-geographers/)
+[Beyond the Modifiable Areal Unit Problem, François Sémécurbe](https://fsemecurbe.github.io/fractal-for-geographers/)
 
-    Sannier, Christophe, et al. "Harmonized Pan-European Time Series for Monitoring Soil Sealing." Land 13.7 (2024): 1087.
-    [Link](https://www.mdpi.com/2073-445X/13/7/1087)
+Sannier, Christophe, et al. "Harmonized Pan-European Time Series for Monitoring Soil Sealing." Land 13.7 (2024): 1087.
+[Link](https://www.mdpi.com/2073-445X/13/7/1087)
 
-    Olofsson, Pontus, et al. "Good practices for estimating area and assessing accuracy of land change." Remote sensing of Environment 148 (2014): 42-57.
-    [Link (.pdf)](https://elearning.unipd.it/scuolaamv/pluginfile.php/175898/mod_resource/content/0/articolo_oloffson.pdf)
+Olofsson, Pontus, et al. "Good practices for estimating area and assessing accuracy of land change." Remote sensing of Environment 148 (2014): 42-57.
+[Link (.pdf)](https://elearning.unipd.it/scuolaamv/pluginfile.php/175898/mod_resource/content/0/articolo_oloffson.pdf)
 
-    Xie, Enze, et al. "SegFormer: Simple and efficient design for semantic segmentation with transformers." Advances in neural information processing systems 34 (2021): 12077-12090.
+Xie, Enze, et al. "SegFormer: Simple and efficient design for semantic segmentation with transformers." Advances in neural information processing systems 34 (2021): 12077-12090.
 
-    - Gergely Maucha (Lechner Ltd.), Éva Kerékgyártó (Lechner Ltd.), Viktória Turos (Lechner Ltd.), Christophe Sannier (GAF), Jaroslav Dufek (GISAT), Tomas Soukup (GISAT), Eva Ivits (EEA), Analysis of usability of Imperviousness and CLC+ Backbone data for mapping sealed areas, ETC DI Report 2024/3, 13 Jun 2024
-    [Link](https://www.eionet.europa.eu/etcs/etc-di/products/etc-di-report-2024-3-analysis-of-usability-of-imperviousness-and-clc-backbone-data-for-mapping-sealed-areas)
-    - Pelletier, Charlotte, Geoffrey I. Webb, and François Petitjean. "Temporal convolutional neural network for the classification of satellite image time series." Remote Sensing 11.5 (2019): 523
-    [Link](https://www.mdpi.com/2072-4292/11/5/523)
-    [Repo](https://github.com/charlotte-pel/temporalCNN)
-    Product user manual – CLCplus Backbone 2021 Publication date: 12.06.2024  Version: 1.2
-    [Link](https://land.copernicus.eu/en/products/clc-backbone?tab=documentation)
+Gergely Maucha (Lechner Ltd.), Éva Kerékgyártó (Lechner Ltd.), Viktória Turos (Lechner Ltd.), Christophe Sannier (GAF), Jaroslav Dufek (GISAT), Tomas Soukup (GISAT), Eva Ivits (EEA), Analysis of usability of Imperviousness and CLC+ Backbone data for mapping sealed areas, ETC DI Report 2024/3, 13 Jun 2024
+[Link](https://www.eionet.europa.eu/etcs/etc-di/products/etc-di-report-2024-3-analysis-of-usability-of-imperviousness-and-clc-backbone-data-for-mapping-sealed-areas)
+
+Pelletier, Charlotte, Geoffrey I. Webb, and François Petitjean. "Temporal convolutional neural network for the classification of satellite image time series." Remote Sensing 11.5 (2019): 523
+[Link](https://www.mdpi.com/2072-4292/11/5/523)
+[Repo](https://github.com/charlotte-pel/temporalCNN)
+
+Product user manual – CLCplus Backbone 2021 Publication date: 12.06.2024  Version: 1.2
+[Link](https://land.copernicus.eu/en/products/clc-backbone?tab=documentation)
