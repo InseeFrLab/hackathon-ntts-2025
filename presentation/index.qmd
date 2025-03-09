@@ -10,7 +10,7 @@ page-layout: full
 toc: false
 ---
 
-## Présentations des outils produits par le SES
+## Hackathon NTTS 2025 : French team
 
 
 ::: {#presentations}
