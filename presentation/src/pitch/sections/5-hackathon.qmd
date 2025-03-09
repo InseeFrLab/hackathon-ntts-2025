@@ -17,7 +17,7 @@ We use cross-entropy loss with or without weights
 and track intersection over union (IOU) for the "1: sealed" CLC+ category
 
 Test sample metrics:
-IOU "1/ sealed" category:   0.34
+IOU "1/ sealed" category:   0.35
 IOU all categories:         0.57
 
 Next step is confronting with ground truth data: LUCAS survey points
