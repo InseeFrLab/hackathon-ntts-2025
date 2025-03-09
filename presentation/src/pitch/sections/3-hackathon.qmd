@@ -1,0 +1,9 @@
+## Segformer model
+
+We trained a segformer model on Sentinel-2 mosaics all 12 bands + NDVI and NDWI
+
+Xie, Enze, et al. "SegFormer: Simple and efficient design for semantic segmentation with transformers." Advances in neural information processing systems 34 (2021): 12077-12090.
+
+## Architecture 
+![](../img/pipeline_donnees_sat_en.png){#fig-chain2 width=100% height=100%}
+

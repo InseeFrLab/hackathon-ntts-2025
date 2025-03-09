@@ -10,9 +10,12 @@
 <a title="Wolfgang Glock, CC BY 3.0 &lt;https://creativecommons.org/licenses/by/3.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Seven_Sisters_02.JPG"><img width="2048" alt="Seven Sisters 02" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Seven_Sisters_02.JPG/2048px-Seven_Sisters_02.JPG?20230724133400"></a>
 
 +3%
-The growth or urbanized area in East Sussex, United Kingdom, between 2018 and 2024
+
+The growth or **urbanized area** in East Sussex, United Kingdom, between 2018 and 2024
 
 ## One number
+<a title="Wolfgang Glock, CC BY 3.0 &lt;https://creativecommons.org/licenses/by/3.0&gt;, via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:Seven_Sisters_02.JPG"><img width="2048" alt="Seven Sisters 02" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Seven_Sisters_02.JPG/2048px-Seven_Sisters_02.JPG?20230724133400"></a>
+
 [Let's have a look](https://clement2323.github.io/webapphackathon2025/)
 
 https://inseefrlab.github.io/hackathon-ntts-2025-webapp/

@@ -18,23 +18,22 @@ ascii: true
 ---
 
 
-# 1️ One number
+# 1️ ONE number
 
 {{< include sections/1-hackathon.qmd >}}
-
 
 # 2️⃣ One RELEVANT number !
 
 {{< include sections/2-hackathon.qmd >}}
 
-# 3️⃣ Product: CLC Delta
+# 3️⃣ The INNOVATION behind the relevant number
 
-{{< include sections/3-hackathon-product.qmd >}}
+{{< include sections/3-hackathon.qmd >}}
 
-# 4️⃣ Demo
+# 4️⃣ The REPLICABILITY of the innovation behind the relevant number
 
-{{< include sections/4-hackathon-demo.qmd >}}
+{{< include sections/4-hackathon.qmd >}}
 
-# 5️⃣ Next steps: BBB!
+# 5️⃣ One RIGOROUS number
 
-{{< include sections/5-hackathon-next-steps.qmd >}}
+{{< include sections/5-hackathon.qmd >}}

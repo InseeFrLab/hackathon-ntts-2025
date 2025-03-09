@@ -1,7 +1,7 @@
 ## Land Use Change
-[**EU Regulation on the Inclusion of Greenhouse Gas emissions and Removals from Land Use, Land Use Change and Forestry (LULUCF)**]
+**EU Regulation on the Inclusion of Greenhouse Gas emissions and Removals from Land Use, Land Use Change and Forestry (LULUCF)**
 
-We focus on artificialisation, defined here as a rise in imperviousness :
+We focus on *artificialisation*, defined here as a rise in imperviousness :
 "the disappearance of natural spaces under concrete or bitumen"
 
 Imperviousness negatively affects biodiversity, carbon storage and sequestration, soil hydrological properties, ecosystem services and nature conservation.
@@ -11,7 +11,7 @@ The European Commission’s roadmap to a resource efficient Europe introduced a 
 [European Environment Agency](https://www.eionet.europa.eu/etcs/etc-di/products/etc-di-report-2024-3-analysis-of-usability-of-imperviousness-and-clc-backbone-data-for-mapping-sealed-areas)
 
 ## CLC+ Backbone
-Land cover and land use: an important topic with [**a lot**] of work. The most recent and performant is the Corine Land Cover Plus (CLC+) Backbone
+Land cover and land use: an important topic with **a lot** of work. The most recent and performant is the Corine Land Cover Plus (CLC+) Backbone
 
 Everything we did is built on the CLC+ Backbone :
 [CLMS Data Viewer](https://land.copernicus.eu/en/map-viewer)
