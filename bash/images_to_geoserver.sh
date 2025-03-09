@@ -46,6 +46,11 @@ export MC_HOST_s3=
 /tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/LT028/2021/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/
 /tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/UKJ22/2021/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/
 /tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/UKRAINE/2021/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/MT001/2021/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/NL33C/2021/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/AT332/2021/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/PT16I/2021/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/SE311/2021/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/
 
 /tmp/mc rm /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/filename2bbox.parquet 
 /tmp/mc rm /opt/geoserver/data_dir/SENTINEL2/NUTS3/2021-new/metrics-normalization.yaml
@@ -76,6 +81,11 @@ export MC_HOST_s3=
 /tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/LT028/2018/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/
 /tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/UKJ22/2018/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/
 /tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/UKRAINE/2018/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/MT001/2018/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/NL33C/2018/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/AT332/2018/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/PT16I/2018/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/
+/tmp/mc cp -r s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/SE311/2018/250/ /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/
 
 /tmp/mc rm /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/filename2bbox.parquet 
 /tmp/mc rm /opt/geoserver/data_dir/SENTINEL2/NUTS3/2018-new/metrics-normalization.yaml
