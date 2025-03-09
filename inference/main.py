@@ -7,6 +7,7 @@ import time
 import geopandas as gpd
 import requests
 import s3fs
+from shapely.geometry import shape
 
 
 def save_geopackage_to_s3(gdf, s3_path, filesystem):
@@ -57,6 +58,8 @@ if __name__ == "__main__":
         secret=os.environ["AWS_SECRET_ACCESS_KEY"],
     )
     print(f"Start of the prediction of NUTS {nuts3}")
+    # nuts3="BE100"
+    # year="2024"
     url = "https://hackathon-ntts-2025.lab.sspcloud.fr/predict_nuts"
     response = requests.get(url, params={"nuts_id": nuts3, "year": year})
 
@@ -75,6 +78,14 @@ if __name__ == "__main__":
 
         df = gpd.GeoDataFrame(data)
 
+        df["geometry"] = df["coordinates"].apply(
+            lambda x: shape({"type": "Polygon", "coordinates": x})
+        )
+        gdf = gpd.GeoDataFrame(
+            df, geometry="geometry", crs="EPSG:3035"
+        )  # Ajuster le CRS si nécessaire
+
+        gdf = gdf.to_crs(4326)
         filepath_out = f"s3://projet-hackathon-ntts-2025/data-predictions/CLCplus-Backbone/SENTINEL2/{year}/250/predictions_{nuts3}.gpkg"
         save_geopackage_to_s3(df, filepath_out, fs)
 
