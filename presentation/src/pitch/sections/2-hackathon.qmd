@@ -1,18 +1,25 @@
 ## Land Use Change
 EU Regulation on the Inclusion of Greenhouse Gas emissions and Removals from Land Use, Land Use Change and Forestry (LULUCF)
 
-## Artificialisation
+We focus on artificialisation, defined here as a rise in imperviousness :
 "the disappearance of natural spaces under concrete or bitumen"
 
-## Corine Land Cover + is looking for use cases
-[](../src/pitch/img/looking_for_use_cases.png){width=75% fig-align="center"}
+Imperviousness negatively affects biodiversity, carbon storage and sequestration, soil hydrological properties, ecosystem services and nature conservation.
 
-## State of the art
-[Urban Atlas](https://land.copernicus.eu/en/products/urban-atlas#tab=overview)
-    ➡ Only for cities, last available data : 2018
+The European Commission’s roadmap to a resource efficient Europe introduced a *‘no net land take by 2050’* initiative
 
 [European Environment Agency](https://www.eionet.europa.eu/etcs/etc-di/products/etc-di-report-2024-3-analysis-of-usability-of-imperviousness-and-clc-backbone-data-for-mapping-sealed-areas)
-    ➡ last available data : 2018. Bias correction for long term series
 
-[High Resolution Layer Imperviousness](https://land.copernicus.eu/en/products/high-resolution-layer-imperviousness?tab=documentation)
-    ➡ last available data : 2018
+
+//## Corine Land Cover + is looking for use cases
+//[](../img/looking_for_use_cases.png){width=75% fig-align="center"}
+
+//## State of the art
+//[Urban Atlas](https://land.copernicus.eu/en/products/urban-atlas#tab=overview)
+//    ➡ Only for cities, last available data : 2018
+
+//[European Environment Agency](https://www.eionet.europa.eu/etcs/etc-di/products/etc-di-report-2024-3-analysis-of-usability-of-imperviousness-and-clc-backbone-data-for-mapping-sealed-areas)
+//    ➡ last available data : 2018. Bias correction for long term series
+
+//[High Resolution Layer Imperviousness](https://land.copernicus.eu/en/products/high-resolution-layer-imperviousness?tab=documentation)
+//    ➡ last available data : 2018
