@@ -3,7 +3,7 @@ title: Artificialisation with CLC+
 image: img/IA.jpg
 date: "2025-03-07"
 description: |
-  <b>Description :</b> test
+  <b>Description :</b> Slides for the EU Big Data Hackathon 2025 French Team
 author:  Damien Babet, Raya Berova, Clément Guillo
 slides:
   text: Slides
