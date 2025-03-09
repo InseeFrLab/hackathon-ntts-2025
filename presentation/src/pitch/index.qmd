@@ -1,7 +1,7 @@
 ---
 title: "Artificialization with CLC+"
 subtitle: |
-  **Clément Guillo, Raya Berova, Damien Babet**
+  **French NSI TEAM: Clément Guillo, Raya Berova, Damien Babet**
 date: "2025/03/10"
 date-format: "DD MMMM YYYY"
 slide-number: true
