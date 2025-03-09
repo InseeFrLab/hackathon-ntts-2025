@@ -1,6 +1,8 @@
 ## Segformer model
 
-We trained a segformer model on Sentinel-2 mosaics all 12 bands + NDVI and NDWI
+We trained a **segformer** model on Sentinel-2,
+- mosaic images of 250*250 pixels (resolution = 10m)
+- all 12 bands + NDVI and NDWI
 
 Xie, Enze, et al. "SegFormer: Simple and efficient design for semantic segmentation with transformers." Advances in neural information processing systems 34 (2021): 12077-12090.
 
