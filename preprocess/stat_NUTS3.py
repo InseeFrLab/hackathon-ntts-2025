@@ -158,3 +158,23 @@ lpath =f"indicateurs_departements.parquet"
 rpath =f"s3://projet-hackathon-ntts-2025/indicators/"
 
 fs.put(lpath,rpath)
+
+
+# test
+import os
+import s3fs
+fs = s3fs.S3FileSystem(
+    client_kwargs={"endpoint_url": f"https://{os.environ['AWS_S3_ENDPOINT']}"},
+    key=os.getenv("AWS_ACCESS_KEY_ID"),
+    secret=os.getenv("AWS_SECRET_ACCESS_KEY"),
+)
+
+# Remplacez par le chemin exact vers votre fichier .gpkg sur S3
+gpkg_s3_path = "projet-hackathon-ntts-2025/data-predictions/CLCplus-Backbone/SENTINEL2/2024/250/predictions_FRK26.gpkg"
+
+# Téléchargement local du GeoPackage depuis S3
+local_gpkg = "/tmp/predictions_FRK26.gpkg"
+with fs.open(gpkg_s3_path, "rb") as remote_file:
+    with open(local_gpkg, "wb") as f:
+        f.write(remote_file.read())
+
