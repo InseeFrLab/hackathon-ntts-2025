@@ -22,12 +22,17 @@ IOU all categories:         0.63
 
 Next step is confronting with ground truth data: LUCAS survey points
 
-## A good predictor is not enough
+## A quite good predictor is not enough
 - A predictor can be good but biased. Cross-entropy **is** biased when we use **weights**
 - Unbiased errors can translate to bias when measuring evolutions
 - Fundamentally, results depend on resolution, due to the fractal nature of artificialisation
 
-These problems might exist already for CLC+
+These problems might exist already at a smaller scale for CLC+
+
+## An exploration tool
++8% **is not** a reliable number
+
+But a fast trained prediction model is a good tool to explore !
 
 
 ## Our Background
