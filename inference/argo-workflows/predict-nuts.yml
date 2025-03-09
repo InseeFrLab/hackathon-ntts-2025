@@ -8,7 +8,7 @@ spec:
   arguments:
     parameters:
       - name: regions
-        value: '[{"nuts": "BE100", "year": 2024}, {"nuts": "BE251", "year": 2024}, {"nuts": "FRK26", "year": 2024}, {"nuts": "FRJ27", "year": 2024}, {"nuts": "HR050", "year": 2024}, {"nuts": "ITI32", "year": 2024}, {"nuts": "RO123", "year": 2024}, {"nuts": "FI1C1", "year": 2024}, {"nuts": "UKJ22", "year": 2024}, {"nuts": "UKRAINE", "year": 2024}, {"nuts": "UKRAINE", "year": 2021}, {"nuts": "UKRAINE", "year": 2018}, {"nuts": "UKJ22", "year": 2021}]'
+        value: '[{"nuts": "SE311", "year": 2024}, {"nuts": "PT16I", "year": 2024}, {"nuts": "AT332", "year": 2024}, {"nuts": "NL33C", "year": 2024}, {"nuts": "MT001", "year": 2024}, {"nuts": "LT028", "year": 2024}, {"nuts": "LV008", "year": 2024}, {"nuts": "EL521", "year": 2024}, {"nuts": "DK041", "year": 2024}, {"nuts": "CZ072", "year": 2024}, {"nuts": "DEA54", "year": 2024}, {"nuts": "SK022", "year": 2024}, {"nuts": "BG322", "year": 2024}, {"nuts": "SI035", "year": 2024}, {"nuts": "EE00A", "year": 2024}, {"nuts": "IE061", "year": 2024}, {"nuts": "CY000", "year": 2024}, {"nuts": "LU000", "year": 2024}, {"nuts": "ES612", "year": 2024}, {"nuts": "PL414", "year": 2024}, {"nuts": "BE100", "year": 2024}, {"nuts": "BE251", "year": 2024}, {"nuts": "FRK26", "year": 2024}, {"nuts": "FRJ27", "year": 2024}, {"nuts": "HR050", "year": 2024}, {"nuts": "ITI32", "year": 2024}, {"nuts": "RO123", "year": 2024}, {"nuts": "FI1C1", "year": 2024}, {"nuts": "UKJ22", "year": 2024}, {"nuts": "UKRAINE", "year": 2024}, {"nuts": "UKRAINE", "year": 2021}, {"nuts": "UKRAINE", "year": 2018}, {"nuts": "UKJ22", "year": 2021}]'
 
   templates:
     - name: main

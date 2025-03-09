@@ -1,8 +1,8 @@
 ---
 title: "Artificialization with CLC+"
 subtitle: |
-  **Clément Guillo, Raya Berova, Thomas Faria, Damien Babet**
-date: "2025/03/07"
+  **Clément Guillo, Raya Berova, Damien Babet**
+date: "2025/03/10"
 date-format: "DD MMMM YYYY"
 slide-number: true
 lang: fr-FR
@@ -18,37 +18,22 @@ ascii: true
 ---
 
 
-# Sections
+# 1️ ONE number
 
-1️⃣ Introduction 
+{{< include sections/1-hackathon.qmd >}}
 
-2️⃣ Problem statement: artificialization at granular level 
+# 2️⃣ One RELEVANT number !
 
-3️⃣ Product: CLC Delta
+{{< include sections/2-hackathon.qmd >}}
 
-4️⃣ Demo
+# 3️⃣ The INNOVATION behind the relevant number
 
-5️⃣ Next steps: BBB!
+{{< include sections/3-hackathon.qmd >}}
 
+# 4️⃣ The REPLICABILITY of the innovation behind the relevant number
 
+{{< include sections/4-hackathon.qmd >}}
 
-# 1️⃣ Introduction
+# 5️⃣ One RIGOROUS number ?
 
-{{< include sections/1-hackathon-introduction.qmd >}}
-
-
-# 2️⃣ Problem statement: artificialization at granular level
-
-{{< include sections/2-hackathon-problem-statement.qmd >}}
-
-# 3️⃣ Product: CLC Delta
-
-{{< include sections/3-hackathon-product.qmd >}}
-
-# 4️⃣ Demo
-
-{{< include sections/4-hackathon-demo.qmd >}}
-
-# 5️⃣ Next steps: BBB!
-
-{{< include sections/5-hackathon-next-steps.qmd >}}
+{{< include sections/5-hackathon.qmd >}}

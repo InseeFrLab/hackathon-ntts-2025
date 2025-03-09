@@ -1,12 +1,11 @@
 import argparse
-import io
 import json
-import os
 import time
 
 import geopandas as gpd
 import requests
-import s3fs
+from shapely.geometry import shape
+from utils import get_system_file, save_geopackage_to_s3
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Raster tiling pipeline")
@@ -19,12 +18,11 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    fs = s3fs.S3FileSystem(
-        client_kwargs={"endpoint_url": "https://" + "minio.lab.sspcloud.fr"},
-        key=os.environ["AWS_ACCESS_KEY_ID"],
-        secret=os.environ["AWS_SECRET_ACCESS_KEY"],
-    )
+    fs = get_system_file()
+
     print(f"Start of the prediction of NUTS {nuts3}")
+    # nuts3="BE100"
+    # year="2024"
     url = "https://hackathon-ntts-2025.lab.sspcloud.fr/predict_nuts"
     response = requests.get(url, params={"nuts_id": nuts3, "year": year})
 
@@ -42,12 +40,18 @@ if __name__ == "__main__":
             data.append({"id": feature_id, "label": label, "coordinates": coordinates})
 
         df = gpd.GeoDataFrame(data)
-        buffer = io.BytesIO()
-        df.to_file(buffer, driver="GPKG")
+
+        df["geometry"] = df["coordinates"].apply(
+            lambda x: shape({"type": "Polygon", "coordinates": x})
+        )
+        gdf = gpd.GeoDataFrame(df, geometry="geometry", crs="EPSG:3035")
+
+        gdf = gdf.set_crs("EPSG:3035", allow_override=True)
+
+        gdf = gdf.drop(columns=["coordinates", "id"])
 
         filepath_out = f"s3://projet-hackathon-ntts-2025/data-predictions/CLCplus-Backbone/SENTINEL2/{year}/250/predictions_{nuts3}.gpkg"
-        with fs.open(filepath_out, "wb") as f:
-            f.write(buffer.getvalue())
+        save_geopackage_to_s3(gdf, filepath_out, fs)
 
         end_time = time.time() - start_time
         print(f"{nuts3} predicted in {round(end_time/60)} min and registered here {filepath_out}")

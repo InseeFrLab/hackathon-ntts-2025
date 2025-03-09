@@ -1,7 +1,0 @@
-## TEAM 17
-We are TEAM 17
-From France !
-
-## Our Background
-Satellite tracking of slum changes in French oversea territories, for a better census
-[**With a dashboard!**](https://inseefrlab.github.io/satellite-images-webapp/)
