@@ -1,12 +1,12 @@
 ---
 title: Application web
-image: img/toad_cratt.jpeg
+image: img/tiny_flea.jpg
 date: last-modified
 description: |
-  <b>Description :</b> Application web à destination des agents facilitant l'utilisation des résultats fournis par le modèle de segmentation.
+  <b>Description :</b> Dashboard to display land cover statistics at the NUTS3 level from CLC+ data and prediction model
 slides:
-  text: CraTT
-  url: https://inseefrlab.github.io/satellite-images-webapp/
+  text: CLC+ Delta
+  url: https://clement2323.github.io/webapphackathon2025/
 order: 2
 lang: fr-FR
 ---
