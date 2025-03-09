@@ -43,6 +43,28 @@ df_2021 = get_nuts_proportion_classe("2021", fs)
 df_2024 = get_nuts_proportion_classe("2024", fs)
 
 
+df_2018.to_parquet("prop_2018.parquet", engine="pyarrow", index=False)
+df_2021.to_parquet("prop_2021.parquet", engine="pyarrow", index=False)
+df_2024.to_parquet("prop_2024.parquet", engine="pyarrow", index=False)
+
+lpath =f"prop_2018.parquet"
+rpath =f"s3://projet-hackathon-ntts-2025/indicators/"
+fs.put(lpath,rpath)
+
+
+lpath =f"prop_2021.parquet"
+rpath =f"s3://projet-hackathon-ntts-2025/indicators/"
+fs.put(lpath,rpath)
+
+
+lpath =f"prop_2024.parquet"
+rpath =f"s3://projet-hackathon-ntts-2025/indicators/"
+fs.put(lpath,rpath)
+
+
+
+
+
 # Renommer la colonne 'proportion_classe_1' en 'artificial_ratio_2021'
 df_2018.rename(columns={'proportion_classe_1': 'artificial_ratio_2018'}, inplace=True)
 df_2018=df_2018[["nuts_id","artificial_ratio_2018"]]
