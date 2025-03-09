@@ -18,4 +18,4 @@ Everything we did is built on the CLC+ Backbone :
 [CLMS Data Viewer](https://land.copernicus.eu/en/map-viewer)
 
 ## CLC+ is looking for use cases
-[](../pitch/img/looking_for_use_cases.png){width=75% fig-align="center"}
+[](../img/looking_for_use_cases.png){width=75% fig-align="center"}
