@@ -1,45 +1,52 @@
 [
   {
-    "objectID": "src/pitch/index.html#team-17",
-    "href": "src/pitch/index.html#team-17",
+    "objectID": "src/pitch/index.html#one-number-1",
+    "href": "src/pitch/index.html#one-number-1",
     "title": "Artificialization with CLC+",
-    "section": "TEAM 17",
-    "text": "TEAM 17\nWe are TEAM 17 From France !"
+    "section": "One number",
+    "text": "One number"
   },
   {
-    "objectID": "src/pitch/index.html#our-background",
-    "href": "src/pitch/index.html#our-background",
+    "objectID": "src/pitch/index.html#one-number-2",
+    "href": "src/pitch/index.html#one-number-2",
     "title": "Artificialization with CLC+",
-    "section": "Our Background",
-    "text": "Our Background\nSatellite tracking of slum changes in French oversea territories, for a better census With a dashboard!"
+    "section": "One number",
+    "text": "One number\n\n+3%"
+  },
+  {
+    "objectID": "src/pitch/index.html#one-number-3",
+    "href": "src/pitch/index.html#one-number-3",
+    "title": "Artificialization with CLC+",
+    "section": "One number",
+    "text": "One number\n\n+3% The growth or urbanized area in East Sussex, United Kingdom, between 2018 and 2024"
+  },
+  {
+    "objectID": "src/pitch/index.html#one-number-4",
+    "href": "src/pitch/index.html#one-number-4",
+    "title": "Artificialization with CLC+",
+    "section": "One number",
+    "text": "One number\nLet’s have a look\nhttps://inseefrlab.github.io/hackathon-ntts-2025-webapp/"
   },
   {
     "objectID": "src/pitch/index.html#land-use-change",
     "href": "src/pitch/index.html#land-use-change",
     "title": "Artificialization with CLC+",
     "section": "Land Use Change",
-    "text": "Land Use Change\nEU Regulation on the Inclusion of Greenhouse Gas emissions and Removals from Land Use, Land Use Change and Forestry (LULUCF)"
+    "text": "Land Use Change\n[EU Regulation on the Inclusion of Greenhouse Gas emissions and Removals from Land Use, Land Use Change and Forestry (LULUCF)]\nWe focus on artificialisation, defined here as a rise in imperviousness : “the disappearance of natural spaces under concrete or bitumen”\nImperviousness negatively affects biodiversity, carbon storage and sequestration, soil hydrological properties, ecosystem services and nature conservation.\nThe European Commission’s roadmap to a resource efficient Europe introduced a [‘no net land take by 2050’* initiative]\nEuropean Environment Agency"
   },
   {
-    "objectID": "src/pitch/index.html#artificialisation",
-    "href": "src/pitch/index.html#artificialisation",
+    "objectID": "src/pitch/index.html#clc-backbone",
+    "href": "src/pitch/index.html#clc-backbone",
     "title": "Artificialization with CLC+",
-    "section": "Artificialisation",
-    "text": "Artificialisation\n“the disappearance of natural spaces under concrete or bitumen”"
+    "section": "CLC+ Backbone",
+    "text": "CLC+ Backbone\nLand cover and land use: an important topic with [a lot] of work. The most recent and performant is the Corine Land Cover Plus (CLC+) Backbone\nEverything we did is built on the CLC+ Backbone : CLMS Data Viewer"
   },
   {
-    "objectID": "src/pitch/index.html#corine-land-cover-is-looking-for-use-cases",
-    "href": "src/pitch/index.html#corine-land-cover-is-looking-for-use-cases",
+    "objectID": "src/pitch/index.html#clc-is-looking-for-use-cases",
+    "href": "src/pitch/index.html#clc-is-looking-for-use-cases",
     "title": "Artificialization with CLC+",
-    "section": "Corine Land Cover + is looking for use cases",
-    "text": "Corine Land Cover + is looking for use cases"
-  },
-  {
-    "objectID": "src/pitch/index.html#state-of-the-art",
-    "href": "src/pitch/index.html#state-of-the-art",
-    "title": "Artificialization with CLC+",
-    "section": "State of the art",
-    "text": "State of the art\nUrban Atlas ➡ Only for cities, last available data : 2018\nEuropean Environment Agency ➡ last available data : 2018. Bias correction for long term series\nHigh Resolution Layer Imperviousness ➡ last available data : 2018"
+    "section": "CLC+ is looking for use cases",
+    "text": "CLC+ is looking for use cases"
   },
   {
     "objectID": "src/pitch/index.html#clc-delta",
@@ -75,6 +82,20 @@
     "title": "Artificialization with CLC+",
     "section": "Next steps : BBB!",
     "text": "Next steps : BBB!\nBring back Britain… land cover mapping"
+  },
+  {
+    "objectID": "src/pitch/index.html#our-background",
+    "href": "src/pitch/index.html#our-background",
+    "title": "Artificialization with CLC+",
+    "section": "Our Background",
+    "text": "Our Background\nSatellite tracking of slum changes in French oversea territories, for a better census With a dashboard!"
+  },
+  {
+    "objectID": "src/pitch/index.html#luc-state-of-the-art",
+    "href": "src/pitch/index.html#luc-state-of-the-art",
+    "title": "Artificialization with CLC+",
+    "section": "LU/C State of the art",
+    "text": "LU/C State of the art\nUrban Atlas ➡ Only for cities, last available data : 2018\nEuropean Environment Agency ➡ last available data : 2018. Bias correction for long term series\nHigh Resolution Layer Imperviousness ➡ last available data : 2018"
   },
   {
     "objectID": "index.html",
