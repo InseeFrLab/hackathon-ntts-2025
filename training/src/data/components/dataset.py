@@ -67,6 +67,8 @@ class SegmentationDataset(Dataset):
             )
 
             label = np.load(self.labels[idx])
+            # Temp
+            label[(label > 12) | (label < 0)] = 0 # Replace labels >12 or <0 with 0
 
         # Transforms
         sample = self.transform(image=np.transpose(si.array, [1, 2, 0]), mask=label)
