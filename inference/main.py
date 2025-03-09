@@ -1,45 +1,11 @@
 import argparse
 import json
-import os
-import tempfile
 import time
 
 import geopandas as gpd
 import requests
-import s3fs
 from shapely.geometry import shape
-
-
-def save_geopackage_to_s3(gdf, s3_path, filesystem):
-    """
-    Save a GeoDataFrame as a GeoPackage to S3.
-
-    Parameters:
-    -----------
-    gdf : geopandas.GeoDataFrame
-        The GeoDataFrame to save
-    s3_path : str
-        The S3 path where to save the file (including .gpkg extension)
-    filesystem : s3fs.S3FileSystem
-        Initialized S3 filesystem object
-    """
-    # Create a temporary file
-    with tempfile.NamedTemporaryFile(suffix=".gpkg", delete=False) as tmp_file:
-        temp_path = tmp_file.name
-
-    try:
-        # Save to temporary file
-        gdf.to_file(temp_path, driver="GPKG")
-
-        # Upload to S3
-        with open(temp_path, "rb") as file:
-            with filesystem.open(s3_path, "wb") as s3_file:
-                s3_file.write(file.read())
-    finally:
-        # Clean up temporary file
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
-
+from utils import get_system_file, save_geopackage_to_s3
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Raster tiling pipeline")
@@ -52,11 +18,8 @@ if __name__ == "__main__":
 
     start_time = time.time()
 
-    fs = s3fs.S3FileSystem(
-        client_kwargs={"endpoint_url": "https://" + "minio.lab.sspcloud.fr"},
-        key=os.environ["AWS_ACCESS_KEY_ID"],
-        secret=os.environ["AWS_SECRET_ACCESS_KEY"],
-    )
+    fs = get_system_file()
+
     print(f"Start of the prediction of NUTS {nuts3}")
     # nuts3="BE100"
     # year="2024"
