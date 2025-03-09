@@ -34,6 +34,6 @@ ascii: true
 
 {{< include sections/4-hackathon.qmd >}}
 
-# 5️⃣ One RIGOROUS number
+# 5️⃣ One RIGOROUS number ?
 
 {{< include sections/5-hackathon.qmd >}}
