@@ -39,7 +39,7 @@
     "href": "src/pitch/index.html#clc-backbone",
     "title": "Artificialization with CLC+",
     "section": "CLC+ Backbone",
-    "text": "CLC+ Backbone\nLand cover and land use: an important topic with a lot of work. The most recent and performant is the Corine Land Cover Plus (CLC+) Backbone\nEverything we did is built on the CLC+ Backbone : CLMS Data Viewer\n\\## CLC+ is looking for use cases \\"
+    "text": "CLC+ Backbone\nLand cover and land use: an important topic with a lot of work done.\nThe most recent and accurate datasets are the Corine Land Cover Plus (CLC+) Backbone\nEverything we did is built on the CLC+ Backbone : CLMS Data Viewer\n\\## CLC+ is looking for use cases \\"
   },
   {
     "objectID": "src/pitch/index.html#segformer-model",
@@ -67,21 +67,21 @@
     "href": "src/pitch/index.html#are-the-results-reliable",
     "title": "Artificialization with CLC+",
     "section": "Are the results reliable ?",
-    "text": "Are the results reliable ?\nSannier, Christophe, et al. “Harmonized Pan-European Time Series for Monitoring Soil Sealing.” Land 13.7 (2024): 1087. Link"
+    "text": "Are the results reliable ?\nCorrectly estimating land cover area is a hard problem\nSannier, Christophe, et al. “Harmonized Pan-European Time Series for Monitoring Soil Sealing.” Land 13.7 (2024): 1087. Link\nOlofsson, Pontus, et al. “Good practices for estimating area and assessing accuracy of land change.” Remote sensing of Environment 148 (2014): 42-57. Link (.pdf)"
   },
   {
-    "objectID": "src/pitch/index.html#next-steps-bbb",
-    "href": "src/pitch/index.html#next-steps-bbb",
+    "objectID": "src/pitch/index.html#model-performance",
+    "href": "src/pitch/index.html#model-performance",
     "title": "Artificialization with CLC+",
-    "section": "Next steps : BBB!",
-    "text": "Next steps : BBB!\nBring back Britain…"
+    "section": "Model performance",
+    "text": "Model performance\nWe assess the model predictive performance relative to the CLC+ reference\nWe use cross-entropy loss with or without weights\nand track intersection over union (IOU) for the \"1: sealed\" CLC+ category\nTest sample metrics: IOU “1/ sealed” category: 0.34 IOU all categories: 0.57\nNext step is confronting with ground truth data: LUCAS survey points"
   },
   {
-    "objectID": "src/pitch/index.html#next-steps-bbb-1",
-    "href": "src/pitch/index.html#next-steps-bbb-1",
+    "objectID": "src/pitch/index.html#a-good-predictor-is-not-enough",
+    "href": "src/pitch/index.html#a-good-predictor-is-not-enough",
     "title": "Artificialization with CLC+",
-    "section": "Next steps : BBB!",
-    "text": "Next steps : BBB!\nBring back Britain… land cover mapping"
+    "section": "A good predictor is not enough",
+    "text": "A good predictor is not enough\n\nA predictor can be good but biased. Cross-entropy is biased when we use weights\nUnbiased errors can translate to bias when measuring evolutions\nFundamentally, results depend on resolution, due to the fractal nature of artificialisation\n\nThese problems might exist already for CLC+"
   },
   {
     "objectID": "src/pitch/index.html#our-background",
@@ -91,11 +91,18 @@
     "text": "Our Background\nSatellite tracking of slum changes in French oversea territories, for a better census With a dashboard!"
   },
   {
-    "objectID": "src/pitch/index.html#luc-state-of-the-art",
-    "href": "src/pitch/index.html#luc-state-of-the-art",
+    "objectID": "src/pitch/index.html#other-luc-and-imperviousness-sources",
+    "href": "src/pitch/index.html#other-luc-and-imperviousness-sources",
     "title": "Artificialization with CLC+",
-    "section": "LU/C State of the art",
-    "text": "LU/C State of the art\nUrban Atlas ➡ Only for cities, last available data : 2018\nEuropean Environment Agency ➡ last available data : 2018. Bias correction for long term series\nHigh Resolution Layer Imperviousness ➡ last available data : 2018"
+    "section": "Other LU/C and imperviousness Sources",
+    "text": "Other LU/C and imperviousness Sources\nUrban Atlas ➡ Only for cities, last available data : 2018\nEuropean Environment Agency ➡ last available data : 2018. Bias correction for long term series\nHigh Resolution Layer Imperviousness ➡ last available data : 2018"
+  },
+  {
+    "objectID": "src/pitch/index.html#references",
+    "href": "src/pitch/index.html#references",
+    "title": "Artificialization with CLC+",
+    "section": "References",
+    "text": "References\nBeyond the Modifiable Areal Unit Problem, François Sémécurbe\nSannier, Christophe, et al. “Harmonized Pan-European Time Series for Monitoring Soil Sealing.” Land 13.7 (2024): 1087. Link\nOlofsson, Pontus, et al. “Good practices for estimating area and assessing accuracy of land change.” Remote sensing of Environment 148 (2014): 42-57. Link (.pdf)"
   },
   {
     "objectID": "index.html",
