@@ -1,21 +1,40 @@
 ## Are the results reliable ?
 
-
+Correctly estimating land cover area is a **hard problem**
 
 Sannier, Christophe, et al. "Harmonized Pan-European Time Series for Monitoring Soil Sealing." Land 13.7 (2024): 1087.
 [Link](https://www.mdpi.com/2073-445X/13/7/1087)
 
-## Next steps : BBB!
-Bring back Britain...
+Olofsson, Pontus, et al. "Good practices for estimating area and assessing accuracy of land change." Remote sensing of Environment 148 (2014): 42-57.
+[Link (.pdf)](https://elearning.unipd.it/scuolaamv/pluginfile.php/175898/mod_resource/content/0/articolo_oloffson.pdf)
 
-## Next steps : BBB!
-Bring back Britain... land cover mapping
+## Model performance
+
+We assess the model predictive performance relative to the CLC+ reference 
+
+We use cross-entropy loss with or without weights
+
+    and track intersection over union (IOU) for the "1: sealed" CLC+ category
+
+Test sample metrics:
+IOU "1/ sealed" category:   0.34
+IOU all categories:         0.57
+
+Next step is confronting with ground truth data: LUCAS survey points
+
+## A good predictor is not enough
+- A predictor can be good but biased. Cross-entropy **is** biased when we use **weights**
+- Unbiased errors can translate to bias when measuring evolutions
+- Fundamentally, results depend on resolution, due to the fractal nature of artificialisation
+
+These problems might exist already for CLC+
+
 
 ## Our Background
 Satellite tracking of slum changes in French oversea territories, for a better census
 [**With a dashboard!**](https://inseefrlab.github.io/satellite-images-webapp/)
 
-## LU/C State of the art
+## Other LU/C and imperviousness Sources
 [Urban Atlas](https://land.copernicus.eu/en/products/urban-atlas#tab=overview)
     ➡ Only for cities, last available data : 2018
 
@@ -24,3 +43,12 @@ Satellite tracking of slum changes in French oversea territories, for a better c
 
 [High Resolution Layer Imperviousness](https://land.copernicus.eu/en/products/high-resolution-layer-imperviousness?tab=documentation)
     ➡ last available data : 2018
+
+## References
+[Beyond the Modifiable Areal Unit Problem, François Sémécurbe](https://fsemecurbe.github.io/fractal-for-geographers/)
+
+Sannier, Christophe, et al. "Harmonized Pan-European Time Series for Monitoring Soil Sealing." Land 13.7 (2024): 1087.
+[Link](https://www.mdpi.com/2073-445X/13/7/1087)
+
+Olofsson, Pontus, et al. "Good practices for estimating area and assessing accuracy of land change." Remote sensing of Environment 148 (2014): 42-57.
+[Link (.pdf)](https://elearning.unipd.it/scuolaamv/pluginfile.php/175898/mod_resource/content/0/articolo_oloffson.pdf)
