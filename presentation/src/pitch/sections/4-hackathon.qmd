@@ -1,6 +1,6 @@
-## You can do this at home
-- Use the webapp
-- Access our layers on geoserver
-- Predict on new Sentinel-2 images with the API
-- Download the model  on hugging face to retrain and play
+## You CAN do this at home
+- Use the [webapp](presentation/src/pitch/img/looking_for_use_cases.png)
+- Access our layers on [geoserver] ()
+- Predict on new Sentinel-2 images with the [API]() 
+- Download the model on hugging face to retrain and play 
 - Use our complete stack on any Kubernetes cluster
