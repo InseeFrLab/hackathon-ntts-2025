@@ -4,6 +4,7 @@ import tempfile
 import geopandas as gpd
 import pandas as pd
 import s3fs
+from tqdm import tqdm
 
 
 def get_system_file():
@@ -54,7 +55,7 @@ def concatenate_gpkg(year: int):
     gpkg_filepaths = [fp for fp in fs.ls(s3_dir) if fp.endswith(".gpkg")]
 
     gdf_list = []
-    for filepath in gpkg_filepaths:
+    for filepath in tqdm(gpkg_filepaths):
         with fs.open(filepath, "rb") as f:
             mini_gdf = gpd.read_file(f, driver="GPKG")
         gdf_list.append(mini_gdf)
