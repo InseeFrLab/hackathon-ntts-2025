@@ -17,21 +17,26 @@ We use cross-entropy loss with or without weights
 and track intersection over union (IOU) for the "1: sealed" CLC+ category
 
 Test sample metrics:
-IOU "1/ sealed" category:   0.34
-IOU all categories:         0.57
+IOU "1/ sealed" category:   0.46
+IOU all categories:         0.63
 
 Next step is confronting with ground truth data: LUCAS survey points
 
-## A good predictor is not enough
+## A quite good predictor is not enough
 - A predictor can be good but biased. Cross-entropy **is** biased when we use **weights**
 - Unbiased errors can translate to bias when measuring evolutions
 - Fundamentally, results depend on resolution, due to the fractal nature of artificialisation
 
-These problems might exist already for CLC+
+These problems might exist already at a smaller scale for CLC+
+
+## An exploration tool
++8% **is not** a reliable number
+
+But a fast trained prediction model is a good tool to explore !
 
 
 ## Our Background
-Satellite tracking of slum changes in French oversea territories, for a better census
+Satellite tracking of settlements changes in French oversea territories, for a better census
 [**With a dashboard!**](https://inseefrlab.github.io/satellite-images-webapp/)
 
 ## Other LU/C and imperviousness Sources
@@ -45,10 +50,20 @@ Satellite tracking of slum changes in French oversea territories, for a better c
     ➡ last available data : 2018
 
 ## References
-[Beyond the Modifiable Areal Unit Problem, François Sémécurbe](https://fsemecurbe.github.io/fractal-for-geographers/)
+    [Beyond the Modifiable Areal Unit Problem, François Sémécurbe](https://fsemecurbe.github.io/fractal-for-geographers/)
 
-Sannier, Christophe, et al. "Harmonized Pan-European Time Series for Monitoring Soil Sealing." Land 13.7 (2024): 1087.
-[Link](https://www.mdpi.com/2073-445X/13/7/1087)
+    Sannier, Christophe, et al. "Harmonized Pan-European Time Series for Monitoring Soil Sealing." Land 13.7 (2024): 1087.
+    [Link](https://www.mdpi.com/2073-445X/13/7/1087)
 
-Olofsson, Pontus, et al. "Good practices for estimating area and assessing accuracy of land change." Remote sensing of Environment 148 (2014): 42-57.
-[Link (.pdf)](https://elearning.unipd.it/scuolaamv/pluginfile.php/175898/mod_resource/content/0/articolo_oloffson.pdf)
+    Olofsson, Pontus, et al. "Good practices for estimating area and assessing accuracy of land change." Remote sensing of Environment 148 (2014): 42-57.
+    [Link (.pdf)](https://elearning.unipd.it/scuolaamv/pluginfile.php/175898/mod_resource/content/0/articolo_oloffson.pdf)
+
+    Xie, Enze, et al. "SegFormer: Simple and efficient design for semantic segmentation with transformers." Advances in neural information processing systems 34 (2021): 12077-12090.
+
+    - Gergely Maucha (Lechner Ltd.), Éva Kerékgyártó (Lechner Ltd.), Viktória Turos (Lechner Ltd.), Christophe Sannier (GAF), Jaroslav Dufek (GISAT), Tomas Soukup (GISAT), Eva Ivits (EEA), Analysis of usability of Imperviousness and CLC+ Backbone data for mapping sealed areas, ETC DI Report 2024/3, 13 Jun 2024
+    [Link](https://www.eionet.europa.eu/etcs/etc-di/products/etc-di-report-2024-3-analysis-of-usability-of-imperviousness-and-clc-backbone-data-for-mapping-sealed-areas)
+    - Pelletier, Charlotte, Geoffrey I. Webb, and François Petitjean. "Temporal convolutional neural network for the classification of satellite image time series." Remote Sensing 11.5 (2019): 523
+    [Link](https://www.mdpi.com/2072-4292/11/5/523)
+    [Repo](https://github.com/charlotte-pel/temporalCNN)
+    Product user manual – CLCplus Backbone 2021 Publication date: 12.06.2024  Version: 1.2
+    [Link](https://land.copernicus.eu/en/products/clc-backbone?tab=documentation)

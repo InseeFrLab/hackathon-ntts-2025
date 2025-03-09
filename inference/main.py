@@ -8,9 +8,9 @@ from shapely.geometry import shape
 from utils import get_system_file, save_geopackage_to_s3
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Raster tiling pipeline")
+    parser = argparse.ArgumentParser(description="Predict nuts pipeline")
     parser.add_argument("--nuts3", type=str, required=True, help="NUTS3 (e.g., 'BE100')")
-    parser.add_argument("--year", type=int, required=True, help="startDate (e.g., 2024)")
+    parser.add_argument("--year", type=int, required=True, help="year (e.g., 2024)")
     args = parser.parse_args()
 
     nuts3 = args.nuts3

@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: concatene-nuts-
+spec:
+  serviceAccountName: workflow
+  entrypoint: main
+  arguments:
+    parameters:
+      - name: regions
+        value: '[{"year": 2018}]'
+
+  templates:
+    - name: main
+      dag:
+        tasks:
+          - name: run-concatene
+            template: run-concatene-task
+            arguments:
+              parameters:
+                - name: year
+                  value: "{{item.year}}"
+            withParam: "{{workflow.parameters.regions}}"
+
+    - name: run-concatene-task
+      inputs:
+        parameters:
+          - name: year
+      container:
+        image:  rayaberova/hackathon-ntts-2025:main
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/bash", "-c"]
+        args: [
+           "git clone https://github.com/InseeFrLab/hackathon-ntts-2025.git &&
+           cd /api/hackathon-ntts-2025/inference/ &&
+           python main_concatene.py --year {{inputs.parameters.year}}"
+        ]
+        env:
+          - name: PROJ_LIB
+            value: /opt/conda/share/proj
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: mc-s3
+                key: accessKey
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: mc-s3
+                key: secretKey
+          - name: AWS_DEFAULT_REGION
+            value: us-east-1
+          - name: AWS_S3_ENDPOINT
+            value: minio.lab.sspcloud.fr
