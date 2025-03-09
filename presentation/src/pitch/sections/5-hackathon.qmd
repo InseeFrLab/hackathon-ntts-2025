@@ -14,7 +14,7 @@ We assess the model predictive performance relative to the CLC+ reference
 
 We use cross-entropy loss with or without weights
 
-    and track intersection over union (IOU) for the "1: sealed" CLC+ category
+and track intersection over union (IOU) for the "1: sealed" CLC+ category
 
 Test sample metrics:
 IOU "1/ sealed" category:   0.34
