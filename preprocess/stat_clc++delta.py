@@ -64,3 +64,26 @@ df_pivot.columns = [f"artificial_ratio_{year}" for year in df_pivot.columns]
 
 # Reset index for readability
 df_pivot.reset_index(inplace=True)
+
+# Construct full S3 path
+path_name_nuts="projet-hackathon-ntts-2025/indicators/NUTS2021.xlsx"
+
+# Open the file using s3fs and read it with pandas
+with fs.open(path_name_nuts, "rb") as f:
+    df_label = pd.read_excel(f,1)
+
+# Ensure column names are correct and standardized for merging
+df_label.rename(columns={"Code 2021": "NUTS3","NUTS level 3": "name"}, inplace=True)
+# Merge df_indicators with df_label on NUTS3
+data = df_pivot.merge(df_label[["NUTS3","name"]], on="NUTS3", how="left")
+
+data["artificial_ratio_evolution"]=np.round(100*(data["artificial_ratio_2021"]-data["artificial_ratio_2018"])/data["artificial_ratio_2018"],1)
+
+data = data[["NUTS3","name","artificial_ratio_2018","artificial_ratio_2021","artificial_ratio_evolution"]]
+
+data.to_parquet("indic_clc+.parquet", engine="pyarrow", index=False)
+
+lpath =f"indic_clc+.parquet"
+rpath =f"s3://projet-hackathon-ntts-2025/indicators/"
+
+fs.put(lpath,rpath)
