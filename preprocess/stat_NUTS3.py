@@ -25,14 +25,13 @@ fs = s3fs.S3FileSystem(
 picture_dir = "projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/"
 label_dir = "projet-hackathon-ntts-2025/data-preprocessed/labels/CLCplus-Backbone/SENTINEL2/"
 
-NUTS3S = ["BG322", "CY000", "CZ072", "DEA54", "EE00A", "EL521", "ES612", "FI1C1", "BE100", "BE251", "FRJ27", "FRK26"]
-
+NUTS3S = ["BG322", "CY000", "CZ072", "DEA54", "EE00A", "EL521", "ES612", "FI1C1", "BE100", "BE251", "FRJ27", "FRK26","UKJ22"]
+NUTS3S=["UKJ22"]
 results=[]
 
 for NUTS3 in NUTS3S:
-    #NUTS3 = "DK041"
+    #NUTS3 = "BE100"
     print(NUTS3)
-
     list_labels_2018= fs.ls(f"{label_dir}{NUTS3}/{2018}/250")
     list_labels_2021= fs.ls(f"{label_dir}{NUTS3}/{2021}/250")
     list_patchs_2018 = fs.ls(f"{picture_dir}{NUTS3}/{2018}/250")
@@ -115,7 +114,7 @@ df_results["NDVI-"] = df_results["NDVI-"] * pixel_to_m2
 df_results["NDVI_net"] = df_results["NDVI_net"] * pixel_to_m2
 
 # Réorganiser les colonnes
-df_results = df_results[["NUTS3", "artificial_2021"
+df_results = df_results[["NUTS3", "artificial_2021",
                          "artificial+", "artificial-", "artificial_net",
                          "NDVI+", "NDVI-", "NDVI_net"]]
 
