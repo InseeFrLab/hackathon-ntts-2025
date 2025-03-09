@@ -3,7 +3,7 @@ title: Application web
 image: img/tiny_flea.jpg
 date: last-modified
 description: |
-  <b>Description :</b> Dashboard to display land cover statistics at the NUTS3 level from CLC+ data and prediction model
+  <b>Description :</b> A dashboard to display land cover statistics at the NUTS3 level from CLC+ data and prediction model
 slides:
   text: CLC+ Delta
   url: https://clement2323.github.io/webapphackathon2025/

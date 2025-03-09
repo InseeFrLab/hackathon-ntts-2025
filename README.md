@@ -4,8 +4,8 @@
 
 ## Getting started
 
-## Artificialisation
-We focus on artificialisation (or the closely linked imperviousness).
+## Artificialization
+We focus on artificialization (or the closely linked imperviousness).
 
 
 ## CLC+ and beyond
