@@ -31,7 +31,7 @@ These problems might exist already for CLC+
 
 
 ## Our Background
-Satellite tracking of slum changes in French oversea territories, for a better census
+Satellite tracking of settlements changes in French oversea territories, for a better census
 [**With a dashboard!**](https://inseefrlab.github.io/satellite-images-webapp/)
 
 ## Other LU/C and imperviousness Sources
