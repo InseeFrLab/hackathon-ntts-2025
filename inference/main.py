@@ -88,7 +88,7 @@ if __name__ == "__main__":
         gdf = gdf.drop(columns=["coordinates", "id"])
 
         filepath_out = f"s3://projet-hackathon-ntts-2025/data-predictions/CLCplus-Backbone/SENTINEL2/{year}/250/predictions_{nuts3}.gpkg"
-        save_geopackage_to_s3(df, filepath_out, fs)
+        save_geopackage_to_s3(gdf, filepath_out, fs)
 
         end_time = time.time() - start_time
         print(f"{nuts3} predicted in {round(end_time/60)} min and registered here {filepath_out}")
