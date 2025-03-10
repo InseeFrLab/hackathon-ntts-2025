@@ -6,7 +6,7 @@ description: |
   <b>Description :</b> A dashboard to display land cover statistics at the NUTS3 level from CLC+ data and prediction model
 slides:
   text: CLC+ Delta
-  url: https://clement2323.github.io/webapphackathon2025/
+  url: https://inseefrlab.github.io/hackathon-ntts-2025-webapp/
 order: 2
 lang: fr-FR
 ---
