@@ -1,5 +1,5 @@
 ## You CAN do this at home
-- Use the [webapp](presentation/src/pitch/img/looking_for_use_cases.png)
+- Use the [webapp](https://inseefrlab.github.io/hackathon-ntts-2025-webapp/)
 - Access our layers on [geoserver](https://geoserver-hachathon2025.lab.sspcloud.fr/geoserver)
 - Predict on new Sentinel-2 images with the [API](https://hackathon-ntts-2025.lab.sspcloud.fr/docs) 
 - Download the model on [Hugging Face](https://huggingface.co/InseeFrLab/hackathon-ntts-2025-segmentation/blob/main/README.md) to retrain and play 
