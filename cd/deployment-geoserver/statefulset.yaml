@@ -88,8 +88,8 @@ spec:
               memory: "75Gi"
               cpu: "3000m"
             limits:
-              memory: "200Gi"
-              cpu: "100000m"
+              memory: "100Gi"
+              cpu: "30000m"
       
       volumes:
         - name: geoserver-data-dir
