@@ -4,7 +4,7 @@ metadata:
   name: geoserver-pod
 spec:
   serviceName: geoserver-service
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels:
       app: geoserver-pod
