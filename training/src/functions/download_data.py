@@ -139,6 +139,24 @@ def download_data(
             ]
             subprocess.run(patch_cmd, check=True, stdout=devnull, stderr=devnull)
 
+        # download normalization metrics
+        normalization_metrics_cmd = [
+            "mc",
+            "cp",
+            f"public/projet-hackathon-ntts-2025/data-preprocessed/patchs/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/metrics-normalization.yaml",  # noqa
+            f"data/data-preprocessed/patchs/{source}/{dep}/{year}/{tiles_size}/",
+        ]
+        subprocess.run(normalization_metrics_cmd, check=True, stdout=devnull, stderr=devnull)
+
+        # download filename2bbox
+        filename2bbox_cmd = [
+            "mc",
+            "cp",
+            f"public/projet-hackathon-ntts-2025/data-preprocessed/patchs/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/filename2bbox.parquet",  # noqa
+            f"data/data-preprocessed/patchs/{source}/{dep}/{year}/{tiles_size}/",
+        ]
+        subprocess.run(filename2bbox_cmd, check=True, stdout=devnull, stderr=devnull)
+
         # download labels
         for filename_label in filenames_labels:
             label_cmd = [
