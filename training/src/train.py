@@ -497,11 +497,6 @@ def format_datasets(args_dict: dict) -> Tuple[str, int]:
     """
     deps, years = zip(*[item.split("_") for item in args_dict["datasets"]])
     deps = [dep.upper() for dep in deps]
-    fs = get_file_system()
-    for dep, year in zip(deps, years):
-        s3_path = f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-preprocessed/patchs/{args_dict['type_labeler']}/{args_dict['source']}/{dep.upper()}/{year}"
-        if not fs.exists(s3_path):
-            raise ValueError(f"S3 path {s3_path} does not exist.")
     args_dict.pop("datasets")
     return deps, years, args_dict
 
