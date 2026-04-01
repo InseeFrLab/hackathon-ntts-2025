@@ -67,12 +67,22 @@ def get_golden_paths(
             f"data/data-preprocessed/golden-test/labels/{task}/{source}/{dep}/{year}/{tiles_size}"
         )
 
+        alias_cmd = [
+            "mc",
+            "alias",
+            "set",
+            "public",
+            "https://minio.lab.sspcloud.fr",
+            "''",
+            "''"
+        ]
+
         patch_cmd = [
             "mc",
             "cp",
             "--quiet",
             "-r",
-            f"s3/projet-hackathon-ntts-2025/golden-test/patchs/"
+            f"public/projet-hackathon-ntts-2025/golden-test/patchs/"
             f"{task}/{source}/{dep}/{year}/{tiles_size}/",
             patchs_path + "/",
         ]
@@ -81,11 +91,13 @@ def get_golden_paths(
             "cp",
             "--quiet",
             "-r",
-            f"s3/projet-hackathon-ntts-2025/golden-test/labels/"
+            f"public/projet-hackathon-ntts-2025/golden-test/labels/"
             f"{task}/{source}/{dep}/{year}/{tiles_size}/",
             labels_path + "/",
         ]
         with open("/dev/null", "w") as devnull:
+            # set public alias
+            subprocess.run(alias_cmd, check=True, stdout=devnull, stderr=devnull)
             # download patchs
             subprocess.run(patch_cmd, check=True, stdout=devnull, stderr=devnull)
             # download labels
@@ -193,11 +205,21 @@ def download_data(
     if all_exist:
         return None
 
+    alias_cmd = [
+        "mc",
+        "alias",
+        "set",
+        "public",
+        "https://minio.lab.sspcloud.fr",
+        "''",
+        "''"
+    ]
+
     patch_cmd = [
         "mc",
         "cp",
         "-r",
-        f"s3/projet-hackathon-ntts-2025/data-preprocessed/patchs/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",  # noqa
+        f"public/projet-hackathon-ntts-2025/data-preprocessed/patchs/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",  # noqa
         f"data/data-preprocessed/patchs/{source}/{dep}/{year}/{tiles_size}/",
     ]
 
@@ -205,12 +227,14 @@ def download_data(
         "mc",
         "cp",
         "-r",
-        f"s3/projet-hackathon-ntts-2025/data-preprocessed/labels/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",  # noqa
+        f"public/projet-hackathon-ntts-2025/data-preprocessed/labels/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",  # noqa
         f"data/data-preprocessed/labels/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",
     ]
 
     print("Downloading data from S3...\n")
     with open("/dev/null", "w") as devnull:
+        # set public alias
+        subprocess.run(alias_cmd, check=True, stdout=devnull, stderr=devnull)
         # download patchs
         subprocess.run(patch_cmd, check=True, stdout=devnull, stderr=devnull)
         # download labels
