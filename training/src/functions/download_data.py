@@ -68,13 +68,9 @@ def get_golden_paths(
         )
 
         alias_cmd = [
-            "mc",
-            "alias",
-            "set",
-            "public",
+            "mc", "alias", "set", "public",
             "https://minio.lab.sspcloud.fr",
-            "''",
-            "''"
+            "", ""
         ]
 
         patch_cmd = [
@@ -206,13 +202,9 @@ def download_data(
         return None
 
     alias_cmd = [
-        "mc",
-        "alias",
-        "set",
-        "public",
+        "mc", "alias", "set", "public",
         "https://minio.lab.sspcloud.fr",
-        "''",
-        "''"
+        "", ""
     ]
 
     patch_cmd = [
