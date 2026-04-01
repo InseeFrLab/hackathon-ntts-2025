@@ -2,6 +2,7 @@ import os
 import subprocess
 from pathlib import Path
 from typing import List, Tuple
+import pandas as pd
 
 import numpy as np
 import yaml
@@ -18,95 +19,6 @@ def get_file_system() -> S3FileSystem:
         secret=os.environ["AWS_SECRET_ACCESS_KEY"],
         token=""
     )
-
-
-def get_golden_paths(
-    from_s3: bool,
-    task: str,
-    source: str,
-    dep: str,
-    year: str,
-    tiles_size: str,
-) -> Tuple[List[str], List[str]]:
-    """
-    Get paths to images and labels making up a golden dataset of 32 observations
-    from s3 or local.
-
-    Args:
-        from_s3 (bool): True if data should be downloaded from s3, False otherwise.
-        task (str): Task.
-        source (str): Satellite source.
-        dep (str): Department.
-        year (str): Year.
-        tiles_size (str): Tiles size.
-
-    Returns:
-        Tuple[List[str], List[str]]: Paths to patchs and labels.
-    """
-    if from_s3:
-        fs = get_file_system()
-
-        patchs = fs.ls(
-            (
-                f"projet-hackathon-ntts-2025/golden-test/patchs/"
-                f"{task}/{source}/{dep}/{year}/{tiles_size}"
-            )
-        )
-        labels = fs.ls(
-            (
-                f"projet-hackathon-ntts-2025/golden-test/labels/"
-                f"{task}/{source}/{dep}/{year}/{tiles_size}"
-            )
-        )
-    else:
-        patchs_path = (
-            f"data/data-preprocessed/golden-test/patchs/"
-            f"{task}/{source}/{dep}/{year}/{tiles_size}"
-        )
-        labels_path = (
-            f"data/data-preprocessed/golden-test/labels/{task}/{source}/{dep}/{year}/{tiles_size}"
-        )
-
-        alias_cmd = [
-            "mc", "alias", "set", "public",
-            "https://minio.lab.sspcloud.fr",
-            "", ""
-        ]
-
-        patch_cmd = [
-            "mc",
-            "cp",
-            "--quiet",
-            "-r",
-            f"public/projet-hackathon-ntts-2025/golden-test/patchs/"
-            f"{task}/{source}/{dep}/{year}/{tiles_size}/",
-            patchs_path + "/",
-        ]
-        label_cmd = [
-            "mc",
-            "cp",
-            "--quiet",
-            "-r",
-            f"public/projet-hackathon-ntts-2025/golden-test/labels/"
-            f"{task}/{source}/{dep}/{year}/{tiles_size}/",
-            labels_path + "/",
-        ]
-        with open("/dev/null", "w") as devnull:
-            # set public alias
-            subprocess.run(alias_cmd, check=True, stdout=devnull, stderr=devnull)
-            # download patchs
-            subprocess.run(patch_cmd, check=True, stdout=devnull, stderr=devnull)
-            # download labels
-            subprocess.run(label_cmd, check=True, stdout=devnull, stderr=devnull)
-
-        patchs = [
-            f"{patchs_path}/{filename}"
-            for filename in os.listdir(patchs_path)
-            if Path(filename).suffix != ".yaml"
-        ]
-        labels = [f"{labels_path}/{filename}" for filename in os.listdir(labels_path)]
-
-    return patchs, labels
 
 
 def get_patchs_labels(
@@ -207,30 +119,35 @@ def download_data(
         "", ""
     ]
 
-    patch_cmd = [
-        "mc",
-        "cp",
-        "-r",
-        f"public/projet-hackathon-ntts-2025/data-preprocessed/patchs/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",  # noqa
-        f"data/data-preprocessed/patchs/{source}/{dep}/{year}/{tiles_size}/",
-    ]
-
-    label_cmd = [
-        "mc",
-        "cp",
-        "-r",
-        f"public/projet-hackathon-ntts-2025/data-preprocessed/labels/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",  # noqa
-        f"data/data-preprocessed/labels/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",
-    ]
+    url_filenames = f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-preprocessed/patchs/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/filename2bbox.parquet"
+    df_filenames = pd.read_parquet(url_filenames)
+    filenames_patchs = df_filenames.filename.tolist()
+    filenames_labels = [filename.split('.')[0]+'.npy' for filename in filenames_patchs]
 
     print("Downloading data from S3...\n")
     with open("/dev/null", "w") as devnull:
         # set public alias
         subprocess.run(alias_cmd, check=True, stdout=devnull, stderr=devnull)
+
         # download patchs
-        subprocess.run(patch_cmd, check=True, stdout=devnull, stderr=devnull)
+        for filename_patch in filenames_patchs:
+            patch_cmd = [
+                "mc",
+                "cp",
+                f"public/projet-hackathon-ntts-2025/data-preprocessed/patchs/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/{filename_patch}",  # noqa
+                f"data/data-preprocessed/patchs/{source}/{dep}/{year}/{tiles_size}/",
+            ]
+            subprocess.run(patch_cmd, check=True, stdout=devnull, stderr=devnull)
+
         # download labels
-        subprocess.run(label_cmd, check=True, stdout=devnull, stderr=devnull)
+        for filename_label in filenames_labels:
+            label_cmd = [
+                "mc",
+                "cp",
+                f"public/projet-hackathon-ntts-2025/data-preprocessed/labels/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/{filename_label}",  # noqa
+                f"data/data-preprocessed/labels/{type_labeler}/{source}/{dep}/{year}/{tiles_size}/",
+            ]
+            subprocess.run(label_cmd, check=True, stdout=devnull, stderr=devnull)
     print("Downloading finished!\n")
 
 
