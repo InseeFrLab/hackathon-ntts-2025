@@ -3,9 +3,10 @@
 export MLFLOW_TRACKING_URI=https://projet-hackathon-ntts-2025-mlflow.user.lab.sspcloud.fr/
 export MLFLOW_S3_ENDPOINT_URL=https://minio.lab.sspcloud.fr
 export MLFLOW_EXPERIMENT_NAME=test
+export MLFLOW_PASSWORD=xxx
 
 export AWS_ACCESS_KEY_ID=hackathon2025
-export AWS_SECRET_ACCESS_KEY=8YJkCIle2Gd4Avhg7gxj5g==
+export AWS_SECRET_ACCESS_KEY=xxx
 export MC_HOST_s3=https://$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY:@minio.lab.sspcloud.fr
 ENTRY_POINT=main
 

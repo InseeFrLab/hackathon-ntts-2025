@@ -47,7 +47,6 @@ parser.add_argument(
 parser.add_argument(
     "--experiment_name",
     type=str,
-    choices=["segmentation", "detection", "classification", "test"],
     default="test",
     help="Experiment name in MLflow",
 )
