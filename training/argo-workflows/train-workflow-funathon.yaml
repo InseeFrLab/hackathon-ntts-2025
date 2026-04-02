@@ -21,9 +21,9 @@ spec:
               "AUGMENT_SIZE": 512,
               "TYPE_LABELER": "CLCplus-Backbone",
               "USE_S3": 0,
-              "EPOCHS": 50,
-              "BATCH_SIZE": 32,
-              "TEST_BATCH_SIZE": 16,
+              "EPOCHS": 1,
+              "BATCH_SIZE": 4,
+              "TEST_BATCH_SIZE": 2,
               "LR": 0.00005,
               "BUILDING_CLASS_WEIGHT": 10.0,
               "LOSS_NAME": "cross_entropy_weighted",
@@ -113,10 +113,8 @@ spec:
           - name: LOGITS
           - name: FREEZE_ENCODER
           - name: CUDA
-      nodeSelector:
-        nvidia.com/gpu.product: "NVIDIA-H100-NVL"
       container:
-        image: inseefrlab/satellite-images-train:v0.0.7
+        image: rayaberova/hackathon-ntts-2025:main
         imagePullPolicy: IfNotPresent
         resources:
           limits:
@@ -127,7 +125,7 @@ spec:
             git clone https://github.com/InseeFrLab/hackathon-ntts-2025.git &&
             cd hackathon-ntts-2025/training &&
             export MC_HOST_s3=https://$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY@$AWS_S3_ENDPOINT &&
-            mlflow run ~/work/hackathon-ntts-2025/training/ \
+            mlflow run . \
                 --env-manager=local \
                 --entry-point $ENTRY_POINT \
                 -P remote_server_uri=$MLFLOW_TRACKING_URI \

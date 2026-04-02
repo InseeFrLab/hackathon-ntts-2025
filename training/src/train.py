@@ -430,7 +430,7 @@ def main(
         earlystop=earlystop,
         scheduler_name=scheduler_name,
         scheduler_patience=scheduler_patience,
-        cuda=cuda,
+        cuda=cuda
     )
 
     mlflow.set_tracking_uri(remote_server_uri)
@@ -453,6 +453,7 @@ def main(
             scheduler=light_module.scheduler,
             scheduler_params=light_module.scheduler_params,
             scheduler_interval=light_module.scheduler_interval,
+            n_bands=n_bands
         )
 
         # Signature
