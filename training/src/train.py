@@ -10,6 +10,7 @@ import random
 from typing import Tuple
 
 import albumentations as A
+from mlflow.models.signature import infer_signature
 import mlflow
 import numpy as np
 import requests
@@ -273,8 +274,6 @@ def main(
     """
     Main method.
     """
-    os.environ["MLFLOW_HTTP_REQUEST_MAX_RETRIES"] = "5"
-
     # Seeds
     torch.manual_seed(args.seed)
     if args.cuda:
@@ -456,6 +455,22 @@ def main(
             scheduler_interval=light_module.scheduler_interval,
         )
 
+        # Signature
+
+        sample_batch = next(iter(test_loader))
+        sample_input = sample_batch["pixel_values"][:1].to("cpu")
+
+        with torch.no_grad():
+            sample_output = best_model(sample_input)
+
+        if isinstance(sample_output, dict):
+            sample_output = sample_output["logits"]
+
+        signature = infer_signature(
+            sample_input.numpy(),
+            sample_output.detach().numpy()
+        )
+
         # Logging the model with the associated code
         mlflow.pytorch.log_model(
             artifact_path="model",
@@ -465,6 +480,8 @@ def main(
                 "src/config/",
             ],
             pytorch_model=best_model.to("cpu"),
+            signature=signature,
+            input_example=sample_input.numpy()
         )
 
         # Log normalization parameters
