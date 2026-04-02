@@ -16,7 +16,6 @@ import requests
 import torch
 from albumentations.pytorch.transforms import ToTensorV2
 from functions.download_data import (
-    get_file_system,
     get_patchs_labels,
     normalization_params,
     pooled_std_dev,
@@ -26,6 +25,7 @@ from functions.instanciators import get_dataset, get_lightning_module, get_train
 from osgeo import gdal
 from torch import Generator
 from torch.utils.data import DataLoader, random_split
+
 
 gdal.UseExceptions()
 
@@ -273,6 +273,7 @@ def main(
     """
     Main method.
     """
+    os.environ["MLFLOW_HTTP_REQUEST_MAX_RETRIES"] = "5"
 
     # Seeds
     torch.manual_seed(args.seed)
