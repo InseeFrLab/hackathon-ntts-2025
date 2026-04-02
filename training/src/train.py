@@ -444,16 +444,9 @@ def main(
 
         trainer.fit(light_module, train_loader, val_loader)
 
-        # Reconstruire le modèle avec le nombre de canaux correct
-        correct_model = light_module.model(
-            n_bands=n_bands,
-            logits=bool(logits),
-            type_labeler=type_labeler
-        )
-
         best_model = type(light_module).load_from_checkpoint(
             checkpoint_path=trainer.checkpoint_callback.best_model_path,
-            model=correct_model,
+            model=light_module.model,
             loss=light_module.loss,
             optimizer=light_module.optimizer,
             optimizer_params=light_module.optimizer_params,

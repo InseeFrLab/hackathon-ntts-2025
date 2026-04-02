@@ -24,6 +24,7 @@ class SegmentationModule(pl.LightningModule):
         scheduler: Union[optim.lr_scheduler.OneCycleLR, optim.lr_scheduler.ReduceLROnPlateau],
         scheduler_params: Dict,
         scheduler_interval: str,
+        n_bands: int,
     ):
         """
         Initialize TableNet Module.
@@ -35,6 +36,7 @@ class SegmentationModule(pl.LightningModule):
             scheduler
             scheduler_params
             scheduler_interval
+            n_bands
         """
         super().__init__()
 
@@ -45,6 +47,7 @@ class SegmentationModule(pl.LightningModule):
         self.scheduler = scheduler
         self.scheduler_params = scheduler_params
         self.scheduler_interval = scheduler_interval
+        self.n_bands = n_bands
 
     def forward(self, batch: torch.Tensor, labels: Optional[torch.Tensor] = None):
         """

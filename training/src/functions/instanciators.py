@@ -215,6 +215,7 @@ def get_lightning_module(
         scheduler=scheduler,
         scheduler_params=scheduler_params,
         scheduler_interval=scheduler_interval,
+        n_bands=n_bands
     )
 
     return lightning_module
