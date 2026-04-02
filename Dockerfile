@@ -1,4 +1,4 @@
-FROM inseefrlab/onyxia-python-pytorch:py3.12.6
+FROM inseefrlab/onyxia-python-pytorch:py3.12.9-gpu
 
 ENV TIMEOUT=3600
 
