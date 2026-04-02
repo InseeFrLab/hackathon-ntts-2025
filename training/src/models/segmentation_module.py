@@ -131,10 +131,10 @@ class SegmentationModule(pl.LightningModule):
         iou_all, iou_building = IOU(output, labels, self.model.logits)
 
         # Log on epoch, mean reduction
-        self.log("validation_IOU_all", iou_all, on_step=True, on_epoch=True)
-        self.log("validation_IOU_building", iou_building, on_step=True, on_epoch=True)
-        self.log("validation_loss", loss, on_step=True, on_epoch=True)
-        self.log("validation_building_rate", building_rate, on_step=True, on_epoch=True)
+        self.log("val_IOU_all", iou_all, on_step=False, on_epoch=True)
+        self.log("val_IOU_building", iou_building, on_step=False, on_epoch=True)
+        self.log("val_loss", loss, on_step=False, on_epoch=True)
+        self.log("val_building_rate", building_rate, on_step=False, on_epoch=True)
 
         return loss
 
@@ -159,10 +159,10 @@ class SegmentationModule(pl.LightningModule):
         building_rate = positive_rate(output, self.model.logits)
         iou_all, iou_building = IOU(output, labels, self.model.logits)
 
-        self.log(f"test_loss_{dataloader_idx}", loss, on_epoch=True)
-        self.log(f"test_IOU_all_{dataloader_idx}", iou_all, on_epoch=True)
-        self.log(f"test_IOU_building_{dataloader_idx}", iou_building, on_epoch=True)
-        self.log(f"test_building_rate_{dataloader_idx}", building_rate, on_epoch=True)
+        self.log(f"test_loss_{dataloader_idx}", loss, on_step=False, on_epoch=True)
+        self.log(f"test_IOU_all_{dataloader_idx}", iou_all, on_step=False, on_epoch=True)
+        self.log(f"test_IOU_building_{dataloader_idx}", iou_building, on_step=False, on_epoch=True)
+        self.log(f"test_building_rate_{dataloader_idx}", building_rate, on_step=False, on_epoch=True)
 
         return IOU
 
