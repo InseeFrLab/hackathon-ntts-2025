@@ -283,10 +283,10 @@ def main(
 
     kwargs = {"num_workers": os.cpu_count(), "pin_memory": True} if args.cuda else {}
 
-    earlystop = {"monitor": "validation_loss", "patience": patience, "mode": "min"}
+    earlystop = {"monitor": "val_loss", "patience": patience, "mode": "min"}
     checkpoints = [
         {
-            "monitor": "validation_loss",
+            "monitor": "val_loss",
             "save_top_k": 1,
             "save_last": False,
             "mode": "min",

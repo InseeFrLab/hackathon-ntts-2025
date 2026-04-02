@@ -178,7 +178,7 @@ spec:
           - name: MLFLOW_EXPERIMENT_NAME
             value: funathon-2026-project3
           - name: MLFLOW_TRACKING_USERNAME
-            value: projet-formation 
+            value: projet-formation
           - name: MLFLOW_TRACKING_PASSWORD
             valueFrom:
               secretKeyRef:

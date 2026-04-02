@@ -201,7 +201,7 @@ def get_lightning_module(
     # TODO: faire get_scheduler with kwargs
     scheduler = get_scheduler(scheduler_name)
     scheduler_params = {
-        "monitor": "validation_loss",
+        "monitor": "val_loss",
         "mode": "min",
         "patience": scheduler_patience,
     }
