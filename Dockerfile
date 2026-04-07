@@ -1,4 +1,4 @@
-FROM inseefrlab/onyxia-vscode-python:py3.13.12-gpu
+FROM inseefrlab/onyxia-vscode-pytorch:py3.13.12-gpu
 
 ENV TIMEOUT=3600
 
