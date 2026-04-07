@@ -11,8 +11,9 @@ WORKDIR /api
 COPY requirements_app.txt requirements_app.txt
 
 # install all the requirements
-RUN conda install -c conda-forge gdal=3.9.3 -y &&\
-    pip install --no-cache-dir --upgrade -r requirements_app.txt &&\
+RUN  sudo apt-get update &&\
+    sudo apt-get install -y binutils libproj-dev gdal-bin ffmpeg libgdal-dev &&\
+    uv pip install -r requirements.txt --system && uv pip install gdal==3.8.4 --system &&\
     wget -q -O /api/nuts_2021.gpkg https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/NUTS_RG_01M_2021_4326_LEVL_3.gpkg
 
 # copy the main code of fastapi
