@@ -114,7 +114,7 @@ spec:
           - name: FREEZE_ENCODER
           - name: CUDA
       container:
-        image: rayaberova/hackathon-ntts-2025:main
+        image: inseefrlab/onyxia-python-pytorch:py3.13.12-gpu
         imagePullPolicy: IfNotPresent
         resources:
           limits:
@@ -124,7 +124,7 @@ spec:
           - |
             git clone https://github.com/InseeFrLab/hackathon-ntts-2025.git &&
             cd hackathon-ntts-2025/training &&
-            export MC_HOST_s3=https://$AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY@$AWS_S3_ENDPOINT &&
+            uv sync && 
             mlflow run . \
                 --env-manager=local \
                 --entry-point $ENTRY_POINT \
