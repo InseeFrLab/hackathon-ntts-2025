@@ -462,6 +462,8 @@ def main(
         sample_input = sample_batch["pixel_values"][:1].to("cpu")
 
         with torch.no_grad():
+            device = next(best_model.parameters()).device
+            sample_input = sample_input.to(device)
             sample_output = best_model(sample_input)
 
         if isinstance(sample_output, dict):
