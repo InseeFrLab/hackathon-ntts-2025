@@ -456,21 +456,21 @@ def main(
             n_bands=n_bands
         )
 
-        # # Signature
-        # sample_batch = next(iter(test_loader))
-        # sample_input = sample_batch["pixel_values"][:1]
+        # Signature
+        sample_batch = next(iter(test_loader))
+        sample_input = sample_batch["pixel_values"][:1]
 
-        # with torch.no_grad():
-        #     device = next(best_model.parameters()).device
-        #     sample_output = best_model(sample_input.to(device))
+        with torch.no_grad():
+            device = next(best_model.parameters()).device
+            sample_output = best_model(sample_input.to(device))
 
-        # if isinstance(sample_output, dict):
-        #     sample_output = sample_output["logits"]
+        if isinstance(sample_output, dict):
+            sample_output = sample_output["logits"]
 
-        # signature = infer_signature(
-        #     sample_input.numpy(),
-        #     sample_output.detach().cpu().numpy()
-        # )
+        signature = infer_signature(
+            sample_input.numpy(),
+            sample_output.detach().cpu().numpy()
+        )
 
         # Logging the model with the associated code
         mlflow.pytorch.log_model(
@@ -481,8 +481,8 @@ def main(
                 "src/config/",
             ],
             pytorch_model=best_model.to("cpu"),
-            # signature=signature,
-            # input_example=sample_input.numpy()
+            signature=signature,
+            input_example=sample_input.numpy()
         )
 
         # Log normalization parameters
