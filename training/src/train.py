@@ -457,21 +457,19 @@ def main(
         )
 
         # Signature
-
         sample_batch = next(iter(test_loader))
-        sample_input = sample_batch["pixel_values"][:1].to("cpu")
+        sample_input = sample_batch["pixel_values"][:1]
 
         with torch.no_grad():
             device = next(best_model.parameters()).device
-            sample_input = sample_input.to(device)
-            sample_output = best_model(sample_input)
+            sample_output = best_model(sample_input.to(device))
 
         if isinstance(sample_output, dict):
             sample_output = sample_output["logits"]
 
         signature = infer_signature(
             sample_input.numpy(),
-            sample_output.detach().numpy()
+            sample_output.detach().cpu().numpy()
         )
 
         # Logging the model with the associated code
@@ -494,7 +492,6 @@ def main(
                 "normalization_std": normalization_std,
             }
         )
-        # TODO: Add signature for inference
 
         # 8- Test
         trainer.test(dataloaders=[test_loader, test_loader], ckpt_path="best")

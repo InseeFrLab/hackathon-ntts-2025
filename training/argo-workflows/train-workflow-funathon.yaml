@@ -125,7 +125,6 @@ spec:
             git clone https://github.com/InseeFrLab/hackathon-ntts-2025.git &&
             cd hackathon-ntts-2025/training &&
             uv sync && 
-            export PROJ_DATA=$(python -c "import pyproj; print(pyproj.datadir.get_data_dir())") &&
             uv run mlflow run . \
                 --env-manager=local \
                 --entry-point $ENTRY_POINT \
