@@ -11,9 +11,12 @@ WORKDIR /api
 COPY requirements_app.txt requirements_app.txt
 
 # install all the requirements
-RUN  sudo apt-get update &&\
+RUN sudo apt-get update &&\
     sudo apt-get install -y binutils libproj-dev gdal-bin ffmpeg libgdal-dev &&\
-    uv pip install -r requirements_app.txt --system && uv pip install --no-build-isolation --no-cache-dir --force-reinstall gdal==$(gdal-config --version) --system &&\
+    uv pip install -r requirements_app.txt \
+        --extra-index-url https://download.pytorch.org/whl/cu121 \
+        --system && \
+    uv pip install --no-build-isolation --no-cache-dir --force-reinstall gdal==$(gdal-config --version) --system &&\
     wget -q -O /api/nuts_2021.gpkg https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/NUTS_RG_01M_2021_4326_LEVL_3.gpkg
 
 # copy the main code of fastapi
