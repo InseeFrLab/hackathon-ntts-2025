@@ -1,22 +1,30 @@
 [project]
-name = "Satellite-images-train"
+name = "Hackathon-ntts-2025-images-train"
 version = "0.1.0"
 description = "Repository for training of segmentation models on satellite imagery."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = "==3.13.*"
 dependencies = [
-    "albumentations>=2.0.5",
+    "albumentations>=2.0.8",
     "astrovision>=0.14.7",
-    "gdal>=3.10.2",
+    "cloudpickle>=3.1.1",
+    "gdal==3.11.4",
+    "jaraco-collections>=5.2.1",
+    "matplotlib>=3.10.1",
     "mlflow>=2.21.3",
+    "numpy>=2.2.4",
+    "pandas>=2.2.3",
     "pytorch-lightning>=2.5.1",
-    "s3fs>=2025.3.2",
-    "torch>=2.6.0",
-    "torchvision>=0.21.0",
-    "transformers>=4.50.3",
+    "s3fs>=2026.2.0",
+    "scikit-learn>=1.6.1",
+    "scipy>=1.15.2",
+    "torch>=2.11.0",
+    "torchvision>=0.26.0",
+    "transformers>=5.5.1",
 ]
+
 authors = [
-  {name="Thomas Faria", email="thomas.faria@insee.fr"}
+  {name="Raya Berova", email="raya.berova@insee.fr"}
 ]
 
 [dependency-groups]
