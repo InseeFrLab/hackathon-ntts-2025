@@ -172,7 +172,7 @@ spec:
           - name: MLFLOW_S3_ENDPOINT_URL
             value: https://minio.lab.sspcloud.fr
           - name: MLFLOW_TRACKING_URI
-            value: https://projet-formation-mlflow.user.lab.sspcloud.fr/
+            value: http://mlflow-817525/
           - name: MLFLOW_EXPERIMENT_NAME
             value: funathon-2026-project3
           - name: MLFLOW_TRACKING_USERNAME
