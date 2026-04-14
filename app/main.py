@@ -14,6 +14,10 @@ import pandas as pd
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
 from osgeo import gdal
+from pyproj import Transformer
+from shapely.geometry import box
+from shapely.geometry import Point
+import requests
 
 from app.logger_config import configure_logger
 from app.utils import (
@@ -88,6 +92,57 @@ def show_welcome_page():
     }
 
 
+@app.get("/find_image", tags=["Find Image"])
+async def find_image(
+    gps_point: tuple[str, str],
+    nuts_id: str,
+    year: int = Query(2021, ge=2018, le=2024)
+) -> str:
+    """
+    Find image path for a given NUTS3 and year.
+
+    Args:
+        gps_point (tuple[str, str]): the gps point.
+        nuts_id (str): The ID of the NUTS.
+        year (int): The year of the satellite images.
+    Returns:
+        str: Image filepath if the image is finded, otherwise None.
+
+    """
+    logger.info(f"Find the image filepath for this gps point: {gps_point}")
+    gc.collect()
+
+    url = f"https://minio.lab.sspcloud.fr/projet-formation/diffusion/funathon/2026/project3/data/images/{nuts3}/{year}/filename2bbox.parquet"
+
+    response = requests.head(url)
+
+    if response.status_code == 200:
+        df = pd.read_parquet(url)
+    else:
+        print(f"❌ No data for NUTS3='{nuts3}' and year={year} (HTTP {response.status_code})")
+        return None
+
+    # Création de la géométrie
+    df["geometry"] = df.apply(
+        lambda row: box(row["bbox"][0], row["bbox"][1], row["bbox"][2], row["bbox"][3]),
+        axis=1
+    )
+
+    # Conversion en GeoDataFrame
+    gdf = gpd.GeoDataFrame(df, geometry="geometry", crs="EPSG:3035")
+
+    lat, lon = gps_point
+
+    # Convertir le point GPS (EPSG:4326) en EPSG:3035
+    transformer = Transformer.from_crs("EPSG:4326", "EPSG:3035", always_xy=True)
+    x, y = transformer.transform(lon, lat)
+
+    point = Point(x, y)
+    result = gdf[gdf.contains(point)]
+
+    return result["filename"].values
+
+
 @app.get("/predict_image", tags=["Predict Image"])
 async def predict_image(image: str, polygons: bool = False) -> Dict:
     """
@@ -159,10 +214,32 @@ def predict_nuts(
     # nuts = gpd.read_file("/api/nuts_2021.gpkg")
     # nuts = gpd.GeoDataFrame(nuts, geometry="geometry", crs="EPSG:4326")
 
+    path = f"s3://projet-formation/diffusion/funathon/2026/project3/data/images/{nuts_id}"
+
+    if fs.exists(path):
+        print(f"✅ {nuts_id} is in the database")
+    else:
+        logger.info(f"""No {nuts_id} in the database.""")
+        return JSONResponse(
+            content={
+                "predictions": gpd.GeoDataFrame(columns=["geometry"], crs="EPSG:3035").to_json()
+            }
+        )
+
+    if fs.exists(path+f"/{year}"):
+        print(f"✅ {year} is in the database for {nuts_id}.")
+    else:
+        logger.info(f"""No {year} in {nuts_id} in the database.""")
+        return JSONResponse(
+            content={
+                "predictions": gpd.GeoDataFrame(columns=["geometry"], crs="EPSG:3035").to_json()
+            }
+        )
+
     images = [
         img
         for img in fs.ls(
-            f"s3://projet-formation/diffusion/funathon/2026/project3/data/images/{nuts_id}/{year}/"
+            path+f"/{year}/"
         )
         if img.endswith(".tif")
     ]
