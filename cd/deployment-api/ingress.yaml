@@ -3,14 +3,15 @@ kind: Ingress
 metadata:
   name: funathon-2026-project3-model-ingress
   annotations:
+    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
 spec:
   tls:
     - hosts:
-        - projet-formation.lab.sspcloud.fr
+        - funathon-2026-project3.lab.sspcloud.fr
   rules:
-    - host: projet-formation.lab.sspcloud.fr
+    - host: funathon-2026-project3.lab.sspcloud.fr
       http:
         paths:
           - path: /

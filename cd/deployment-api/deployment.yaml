@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: funathon-2026-project3-model-deployment
 spec:
-  replicas: 25
+  replicas: 1
   selector:
     matchLabels:
       app: funathon-2026-project3-model-deployment
@@ -35,7 +35,7 @@ spec:
             - name: MLFLOW_S3_ENDPOINT_URL
               value: https://minio.lab.sspcloud.fr
             - name: MLFLOW_TRACKING_URI
-              value: projet-formation-mlflow.user.lab.sspcloud.fr
+              value: https://projet-formation-mlflow.user.lab.sspcloud.fr
             - name: MLFLOW_TRACKING_USERNAME
               value: projet-formation
             - name: MLFLOW_TRACKING_PASSWORD
