@@ -1,5 +1,5 @@
 [project]
-name = "Hackathon-ntts-2025-images-train"
+name = "funathon-2026-project3-images-train"
 version = "0.1.0"
 description = "Repository for training of segmentation models on satellite imagery."
 readme = "README.md"
