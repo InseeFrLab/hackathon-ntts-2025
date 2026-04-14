@@ -94,7 +94,7 @@ def show_welcome_page():
 
 @app.get("/find_image", tags=["Find Image"])
 async def find_image(
-    gps_point: tuple[str, str],
+    gps_point: tuple[float, float],
     nuts_id: str,
     year: int = Query(2021, ge=2018, le=2024)
 ) -> str:
@@ -102,7 +102,7 @@ async def find_image(
     Find image path for a given NUTS3 and year.
 
     Args:
-        gps_point (tuple[str, str]): the gps point.
+        gps_point (tuple[float, float]): the gps point.
         nuts_id (str): The ID of the NUTS.
         year (int): The year of the satellite images.
     Returns:
@@ -119,7 +119,7 @@ async def find_image(
     if response.status_code == 200:
         df = pd.read_parquet(url)
     else:
-        print(f"❌ No data for NUTS3='{nuts3}' and year={year} (HTTP {response.status_code})")
+        print(f"❌ No data for NUTS3='{nuts_id}' and year={year} (HTTP {response.status_code})")
         return None
 
     # Création de la géométrie
