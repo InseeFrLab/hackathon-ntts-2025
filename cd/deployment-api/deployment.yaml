@@ -1,27 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hackathon-ntts-2025-model-deployment
+  name: funathon-2026-project3-model-deployment
 spec:
   replicas: 25
   selector:
     matchLabels:
-      app: hackathon-ntts-2025-model-deployment
+      app: funathon-2026-project3-model-deployment
   template:
     metadata:
       labels:
-        app: hackathon-ntts-2025-model-deployment
+        app: funathon-2026-project3-model-deployment
     spec:
       containers:
-        - name: hackathon-ntts-2025-app
+        - name: funathon-2026-project3-app
           image: rayaberova/hackathon-ntts-2025:main
           imagePullPolicy: Always
           env:
             # env var for s3 connexion
-            - name: MLFLOW_S3_ENDPOINT_URL
-              value: https://minio.lab.sspcloud.fr
-            - name: AWS_S3_ENDPOINT
-              value: minio.lab.sspcloud.fr
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -34,14 +30,23 @@ spec:
                   key: secretKey
             - name: AWS_DEFAULT_REGION
               value: us-east-1
-            # env var for setting mlflow model registry server
+            - name: AWS_S3_ENDPOINT
+              value: minio.lab.sspcloud.fr
+            - name: MLFLOW_S3_ENDPOINT_URL
+              value: https://minio.lab.sspcloud.fr
             - name: MLFLOW_TRACKING_URI
-              value: https://projet-hackathon-ntts-2025-mlflow.user.lab.sspcloud.fr
-            # env var for setting models uri which will be deployed
+              value: projet-formation-mlflow.user.lab.sspcloud.fr
+            - name: MLFLOW_TRACKING_USERNAME
+              value: projet-formation
+            - name: MLFLOW_TRACKING_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mlflow
+                  key: password
             - name: MLFLOW_MODEL_NAME
-              value: Segmentation-multiclass
+              value: segmentation-sentinel2-model
             - name: MLFLOW_MODEL_VERSION
-              value: "4"
+              value: "2"
             - name: MLFLOW_ENABLE_ARTIFACTS_PROGRESS_BAR
               value: "false"
           resources:
