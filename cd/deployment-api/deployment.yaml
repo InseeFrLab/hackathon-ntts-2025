@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: funathon-2026-project3-app
-          image: rayaberova/hackathon-ntts-2025:main
+          image: rayaberova/funathon-2026-project3:main
           imagePullPolicy: Always
           env:
             # env var for s3 connexion

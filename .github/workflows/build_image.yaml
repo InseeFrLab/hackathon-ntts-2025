@@ -25,7 +25,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: rayaberova/hackathon-ntts-2025
+          images: rayaberova/funathon-2026-project3
 
       - name: Make free space
         # https://github.com/actions/virtual-environments/issues/2840
