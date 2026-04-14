@@ -162,7 +162,7 @@ def predict_nuts(
     images = [
         img
         for img in fs.ls(
-            f"s3://projet-hackathon-ntts-2025/data-preprocessed/patchs/CLCplus-Backbone/SENTINEL2/{nuts_id}/{year}/250/"
+            f"s3://projet-formation/diffusion/funathon/2026/project3/data/labels/{nuts_id}/{year}/"
         )
         if img.endswith(".tif")
     ]
