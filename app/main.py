@@ -103,8 +103,12 @@ async def find_image(
     Find image path for a given NUTS3 and year.
 
     Args:
+<<<<<<< HEAD
         lon_gps (float): longitude of the gps point.
         lat_gps (float): longitude of the gps point.
+=======
+        gps_point (tuple[float, float]): the gps point.
+>>>>>>> ef2daaa0337a84a2355aeca3ceb61423c0548e07
         nuts_id (str): The ID of the NUTS.
         year (int): The year of the satellite images.
     Returns:
