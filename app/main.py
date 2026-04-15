@@ -94,7 +94,8 @@ def show_welcome_page():
 
 @app.get("/find_image", tags=["Find Image"])
 async def find_image(
-    gps_point: tuple[str, str],
+    lon_gps: float,
+    lat_gps: float,
     nuts_id: str,
     year: int = Query(2021, ge=2018, le=2024)
 ) -> str:
@@ -102,14 +103,15 @@ async def find_image(
     Find image path for a given NUTS3 and year.
 
     Args:
-        gps_point (tuple[str, str]): the gps point.
+        lon_gps (float): longitude of the gps point.
+        lat_gps (float): longitude of the gps point.
         nuts_id (str): The ID of the NUTS.
         year (int): The year of the satellite images.
     Returns:
         str: Image filepath if the image is finded, otherwise None.
 
     """
-    logger.info(f"Find the image filepath for this gps point: {gps_point}")
+    logger.info(f"Find the image filepath for this gps point: {lon_gps}, {lat_gps}")
     gc.collect()
 
     url = f"https://minio.lab.sspcloud.fr/projet-formation/diffusion/funathon/2026/project3/data/images/{nuts3}/{year}/filename2bbox.parquet"
@@ -119,7 +121,7 @@ async def find_image(
     if response.status_code == 200:
         df = pd.read_parquet(url)
     else:
-        print(f"❌ No data for NUTS3='{nuts3}' and year={year} (HTTP {response.status_code})")
+        print(f"❌ No data for NUTS3='{nuts_id}' and year={year} (HTTP {response.status_code})")
         return None
 
     # Création de la géométrie
@@ -131,11 +133,9 @@ async def find_image(
     # Conversion en GeoDataFrame
     gdf = gpd.GeoDataFrame(df, geometry="geometry", crs="EPSG:3035")
 
-    lat, lon = gps_point
-
     # Convertir le point GPS (EPSG:4326) en EPSG:3035
     transformer = Transformer.from_crs("EPSG:4326", "EPSG:3035", always_xy=True)
-    x, y = transformer.transform(lon, lat)
+    x, y = transformer.transform(lon_gps, lat_gps)
 
     point = Point(x, y)
     result = gdf[gdf.contains(point)]
