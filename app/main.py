@@ -114,7 +114,7 @@ async def find_image(
     logger.info(f"Find the image filepath for this gps point: {lon_gps}, {lat_gps}")
     gc.collect()
 
-    url = f"https://minio.lab.sspcloud.fr/projet-formation/diffusion/funathon/2026/project3/data/images/{nuts3}/{year}/filename2bbox.parquet"
+    url = f"https://minio.lab.sspcloud.fr/projet-formation/diffusion/funathon/2026/project3/data/images/{nuts_id}/{year}/filename2bbox.parquet"
 
     response = requests.head(url)
 
