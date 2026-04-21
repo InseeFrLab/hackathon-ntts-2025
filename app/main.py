@@ -5,7 +5,7 @@ Main file for the API.
 import gc
 import os
 from contextlib import asynccontextmanager
-from typing import Dict, List
+from typing import Dict, List, Annotated
 
 import geopandas as gpd
 import mlflow
@@ -93,7 +93,7 @@ def show_welcome_page():
 
 @app.get("/find_image", tags=["Find Image"])
 async def find_image(
-    gps_point: List[float] = Query(..., description="[longitude, latitude] in WGS84"),
+    gps_point: Annotated[List[float], Query(min_length=2, max_length=2, description="[latitude, longitude] in WGS84")],
     nuts_id: str = Query(...),
     year: int = Query(2021, ge=2018, le=2024)
 ) -> str:
@@ -101,13 +101,13 @@ async def find_image(
     Find image path for a given NUTS3 and year.
 
     Args:
-        gps_point (List[float]): [longitude, latitude] of the GPS point in WGS84.
+        gps_point (List[float]): [latitude, longitude] of the GPS point in WGS84.
         nuts_id (str): The ID of the NUTS.
         year (int): The year of the satellite images.
     Returns:
         str: Image filepath if found, otherwise empty string.
     """
-    lon_gps, lat_gps = gps_point[0], gps_point[1]
+    lat_gps, lon_gps = gps_point[0], gps_point[1]
     logger.info(f"Find the image filepath for this gps point: {lon_gps}, {lat_gps}")
     gc.collect()
 
