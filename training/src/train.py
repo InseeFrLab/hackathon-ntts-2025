@@ -493,6 +493,17 @@ def main(
             }
         )
 
+        params = {
+                "n_bands": n_bands,
+                "tiles_size": tiles_size,
+                "augment_size": augment_size,
+                "module_name": module_name,
+                "normalization_mean": normalization_mean,
+                "normalization_std": normalization_std,
+            }
+
+        mlflow.log_dict(params, "params.json")
+
         # 8- Test
         trainer.test(dataloaders=[test_loader, test_loader], ckpt_path="best")
         run_id = run.info.run_id
