@@ -281,7 +281,7 @@ def main(
     random.seed(0)
     np.random.seed(0)
 
-    kwargs = {"num_workers": 0, "pin_memory": False} if args.cuda else {}
+    kwargs = {"num_workers": 127, "pin_memory": False} if args.cuda else {}
 
     earlystop = {"monitor": "val_loss", "patience": patience, "mode": "min"}
     checkpoints = [
