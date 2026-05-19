@@ -12,7 +12,7 @@ COPY pyproject.toml pyproject.toml
 COPY uv.lock uv.lock
 
 # install
-RUN uv sync --frozen &&
+RUN uv sync --frozen
 
 # copy the main code of fastapi
 COPY ./app /api/app
