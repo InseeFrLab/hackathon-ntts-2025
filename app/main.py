@@ -5,7 +5,7 @@ Main file for the API.
 import gc
 import os
 from contextlib import asynccontextmanager
-from typing import Dict, List, Annotated
+from typing import Dict, List, Annotated, Optional
 
 import geopandas as gpd
 import mlflow
@@ -14,9 +14,6 @@ import pandas as pd
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
 from osgeo import gdal
-from pyproj import Transformer
-from shapely.geometry import box
-from shapely.geometry import Point
 
 from app.logger_config import configure_logger
 from app.utils import (
@@ -28,6 +25,8 @@ from app.utils import (
     load_from_cache,
     predict,
     produce_mask,
+    find_nuts3_of_gps_point,
+    find_gps_point_in_filename2bbox
 )
 
 
@@ -91,67 +90,110 @@ def show_welcome_page():
     }
 
 
-@app.get("/find_image", tags=["Find Image"])
-async def find_image(
-    gps_point: Annotated[List[float], Query(min_length=2, max_length=2, description="[latitude, longitude] in WGS84")],
-    nuts_id: str = Query(...),
-    year: int = Query(2021, ge=2018, le=2024)
+@app.get("/find_nuts", tags=["Find NUTS3"])
+async def find_nuts(
+    gps_point: Annotated[List[float], Query(
+        min_length=2,
+        max_length=2,
+        description="[latitude, longitude] in WGS84",
+        example=[49.633339659666575, 6.168944599158566]
+    )],
 ) -> str:
     """
-    Find image path for a given NUTS3 and year.
+    Find NUTS3 id for a given gps point.
 
     Args:
         gps_point (List[float]): [latitude, longitude] of the GPS point in WGS84.
-        nuts_id (str): The ID of the NUTS.
+    Returns:
+        str: NUTS3 id if found, otherwise empty string.
+    """
+    gc.collect()
+    logger.info(f"Find the image filepath for this gps point: {gps_point}")
+
+    nuts_id = find_nuts3_of_gps_point(gps_point)
+
+    if nuts_id:
+        logger.info(f"GPS point found in NUTS3='{nuts_id}'")
+        return nuts_id
+
+    logger.warning("GPS point not found in any NUTS3")
+    return ""
+
+
+@app.get("/find_image", tags=["Find Image"])
+async def find_image(
+    gps_point: Annotated[List[float], Query(
+        min_length=2,
+        max_length=2,
+        description="[latitude, longitude] in WGS84",
+        example=[49.633339659666575, 6.168944599158566]
+    )],
+    year: int = Query(..., ge=2018, le=2024, example=2021),
+    nuts_id: Optional[str] = Query(None, example="LU000")
+) -> str:
+    """
+    Find image path for a given gps point, year and potentielly NUTS3 id.
+
+    Args:
+        gps_point (List[float]): [latitude, longitude] of the GPS point in WGS84.
         year (int): The year of the satellite images.
+        Optional - nuts_id (str): The ID of the NUTS.
     Returns:
         str: Image filepath if found, otherwise empty string.
     """
-    lat_gps, lon_gps = gps_point[0], gps_point[1]
-    logger.info(f"Find the image filepath for this gps point: {lon_gps}, {lat_gps}")
     gc.collect()
+    logger.info(f"Find the image filepath for this gps point: {gps_point}")
 
-    url = f"https://minio.lab.sspcloud.fr/projet-funathon/2026/project3/data/images/{nuts_id}/{year}/filename2bbox.parquet"
+    base_path = "projet-funathon/2026/project3/data/images"
+    image_filename = ""
 
-    try:
-        df = pd.read_parquet(url)
-    except Exception:
-        print(f"❌ No data for NUTS3='{nuts_id}' and year={year}")
-        return ""
+    if not nuts_id:
+        nuts_id = find_nuts3_of_gps_point(gps_point)
 
-    df["geometry"] = df.apply(
-        lambda row: box(row["bbox"][0], row["bbox"][1], row["bbox"][2], row["bbox"][3]),
-        axis=1
-    )
+    if nuts_id:
+        url = f"https://minio.lab.sspcloud.fr/{base_path}/{nuts_id}/{year}/filename2bbox.parquet"
 
-    gdf = gpd.GeoDataFrame(df, geometry="geometry", crs="EPSG:3035")
+        try:
+            df = pd.read_parquet(url)
+            image_filename = find_gps_point_in_filename2bbox(df, gps_point)
+            if image_filename:
+                image_filepath = f"{base_path}/{nuts_id}/{year}/{image_filename}"
+                logger.info(f"GPS point found in NUTS3='{nuts_id}' year={year}")
+                return image_filepath
+            else:
+                logger.warning(f"GPS point not found in NUTS3='{nuts_id}' year={year}")
+                return ""
 
-    transformer = Transformer.from_crs("EPSG:4326", "EPSG:3035", always_xy=True)
-    x, y = transformer.transform(lon_gps, lat_gps)
+        except Exception:
+            logger.warning(f"No data for NUTS3='{nuts_id}' and year={year}")
+            return ""
 
-    point = Point(x, y)
-    result = gdf[gdf.contains(point)]
-
-    if result.empty:
-        return ""
-
-    return str(result["filename"].values[0])
+    logger.warning(f"GPS point not found in any NUTS3 for year={year}")
+    return ""
 
 
 @app.get("/predict_image", tags=["Predict Image"])
-async def predict_image(image: str, polygons: bool = False) -> Dict:
+async def predict_image(
+    image: str = Query(
+        ...,
+        example="projet-funathon/2026/project3/data/images/LU000/2021/4042000_2951690_0_637.tif"
+    ),
+    polygons: bool = Query(False, description="Return polygons instead of raster mask")
+) -> Dict:
     """
     Predicts mask for a given satellite image.
 
     Args:
         image (str): Path to the satellite image.
-        polygons (bool, optional): Flag indicating whether to include polygons in the response. Defaults to False.
+        polygons (bool, optional): Flag indicating whether to include polygons in the response.
+        Defaults to False.
 
     Returns:
         Dict: Response containing the mask of the prediction.
 
     Raises:
-        ValueError: If the dimension of the image is not divisible by the tile size used during training or if the dimension is smaller than the tile size.
+        ValueError: If the dimension of the image is not divisible by the tile size used during
+        training or if the dimension is smaller than the tile size.
 
     """
     logger.info(f"Predict image endpoint accessed with image: {image}")
@@ -189,8 +231,8 @@ async def predict_image(image: str, polygons: bool = False) -> Dict:
 
 @app.get("/predict_nuts", tags=["Predict NUTS"])
 def predict_nuts(
-    nuts_id: str,
-    year: int = Query(2021, ge=2018, le=2024),
+    nuts_id: str = Query(..., example="LU000"),
+    year: int = Query(..., ge=2018, le=2024),
 ) -> Dict:
     """
     Predicts nuts for a given NUTS ID, year, and department.
@@ -212,7 +254,7 @@ def predict_nuts(
     path = f"s3://projet-funathon/2026/project3/data/images/{nuts_id}"
 
     if fs.exists(path):
-        print(f"✅ {nuts_id} is in the database")
+        logger.info(f"{nuts_id} is in the database")
     else:
         logger.info(f"""No {nuts_id} in the database.""")
         return JSONResponse(
@@ -222,7 +264,7 @@ def predict_nuts(
         )
 
     if fs.exists(path+f"/{year}"):
-        print(f"✅ {year} is in the database for {nuts_id}.")
+        logger.info(f"{year} is in the database for {nuts_id}.")
     else:
         logger.info(f"""No {year} in {nuts_id} in the database.""")
         return JSONResponse(

@@ -46,7 +46,7 @@ spec:
             - name: MLFLOW_MODEL_NAME
               value: segmentation-sentinel2-model
             - name: MLFLOW_MODEL_VERSION
-              value: "1"
+              value: "2"
             - name: MLFLOW_ENABLE_ARTIFACTS_PROGRESS_BAR
               value: "false"
           resources:

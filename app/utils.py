@@ -20,6 +20,10 @@ from astrovision.plot import make_mosaic
 from rasterio.features import shapes
 from s3fs import S3FileSystem
 from tqdm import tqdm
+from pyproj import Transformer
+from shapely.geometry import box
+from shapely.geometry import Point
+import pandas as pd
 
 from app.logger_config import configure_logger
 
@@ -34,7 +38,8 @@ def get_file_system() -> S3FileSystem:
         client_kwargs={"endpoint_url": f"https://{os.environ['AWS_S3_ENDPOINT']}"},
         key=os.environ["AWS_ACCESS_KEY_ID"],
         secret=os.environ["AWS_SECRET_ACCESS_KEY"],
-        token=""
+        token=os.environ["AWS_SESSION_TOKEN"]
+        # token=""
     )
 
 
@@ -355,10 +360,12 @@ def predict(
         module_name (str): Name of the module used for training.
 
     Returns:
-        SegmentationLabeledSatelliteImage or list[SegmentationLabeledSatelliteImage]: The labeled satellite image with the predicted mask.
+        SegmentationLabeledSatelliteImage or list[SegmentationLabeledSatelliteImage]:
+        The labeled satellite image with the predicted mask.
 
     Raises:
-        ValueError: If the dimension of the image is not divisible by the tile size used during training or if the dimension is smaller than the tile size.
+        ValueError: If the dimension of the image is not divisible by the tile size used during
+        training or if the dimension is smaller than the tile size.
 
     """
 
@@ -443,7 +450,7 @@ def get_cache_path(image: str) -> str:
         "MLFLOW_MODEL_VERSION" in os.environ
     ), "Please set the MLFLOW_MODEL_VERSION environment variable."
 
-    cache_path = os.path.dirname(image.replace(image.split("/")[1], "cache-predictions"))
+    cache_path = os.path.dirname(image.replace(image.split("/")[3], "cache-predictions"))
     image_name = os.path.splitext(os.path.basename(image))[0]
     return f"{cache_path}/{os.getenv("MLFLOW_MODEL_NAME")}/{os.getenv("MLFLOW_MODEL_VERSION")}/{image_name}.npy"
 
@@ -471,3 +478,46 @@ def load_from_cache(
 
     logits = True if len(mask.shape) >= 3 else False
     return SegmentationLabeledSatelliteImage(si, mask, logits=logits)
+
+
+def find_nuts3_of_gps_point(
+    gps_point: List[float]
+) -> str:
+    # Get NUTS file
+    nuts_filepath = "https://minio.lab.sspcloud.fr/projet-funathon/2026/project3/data/NUTS_RG_01M_2021_4326_LEVL_3.gpkg"
+    nuts = gpd.read_file(nuts_filepath)
+    nuts = gpd.GeoDataFrame(nuts, geometry="geometry", crs="EPSG:4326")
+
+    lat_gps, lon_gps = gps_point[0], gps_point[1]
+    point = Point(lon_gps, lat_gps)
+    result = nuts[nuts.contains(point)]
+
+    if result.empty:
+        return ""
+
+    return str(result["NUTS_ID"].values[0])
+
+
+def find_gps_point_in_filename2bbox(
+    df: pd.DataFrame,
+    gps_point: List[float]
+) -> str:
+    lat_gps, lon_gps = gps_point[0], gps_point[1]
+
+    df["geometry"] = df.apply(
+        lambda row: box(row["bbox"][0], row["bbox"][1], row["bbox"][2], row["bbox"][3]),
+        axis=1
+    )
+
+    gdf = gpd.GeoDataFrame(df, geometry="geometry", crs="EPSG:3035")
+
+    transformer = Transformer.from_crs("EPSG:4326", "EPSG:3035", always_xy=True)
+    x, y = transformer.transform(lon_gps, lat_gps)
+
+    point = Point(x, y)
+    result = gdf[gdf.contains(point)]
+
+    if result.empty:
+        return ""
+
+    return str(result["filename"].values[0])
