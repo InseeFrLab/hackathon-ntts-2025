@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: funathon-2026-project3-api
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/InseeFrLab/hackathon-ntts-2025.git
+    targetRevision: HEAD
+    path: cd/deployment-api
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: projet-funathon
+  syncPolicy:
+    automated:
+      selfHeal: true
