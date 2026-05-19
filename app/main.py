@@ -111,7 +111,7 @@ async def find_image(
     logger.info(f"Find the image filepath for this gps point: {lon_gps}, {lat_gps}")
     gc.collect()
 
-    url = f"https://minio.lab.sspcloud.fr/projet-formation/diffusion/funathon/2026/project3/data/images/{nuts_id}/{year}/filename2bbox.parquet"
+    url = f"https://minio.lab.sspcloud.fr/projet-funathon/2026/project3/data/images/{nuts_id}/{year}/filename2bbox.parquet"
 
     try:
         df = pd.read_parquet(url)
@@ -209,7 +209,7 @@ def predict_nuts(
     # nuts = gpd.read_file("/api/nuts_2021.gpkg")
     # nuts = gpd.GeoDataFrame(nuts, geometry="geometry", crs="EPSG:4326")
 
-    path = f"s3://projet-formation/diffusion/funathon/2026/project3/data/images/{nuts_id}"
+    path = f"s3://projet-funathon/2026/project3/data/images/{nuts_id}"
 
     if fs.exists(path):
         print(f"✅ {nuts_id} is in the database")
@@ -288,104 +288,3 @@ def predict_nuts(
     }
 
     return JSONResponse(content=response_data)
-
-
-# @app.get("/predict_bbox", tags=["Predict Bounding Box"])
-# def predict_bbox(
-#     xmin: float,
-#     xmax: float,
-#     ymin: float,
-#     ymax: float,
-#     epsg: int = Query(4326, ge=0),
-#     year: int = Query(2022, ge=2017, le=2023),
-#     dep: str = Query("MAYOTTE", regex="^(MAYOTTE|GUADELOUPE|MARTINIQUE|GUYANE|REUNION)$"),
-# ) -> Dict:
-#     """
-#     Predicts the bounding box for satellite images based on the given coordinates.
-
-#     Args:
-#         xmin (float): The minimum x-coordinate of the bounding box.
-#         xmax (float): The maximum x-coordinate of the bounding box.
-#         ymin (float): The minimum y-coordinate of the bounding box.
-#         ymax (float): The maximum y-coordinate of the bounding box.
-#         epsg (int, optional): The EPSG code of the coordinate reference system (CRS) for the bounding box. Defaults to 4326.
-#         year (int, optional): The year of the satellite images to use for prediction. Defaults to 2022.
-
-#     Returns:
-#         Dict: A dictionary containing the predicted bounding box coordinates.
-#     """
-#     logger.info(
-#         f"Predict bbox endpoint accessed with bounding box coordinates: ({xmin}, {xmax}, {ymin}, {ymax}), epsg: {epsg}, year: {year}, and department: {dep}"
-#     )
-
-#     fs = get_file_system()
-
-#     # Get the filename to polygons mapping
-#     filename_table = get_filename_to_polygons(dep, year, fs)
-
-#     # Create a GeoSeries with the bounding box
-#     bbox_geo = gpd.GeoSeries(box(*[xmin, ymin, xmax, ymax]), crs=epsg).to_crs(filename_table.crs)
-
-#     # Get the filenames of the images that intersect with the bbox
-#     images = filename_table.loc[
-#         filename_table.geometry.intersects(bbox_geo.geometry.iloc[0]),
-#         "filename",
-#     ].tolist()
-
-#     # Check if images are found in S3 bucket
-#     if not images:
-#         logger.info(
-#             f"""No images found for bounding box: ({xmin}, {xmax}, {ymin}, {ymax}), epsg: {epsg}, year: {year}, and department: {dep}"""
-#         )
-#         return JSONResponse(
-#             content={
-#                 "predictions": gpd.GeoDataFrame(
-#                     columns=["geometry"], crs=filename_table.crs
-#                 ).to_json(),
-#                 "statistics": gpd.GeoDataFrame(
-#                     columns=["geometry"], crs=filename_table.crs
-#                 ).to_json(),
-#             }
-#         )
-
-#     images_to_predict = [im for im in images if not fs.exists(get_cache_path(im))]
-#     images_from_cache = [im for im in images if fs.exists(get_cache_path(im))]
-#     predictions = []
-
-#     if images_to_predict:
-#         # Predict the bbox
-#         predictions = predict(
-#             images_to_predict,
-#             model,
-#             tiles_size,
-#             augment_size,
-#             n_bands,
-#             normalization_mean,
-#             normalization_std,
-#             module_name,
-#         )
-
-#         # Save predictions to cache
-#         for im, pred in zip(images_to_predict, predictions):
-#             with fs.open(get_cache_path(im), "wb") as f:
-#                 np.save(f, pred.label)
-
-#     if images_from_cache:
-#         logger.info(f"Loading predictions from cache for images: {", ".join(images_from_cache)}")
-#         # Load from cache
-#         predictions += [load_from_cache(im, n_bands, fs) for im in images_from_cache]
-
-#     # Produce mask with class IDs TODO : check if ok
-#     for lsi in predictions:
-#         lsi.label = produce_mask(lsi.label, module_name)
-
-#     preds_bbox = subset_predictions(predictions, bbox_geo)
-
-#     stats_bbox = compute_roi_statistics(predictions, bbox_geo)
-
-#     response_data = {
-#         "predictions": preds_bbox.to_json(),
-#         "statistics": stats_bbox.to_json(),
-#     }
-
-#     return JSONResponse(content=response_data)

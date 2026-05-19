@@ -12,7 +12,6 @@ import albumentations as A
 import geopandas as gpd
 import mlflow
 import numpy as np
-import pyarrow.parquet as pq
 import rasterio
 import torch
 from albumentations.pytorch.transforms import ToTensorV2
@@ -214,17 +213,8 @@ def produce_mask(
 
     # Determine mask generation based on module name
     match module_name:
-        case "deeplabv3":
-            mask = prediction.softmax(dim=1) > 0.5
-
-        case "single_class_deeplabv3":
-            mask = prediction.sigmoid() > 0.5
-
         case "segformer-b5":
             mask = torch.argmax(prediction, dim=0)
-
-        case _:
-            raise ValueError("Invalid module name specified.")
 
     return mask.numpy()
 
@@ -434,74 +424,6 @@ def predict(
             )
             for image in tqdm(images)
         ]
-
-
-def get_filename_to_polygons(dep: str, year: int, fs: S3FileSystem) -> gpd.GeoDataFrame:
-    """
-    Retrieves the filename to polygons mapping for a given department and year.
-
-    Args:
-        dep (str): The department code.
-        year (int): The year.
-        fs (S3FileSystem): The S3FileSystem object for accessing the data.
-
-    Returns:
-        gpd.GeoDataFrame: A GeoDataFrame containing the filename to polygons mapping.
-
-    """
-    # Load the filename to polygons mapping
-    data = (
-        pq.ParquetDataset(
-            "projet-slums-detection/data-raw/PLEIADES/filename-to-polygons/",
-            filesystem=fs,
-            filters=[("dep", "=", dep), ("year", "=", year)],
-        )
-        .read()
-        .to_pandas()
-    )
-
-    # Convert the geometry column to a GeoSeries
-    data["geometry"] = gpd.GeoSeries.from_wkt(data["geometry"])
-    return gpd.GeoDataFrame(data, geometry="geometry", crs=data.CRS.unique()[0])
-
-
-# def compute_roi_statistics(predictions: list, roi: gpd.GeoDataFrame) -> Dict[str, float]:
-#     """
-#     Compute statistics of the predictions within a region of interest (ROI).
-
-#     Args:
-#         predictions (list): List of predictions.
-#         roi (gpd.GeoDataFrame): Region of interest.
-
-#     Returns:
-#         dict: Dictionary containing the computed statistics.
-#     """
-#     RESOLUTION = 0.5
-#     area_cluster = 0
-#     area_building = 0
-
-#     for pred in predictions:
-#         polygon_mask = rasterize(
-#             [(roi.geometry.iloc[0], 1)],
-#             out_shape=pred.label.shape,
-#             transform=pred.satellite_image.transform,
-#             fill=0,
-#             dtype=np.uint8,
-#         )
-
-#         original_mask = pred.label
-#         area_cluster += (polygon_mask.sum() * RESOLUTION**2) / 1e6  # in km²
-#         # TODO: Assume 1 is label for buildings
-#         area_building += (
-#             ((original_mask == 1) * polygon_mask).sum() * RESOLUTION**2
-#         ) / 1e6  # in km²
-
-#     pct_building = area_building / area_cluster * 100
-#     roi = roi.assign(
-#         area_cluster=area_cluster, area_building=area_building, pct_building=pct_building
-#     )
-
-#     return roi.reset_index(drop=True)
 
 
 def get_cache_path(image: str) -> str:

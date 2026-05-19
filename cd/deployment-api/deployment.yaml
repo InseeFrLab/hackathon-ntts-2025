@@ -35,9 +35,9 @@ spec:
             - name: MLFLOW_S3_ENDPOINT_URL
               value: https://minio.lab.sspcloud.fr
             - name: MLFLOW_TRACKING_URI
-              value: https://projet-formation-mlflow.user.lab.sspcloud.fr
+              value: https://projet-funathon-mlflow.user.lab.sspcloud.fr
             - name: MLFLOW_TRACKING_USERNAME
-              value: projet-formation
+              value: projet-funathon
             - name: MLFLOW_TRACKING_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -46,7 +46,7 @@ spec:
             - name: MLFLOW_MODEL_NAME
               value: segmentation-sentinel2-model
             - name: MLFLOW_MODEL_VERSION
-              value: "2"
+              value: "1"
             - name: MLFLOW_ENABLE_ARTIFACTS_PROGRESS_BAR
               value: "false"
           resources:
