@@ -33,7 +33,6 @@ gdal.UseExceptions()
 
 # Command-line arguments
 def str_to_list(arg):
-    # Convert the argument string to a list
     return ast.literal_eval(arg)
 
 
@@ -41,14 +40,14 @@ parser = argparse.ArgumentParser(description="PyTorch Training Satellite Images"
 parser.add_argument(
     "--remote_server_uri",
     type=str,
-    default="https://projet-hackathon-ntts-2025-***.user.lab.sspcloud.fr",
+    default="https://projet-funathon.user.lab.sspcloud.fr",
     help="MLflow URI",
     required=True,
 )
 parser.add_argument(
     "--experiment_name",
     type=str,
-    default="test",
+    default="funathon-2026-project3",
     help="Experiment name in MLflow",
 )
 parser.add_argument(
@@ -60,22 +59,28 @@ parser.add_argument(
 parser.add_argument(
     "--source",
     type=str,
-    choices=["PLEIADES", "SENTINEL2"],
-    default="PLEIADES",
+    choices=["SENTINEL2"],
+    default="SENTINEL2",
     help="Source of the data used for the training",
     required=True,
 )
 parser.add_argument(
     "--datasets",
     type=str_to_list,
-    default="['mayotte_2019', 'mayotte_2020', 'mayotte_2021']",
+    default="['AT332_2018','BE100_2018','BE251_2018','BG322_2018','DEA54_2018','DK041_2018','EE00A_2018','EL521_2018','ES612_2018','FI1C1_2018','FRJ27_2018','FRK26_2018','HR050_2018','IE061_2018','ITI32_2018','LT028_2018','LU000_2018','LV008_2018','MT001_2018','NL33C_2018','PL414_2018','PT16I_2018','RO123_2018','SI035_2018','SK022_2018','UKJ22_2018','AT332_2021','BE251_2021','BG322_2021','CZ072_2021','EE00A_2021','EL521_2021','ES612_2021','FI1C1_2021','FRJ27_2021','FRK26_2021','HR050_2021','IE061_2021','ITI32_2021','LT028_2021','LV008_2021','MT001_2021','NL33C_2021','PL414_2021','PT16I_2021','RO123_2021','SI035_2021','SK022_2021']",
     help="List of datasets to be used for training",
     required=True,
 )
 parser.add_argument(
+    "--datasets_test",
+    type=str_to_list,
+    default="['BE100_2021','DEA54_2021','CY000_2021','LU000_2021']",
+    help="List of datasets to be used for test",
+)
+parser.add_argument(
     "--tiles_size",
     type=int,
-    choices=[250, 125],
+    choices=[250],
     metavar="N",
     default=250,
     help="Size of tiles used for the training",
@@ -85,20 +90,20 @@ parser.add_argument(
     "--augment_size",
     type=int,
     metavar="N",
-    default=250,
+    default=512,
     help="Size of input tiles after augmentation",
 )
 parser.add_argument(
     "--type_labeler",
     type=str,
-    choices=["BDTOPO", "COSIA", "CLCplus-Backbone"],
-    default="BDTOPO",
+    choices=["CLCplus-Backbone"],
+    default="CLCplus-Backbone",
     help="Source of data used for labelling",
 )
 parser.add_argument(
     "--n_bands",
     type=int,
-    default=3,
+    default=14,
     metavar="N",
     help="Number of bands used for the training",
 )
@@ -151,16 +156,9 @@ parser.add_argument(
     "--module_name",
     type=str,
     choices=[
-        "deeplabv3",
-        "single_class_deeplabv3",
-        "segformer-b0",
-        "segformer-b1",
-        "segformer-b2",
-        "segformer-b3",
-        "segformer-b4",
         "segformer-b5",
     ],
-    default="deeplabv3",
+    default="segformer-b5",
     help="Model used as based model",
 )
 parser.add_argument(
@@ -247,6 +245,8 @@ def main(
     source: str,
     deps: Tuple[str],
     years: Tuple[str],
+    deps_test: Tuple[str],
+    years_test: Tuple[str],
     tiles_size: int,
     augment_size: int,
     type_labeler: str,
@@ -275,13 +275,13 @@ def main(
     Main method.
     """
     # Seeds
-    torch.manual_seed(args.seed)
-    if args.cuda:
-        torch.cuda.manual_seed(args.seed)
+    torch.manual_seed(seed)
+    if cuda:
+        torch.cuda.manual_seed(seed)
     random.seed(0)
     np.random.seed(0)
 
-    kwargs = {"num_workers": 8, "pin_memory": False} if args.cuda else {}
+    kwargs = {"num_workers": 8, "pin_memory": False} if cuda else {}
 
     earlystop = {"monitor": "val_loss", "patience": patience, "mode": "min"}
     checkpoints = [
@@ -299,7 +299,8 @@ def main(
     test_labels = []
     normalization_means = []
     normalization_stds = []
-    weights = []
+    dataset_weights = []
+
     for dep, year in zip(deps, years):
         # Get patchs and labels for training
         patches, labels = get_patchs_labels(
@@ -313,7 +314,6 @@ def main(
         patches.sort()
         labels.sort()
 
-        # No filtering here
         indices = filter_indices_from_labels(labels, -1.0, 2.0, type_labeler)
         train_patches += [patches[idx] for idx in indices]
         train_labels += [labels[idx] for idx in indices]
@@ -324,13 +324,10 @@ def main(
         )
         normalization_means.append(normalization_mean)
         normalization_stds.append(normalization_std)
-        weights.append(len(indices))
+        dataset_weights.append(len(indices))
 
     # Get test patches and labels
-    deps_test = ["BE100", "DEA54", "CY000", "LU000"]
-    years_test = ["2021"] * len(deps_test)
     for dep, year in zip(deps_test, years_test):
-        # Get patches and labels for test
         patches, labels = get_patchs_labels(from_s3, source, dep, year, tiles_size, type_labeler)
 
         patches.sort()
@@ -340,13 +337,12 @@ def main(
         test_labels += list(labels)
 
     # 2- Define the transforms to apply
-    # Normalization mean
     normalization_mean = np.average(
-        [mean[:n_bands] for mean in normalization_means], weights=weights, axis=0
+        [mean[:n_bands] for mean in normalization_means], weights=dataset_weights, axis=0
     ).tolist()
     normalization_std = [
         pooled_std_dev(
-            weights,
+            dataset_weights,
             [mean[i] for mean in normalization_means],
             [std[i] for std in normalization_stds],
         )
@@ -366,7 +362,7 @@ def main(
     if augment_size != tiles_size:
         transform_list.insert(0, A.Resize(augment_size, augment_size))
     transform = A.Compose(transform_list)
-    # Test transform
+
     test_transform_list = [
         A.Normalize(
             max_pixel_value=1.0,
@@ -379,13 +375,7 @@ def main(
         test_transform_list.insert(0, A.Resize(augment_size, augment_size))
     test_transform = A.Compose(test_transform_list)
 
-    # train_patches = train_patches[:100]
-    # train_labels = train_labels[:100]
-    # test_patches = test_patches[:100]
-    # test_labels = test_labels[:100]
-
     # 3- Retrieve the Dataset object given the params
-    # TODO: mettre en Params comme Tom a fait dans formation-mlops
     dataset = get_dataset(train_patches, train_labels, n_bands, from_s3, transform)
     test_dataset = get_dataset(test_patches, test_labels, n_bands, from_s3, test_transform)
 
@@ -403,14 +393,13 @@ def main(
         test_dataset, batch_size=test_batch_size, shuffle=False, drop_last=True, **kwargs
     )
 
-    # 6- Create the trainer and the lightning
+    # 6- Create the trainer and the lightning module
     trainer = get_trainer(earlystop, checkpoints, epochs, num_sanity_val_steps, accumulate_batch)
 
-    # TODO : Est ce qu'on met des poids ?
-    weights = [
+    class_weights = [
         building_class_weight if label == "Sealed" else 1.0
         for label in requests.get(
-            f"https://minio.lab.sspcloud.fr/projet-hackathon-ntts-2025/data-label/{type_labeler}/{type_labeler.lower()}-id2label.json"
+            "https://minio.lab.sspcloud.fr/projet-funathon/2026/project3/data/clcplus-backbone-id2label.json"
         )
         .json()
         .values()
@@ -420,7 +409,7 @@ def main(
         module_name=module_name,
         type_labeler=type_labeler,
         loss_name=loss_name,
-        weights=weights,
+        weights=class_weights,
         label_smoothing=label_smoothing,
         n_bands=n_bands,
         logits=bool(logits),
@@ -430,7 +419,7 @@ def main(
         earlystop=earlystop,
         scheduler_name=scheduler_name,
         scheduler_patience=scheduler_patience,
-        cuda=cuda
+        cuda=cuda,
     )
 
     mlflow.set_tracking_uri(remote_server_uri)
@@ -453,7 +442,7 @@ def main(
             scheduler=light_module.scheduler,
             scheduler_params=light_module.scheduler_params,
             scheduler_interval=light_module.scheduler_interval,
-            n_bands=n_bands
+            n_bands=n_bands,
         )
 
         # Signature
@@ -469,7 +458,7 @@ def main(
 
         signature = infer_signature(
             sample_input.numpy(),
-            sample_output.detach().cpu().numpy()
+            sample_output.detach().cpu().numpy(),
         )
 
         # Logging the model with the associated code
@@ -482,7 +471,7 @@ def main(
             ],
             pytorch_model=best_model.to("cpu"),
             signature=signature,
-            input_example=sample_input.numpy()
+            input_example=sample_input.numpy(),
         )
 
         # Log normalization parameters
@@ -494,13 +483,13 @@ def main(
         )
 
         params = {
-                "n_bands": n_bands,
-                "tiles_size": tiles_size,
-                "augment_size": augment_size,
-                "module_name": module_name,
-                "normalization_mean": normalization_mean,
-                "normalization_std": normalization_std,
-            }
+            "n_bands": n_bands,
+            "tiles_size": tiles_size,
+            "augment_size": augment_size,
+            "module_name": module_name,
+            "normalization_mean": normalization_mean,
+            "normalization_std": normalization_std,
+        }
 
         mlflow.log_dict(params, "params.json")
 
@@ -510,7 +499,7 @@ def main(
         return run_id
 
 
-def format_datasets(args_dict: dict) -> Tuple[str, int]:
+def format_datasets(args_dict: dict) -> Tuple:
     """
     Format datasets.
 
@@ -518,22 +507,21 @@ def format_datasets(args_dict: dict) -> Tuple[str, int]:
         args_dict (dict): A dictionary containing the command-line arguments.
 
     Returns:
-        Tuple[str, int]: A tuple containing the list of departments and years extracted from the dataset names.
-
-    Raises:
-        ValueError: If the S3 path does not exist.
-
+        Tuple: deps, years, deps_test, years_test, and the remaining args_dict.
     """
     deps, years = zip(*[item.split("_") for item in args_dict["datasets"]])
     deps = [dep.upper() for dep in deps]
     args_dict.pop("datasets")
-    return deps, years, args_dict
 
+    deps_test, years_test = zip(*[item.split("_") for item in args_dict["datasets_test"]])
+    deps_test = [dep.upper() for dep in deps_test]
+    args_dict.pop("datasets_test")
 
-# Rajouter dans MLflow un fichier texte avc tous les nom des images used pour le training
+    return deps, years, deps_test, years_test, args_dict
+
 
 if __name__ == "__main__":
     args_dict = vars(args)
-    deps, years, args_dict = format_datasets(args_dict)
-    run_id = main(**args_dict, deps=deps, years=years)
+    deps, years, deps_test, years_test, args_dict = format_datasets(args_dict)
+    run_id = main(**args_dict, deps=deps, years=years, deps_test=deps_test, years_test=years_test)
     print(run_id)
