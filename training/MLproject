@@ -8,6 +8,7 @@ entry_points:
       run_name: {type: str, default: default}
       source: {type: str, default: PLEIADES}
       datasets: {type: str, default: ["mayotte_2022", "martinique_2022"]}
+      datasets_test: {type: str, default: "[]"}
       tiles_size: {type: str, default: 250}
       augment_size: {type: int, default: 250}
       type_labeler: {type: str, default: BDTOPO}
@@ -38,6 +39,7 @@ entry_points:
             --run_name {run_name} \
             --source {source} \
             --datasets {datasets} \
+            --datasets_test {datasets_test} \
             --tiles_size {tiles_size} \
             --augment_size {augment_size} \
             --type_labeler {type_labeler} \
