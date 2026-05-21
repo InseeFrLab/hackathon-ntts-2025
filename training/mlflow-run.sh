@@ -13,6 +13,7 @@ ENTRY_POINT=main
 
 SOURCE=SENTINEL2
 DATASETS='["BE100_2018", "BE251_2018", "BE251_2021", "FRJ27_2018", "FRK26_2018", "FRK26_2021"]'
+DATASETS_TEST='["BE100_2021"]'
 TILES_SIZE=250
 TYPE_LABELER=CLCplus-Backbone
 USE_S3=0
@@ -39,6 +40,7 @@ mlflow run ~/work/hackathon-ntts-2025/training/ \
     -P experiment_name=$MLFLOW_EXPERIMENT_NAME \
     -P source=$SOURCE \
     -P datasets="$DATASETS" \
+    -P datasets_test="$DATASETS_TEST" \
     -P type_labeler=$TYPE_LABELER \
     -P tiles_size=$TILES_SIZE \
     -P epochs=$EPOCHS \
