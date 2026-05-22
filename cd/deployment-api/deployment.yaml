@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: funathon-2026-project3-model-deployment
 spec:
-  replicas: 1
+  replicas: 25
   selector:
     matchLabels:
       app: funathon-2026-project3-model-deployment
@@ -46,7 +46,7 @@ spec:
             - name: MLFLOW_MODEL_NAME
               value: segmentation-sentinel2-model
             - name: MLFLOW_MODEL_VERSION
-              value: "2"
+              value: "3"
             - name: MLFLOW_ENABLE_ARTIFACTS_PROGRESS_BAR
               value: "false"
           resources:
