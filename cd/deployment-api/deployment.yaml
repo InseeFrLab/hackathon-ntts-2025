@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: funathon-2026-project3-model-deployment
 spec:
-  replicas: 25
+  replicas: 1
   selector:
     matchLabels:
       app: funathon-2026-project3-model-deployment
