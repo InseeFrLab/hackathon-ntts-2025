@@ -283,7 +283,7 @@ def main(
 
     kwargs = {"num_workers": 8, "pin_memory": False} if cuda else {}
 
-    earlystop = {"monitor": "val_loss", "patience": patience, "mode": "min"}
+    earlystop = {"monitor": "train_loss", "patience": patience, "mode": "min"}
     checkpoints = [
         {
             "monitor": "val_loss",
